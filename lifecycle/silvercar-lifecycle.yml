@@ -1,0 +1,32 @@
+generated: '2026-07-21'
+method: searched
+source: https://developer.dealerware.com/docs/deprecation-1.md
+name: Dealerware Partner Integration API — Lifecycle
+versioning:
+  scheme: path
+  current_version: v4
+  reference_label: mob-api-v4
+  notes: >-
+    The API reference is versioned as mob-api-v4. Dealerware is migrating v3
+    endpoints to v4; some v3 endpoints are being deprecated, merged, or updated.
+deprecation_policy:
+  documented: true
+  status: under-review
+  url: https://developer.dealerware.com/docs/deprecation-1.md
+  summary: >-
+    Dealerware publishes a Deprecation policy page describing its plan to fully
+    upgrade v3 endpoints to v4, which endpoints are being deprecated/merged/updated,
+    and the cadence for changes. As of this capture the policy is marked "currently
+    reviewing its deprecation policies."
+  deprecated_operations:
+  - operationId: getdealershipsearch
+    path_hint: /admin/dealership/search
+    replacement: GET /admin/dealerships?q=
+    note: >-
+      Documented as deprecated and slated for removal in a future release; use
+      the /admin/dealerships endpoint with the q query parameter instead.
+    source: https://developer.dealerware.com/reference/getdealershipsearch-1.md
+support:
+  channel: email
+  contact: partnersupport@dealerware.com
+  help_page: https://developer.dealerware.com/docs/support.md

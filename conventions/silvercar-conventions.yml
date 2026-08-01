@@ -1,0 +1,52 @@
+generated: '2026-07-21'
+method: searched
+source: https://developer.dealerware.com/llms.txt
+name: Dealerware Partner Integration API — Cross-cutting Conventions
+note: >-
+  Silvercar's API surface now operates as Dealerware. Conventions captured from
+  the public developer hub (docs + API reference). Only documented semantics are
+  recorded; fields not published by the provider are omitted rather than invented.
+transport:
+  https_required: true
+  base_url: https://api.dealerware.com
+authentication:
+  style: bearer-jwt
+  header: Authorization
+  token: RS256-signed JWT access token issued by Auth0 (client_credentials)
+  detail: authentication/silvercar-authentication.yml
+pagination:
+  style: page-number
+  params:
+  - name: page
+    description: 1-based page index
+  - name: per_page
+    description: rows returned per page
+  response_notes: >-
+    Many list endpoints return "paginated" collections. For the reporting
+    endpoints, total-record counts are intentionally not surfaced (documented as
+    known to be inaccurate).
+  observed_in:
+  - getadmindealershipwebhooks
+  - postreportingdata
+  - postreportingmetadata
+  - getvehicleissues
+webhooks:
+  outbound: event-driven updates to partner-registered endpoints
+  inbound: HMAC-verified system-to-system messages
+  detail: asyncapi/silvercar-webhooks.yml
+versioning:
+  scheme: path
+  current: v4
+  migration: v3 endpoints being upgraded/merged into v4
+  detail: lifecycle/silvercar-lifecycle.yml
+error_semantics:
+  auth_errors: Missing or invalid access token is rejected with an authentication error.
+  not_found_204: >-
+    Some write/confirmation endpoints return 204 when the target (e.g. confirmation
+    token, user) is not found (postuserconfirmations, putuserpasswordreset).
+  short_link_404: >-
+    Invalid, expired, or already-used short/remote-profile links return 404 to
+    prevent replay.
+idempotency:
+  documented: false
+  note: No idempotency-key mechanism is documented in the public developer hub.

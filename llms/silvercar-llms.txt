@@ -1,0 +1,205 @@
+# Partner Integration | Dealerware Documentation
+
+> Documentation for Partner Integration | Dealerware
+
+## Guides
+- [Introduction](https://developer.dealerware.com/docs/getting-started.md): Here you'll find guides, resources, and references for RESTful methods designed for Dealerware product integration.
+- [Quickstart Guide](https://developer.dealerware.com/docs/quickstart-guide.md)
+- [Introduction to Authentication](https://developer.dealerware.com/docs/api-integration-process.md): To access Dealerware's API, you'll need to securely authenticate your requests. This process starts by obtaining your Client ID and Client Secret, which serve as your unique credentials. These keys are critical for API access, so ensure they are stored securely and never shared in public repositories or client-side code.  Dealerware's authentication process relies on generating an Access Token through our trusted authentication server. All interactions with our API require a valid token, ensuring secure, authorized access to resources. Always use HTTPS for all API calls to maintain data security and integrity.  This guide will walk you through each step of the authentication process, from requesting API credentials to securely making authenticated requests. For additional help, feel free to reach out to our support team at partnersupport@dealerware.com.
+- [Dealerware's Business Solutions Quickstart Guide](https://developer.dealerware.com/docs/dealerwares-business-solutions-quickstart-guide.md): Match our API endpoints to your integration use case.
+- [Reservations & Scheduling](https://developer.dealerware.com/docs/appointments-scheduling.md): Empower seamless scheduling by streamlining vehicle availability and appointment creation.
+- [Customer Profile Management](https://developer.dealerware.com/docs/pickup-delivery-copy.md): Keep customer data synced and transform your customer check-in experience.
+- [Payments & Cost Recovery](https://developer.dealerware.com/docs/cost-recovery.md): Retrieve the data you need to maximize reimbursements and reconciliation. Add additional payment workflows to speed up transactions and simplify payment collection and charging.
+- [Fleet Tracking](https://developer.dealerware.com/docs/fleet-api.md): Empower your business with unparalleled insights into your automotive assets.
+- [Deprecation](https://developer.dealerware.com/docs/deprecation-1.md): Our internal policies for deprecating endpoints
+- [Glossary](https://developer.dealerware.com/docs/glossary-1.md): Speak the language of Dealerware API!
+- [Support](https://developer.dealerware.com/docs/support.md): We are here to help you get the most out of Dealerware API integration.
+
+## API Reference
+- [Creates a contactless text message associated with a contract](https://developer.dealerware.com/reference/postcontractcontactlessmessages-1.md)
+- [Get the rental agreement PDF for a reservation](https://developer.dealerware.com/reference/getrentalagreementpdf-1.md): Get the rental agreement PDF for a reservation
+- [Returns the Status for all vehicles at a given dealership on the Dashboard tables](https://developer.dealerware.com/reference/getvehiclestatusfordashboard-1.md)
+- [Admin login endpoint](https://developer.dealerware.com/reference/postlogin-1.md)
+- [Lists failed customer notifications eligible for replay](https://developer.dealerware.com/reference/getadmincustomernotificationsfailed.md): Available to god users only.
+- [Replays a failed customer notification](https://developer.dealerware.com/reference/postadmincustomernotificationreplay.md): Available to god users only.
+- [Get all fields that can be mapped onto an agreement](https://developer.dealerware.com/reference/getmappablefields-1.md)
+- [Get availability for a Fleet/Program](https://developer.dealerware.com/reference/getprogramavailability-1.md)
+- [Get availability for a Fleet/Program with intervals](https://developer.dealerware.com/reference/getprogramavailabilityintervals-1.md)
+- [Returns Contactless Contract/Driver Information](https://developer.dealerware.com/reference/getcontractscontactlessdriver-1.md)
+- [Create a Signature Image for the Driver](https://developer.dealerware.com/reference/postcontactlessdriversignature-1.md)
+- [Fetch Details for a Given Contract](https://developer.dealerware.com/reference/getcontract-1.md)
+- [Update Details for a Given Contract](https://developer.dealerware.com/reference/putcontract-1.md)
+- [Get all Toggles attached to a given Contract](https://developer.dealerware.com/reference/getadmincontractstoggles-1.md)
+- [Fetch the authorization amount for a given contract](https://developer.dealerware.com/reference/getadmincontractauthorization-1.md)
+- [Get all Drivers attached to a given Contract](https://developer.dealerware.com/reference/getadmincontractsdrivers-1.md)
+- [Create a Driver attached to a given Contract](https://developer.dealerware.com/reference/postadmincontractsdrivers-1.md)
+- [Fetch the available adjustments for a given contract](https://developer.dealerware.com/reference/getadmincontractadjustments-1.md)
+- [Create a billing adjustment (charge or credit) for the given contract](https://developer.dealerware.com/reference/postadmincontractbillingadjustment-1.md)
+- [Fetch the customer attached to a given Contract](https://developer.dealerware.com/reference/getadmincontractcustomer-1.md)
+- [Get the notes for a contract](https://developer.dealerware.com/reference/getcontractnotes-1.md)
+- [Add a note for a contract](https://developer.dealerware.com/reference/postcontractnote-1.md)
+- [Update a note for a contract](https://developer.dealerware.com/reference/putcontractnote-1.md)
+- [Delete a note for a contract](https://developer.dealerware.com/reference/deletecontractnote-1.md)
+- [Update the payment method for the given contract](https://developer.dealerware.com/reference/putadmincontractpaymentmethod-1.md)
+- [Fetch the payments attached to a given Contract](https://developer.dealerware.com/reference/getadmincontractpayments-1.md)
+- [Fetch the pricing information of a given Contract](https://developer.dealerware.com/reference/getadmincontractpricing-1.md)
+- [Generate and fetch receipt PDF for the given contract](https://developer.dealerware.com/reference/postadmincontractreceiptpdf-1.md)
+- [Create a settlement attempt on the balance of the contract](https://developer.dealerware.com/reference/postadmincontractsettlement-1.md)
+- [Fetch the split bill associated to a given Contract](https://developer.dealerware.com/reference/getadmincontractsplitbill-1.md)
+- [Creates a split bill that is associated with a given contract](https://developer.dealerware.com/reference/postadmincontractsplitbill-1.md)
+- [Update the split bill associated with a given contract](https://developer.dealerware.com/reference/putadmincontractsplitbill-1.md)
+- [Deletes a split bill](https://developer.dealerware.com/reference/deleteadmincontractsplitbill-1.md)
+- [Fetch the adjustment associated to a given contract's split bill](https://developer.dealerware.com/reference/getadmincontractsplitbilladjustment-1.md)
+- [Creates an adjustment of the specified amount on a contract's split bill](https://developer.dealerware.com/reference/postadmincontractsplitbilladjustment-1.md)
+- [Creates a payment for the split bill of a given contract](https://developer.dealerware.com/reference/postadmincontractsplitbillpayment-1.md)
+- [Deletes the payment of the split bill of a given contract](https://developer.dealerware.com/reference/deleteadmincontractsplitbillpayment-1.md)
+- [Generate split bill PDF for the given contract](https://developer.dealerware.com/reference/postadmincontractsplitbillpdf-1.md)
+- [Cancel the Given Contract](https://developer.dealerware.com/reference/deleteadmincontractcancel-1.md)
+- [Start the Given Contract](https://developer.dealerware.com/reference/putadmincontractstart-1.md)
+- [Finish the given Contract](https://developer.dealerware.com/reference/putadmincontractfinish-1.md)
+- [Unassign the vehicle currently assigned to the given contract](https://developer.dealerware.com/reference/putadmincontractunassignvehicle-1.md)
+- [Assign a Vehicle to the Given Contract](https://developer.dealerware.com/reference/putadmincontractvehicle-1.md)
+- [Retrieves a list of available vehicles for the given contract](https://developer.dealerware.com/reference/getadmincontractvehiclesavailable-1.md)
+- [Returns a list of available vehicles for a contract based on the provided query](https://developer.dealerware.com/reference/getadmincontractvehiclesavailablesearch-1.md)
+- [Returns a Warranty for a Contract](https://developer.dealerware.com/reference/getcontractwarranty-1.md)
+- [Creates a Warranty for a Contract](https://developer.dealerware.com/reference/postcontractswarranty-1.md)
+- [Update the Contract's Warranty](https://developer.dealerware.com/reference/putadmincontractswarranty-1.md)
+- [Removes the Warranty from a Contract](https://developer.dealerware.com/reference/deleteadmincontractswarranty-1.md)
+- [Fetch the contracts for a customer at a particular dealership](https://developer.dealerware.com/reference/getadmincustomerscontracts-1.md)
+- [Fetch the Payment Methods belonging to the given Customer](https://developer.dealerware.com/reference/getadmincustomercreditcards-1.md)
+- [Fetch the manifest scope (open or closed today) of contracts for a dealership](https://developer.dealerware.com/reference/getadmindealershipcontracts-1.md)
+- [Query the manifest scope (open and closed today) of contracts for a dealership](https://developer.dealerware.com/reference/getadmindealershipcontractssearch-1.md)
+- [Fetch the manifest scope of contracts for a dealership with a pickup/dropoff time of the current day](https://developer.dealerware.com/reference/getadmindealershipcontractsmanifesttoday-1.md)
+- [Fetch the fleets for a location, along with the contracts (within the given time range, all statuses) and vehicles for each](https://developer.dealerware.com/reference/getadmindealershipfleetscontractsandvehicles-1.md)
+- [Creates a new signature associated with a contactless contract](https://developer.dealerware.com/reference/postcontractscontactlesssignatures-1.md): Creates a signature for the reservation identified by the contactless uuid token. If contactless cache already exists, it is reused. If contactless cache does not exist, it is created lazily from request values (when provided) or defaults. Required body field: image. Optional body fields: fuel_percentage, odometer.
+- [Returns contactless contract data](https://developer.dealerware.com/reference/getcontractscontactless-1.md)
+- [Returns a customers's profile details](https://developer.dealerware.com/reference/admincustomerget-1.md)
+- [Update a Customer's profile](https://developer.dealerware.com/reference/putadmincustomerupdate-1.md)
+- [Deletes the list of Customers associated with the id's passed in body of request.](https://developer.dealerware.com/reference/deletedealershipcustomers-1.md): delete Customers per dealership
+- [Returns the list of Customers associated with a dealership](https://developer.dealerware.com/reference/getadmindealershipcustomers-1.md)
+- [Create a new customer associated with a dealership](https://developer.dealerware.com/reference/postadmindealershipcustomer-1.md)
+- [Returns the list of Customers associated with a dealership based on search query](https://developer.dealerware.com/reference/getadmindealershipcustomerssearch-1.md)
+- [Get cached profile information for a customer](https://developer.dealerware.com/reference/getadmindealershipcustomersmessagesprofiles-1.md)
+- [Sends an SMS to a new/existing Customer to create/update their Customer profile](https://developer.dealerware.com/reference/postadmindealershipcustomermessage-1.md)
+- [Finds a single Customer profile based on the given token and driver's license/email info](https://developer.dealerware.com/reference/getadmindealershipcustomersremoteprofilesearch-1.md)
+- [Generate a QR code for Mobile Check-In remote profile](https://developer.dealerware.com/reference/postadmindealershipcustomersremoteprofileqrcode.md): Generates a QR code containing a short URL that customers can scan to access their Mobile Check-In remote profile. This endpoint follows the same flow as InviteHandler but without sending SMS.  - Generates a secure short link for the customer to access their profile - Returns QR code as SVG image (default) or URL as plain text (for testing) - Location admins can only create links for customers belonging to their dealership - The QR code expires after a configured time period
+- [Returns the Dealership objects available to the authenticated user](https://developer.dealerware.com/reference/getdealerships-1.md)
+- [Returns the requested dealership object to the authenticated user](https://developer.dealerware.com/reference/getdealership-1.md)
+- [Updates the Dealership and/or its Fleets' Settings](https://developer.dealerware.com/reference/patchdealershipandfleetsettings-1.md)
+- [Returns the dealership address](https://developer.dealerware.com/reference/getdealershipaddress-1.md)
+- [Updates the dealership address](https://developer.dealerware.com/reference/putdealershipaddress-1.md)
+- [Get availability for all cars in a dealership by 30-minute interval for every interval between start and end, inclusive](https://developer.dealerware.com/reference/getdealershipavailabilityintervals-1.md)
+- [Get availability for all cars in a dealership by day for every day between start and end, inclusive](https://developer.dealerware.com/reference/getdealershipavailabilityintervalsdaily-1.md)
+- [Get availability from a static start time for all cars in a dealership by 30-minute interval for every interval between start and end, inclusive](https://developer.dealerware.com/reference/getdealershipavailabilityintervalscontinuous-1.md)
+- [Get availability from a static start time for all cars in a dealership by day for every day between start and end, inclusive](https://developer.dealerware.com/reference/getdealershipavailabilityintervalscontinuousdaily-1.md)
+- [Returns a paginated list of Reservations or Contracts for a Dealership Calendar](https://developer.dealerware.com/reference/getdealershipcalendarcontracts-1.md)
+- [Returns a paginated list of Vehicle objects for the Calendar](https://developer.dealerware.com/reference/getdealershipcalendarvehicles-1.md)
+- [Returns the list of Fleet objects associated with a dealership](https://developer.dealerware.com/reference/getdealershipfleets-1.md)
+- [Creates a new fleet associated with a dealership](https://developer.dealerware.com/reference/postdealershipfleets-1.md): Note: Also creates non-configurable BillableItem adjustments for fleet.
+- [Bulk onboarding vehicles by uploading a CSV file, and return a list of results about success/error](https://developer.dealerware.com/reference/postdealeronboardingvehicles-1.md)
+- [Check the status of bulk onboarding vehicles by CSV, and return a big chunk of json response of the status](https://developer.dealerware.com/reference/postdealervehiclescheckingonboardingstatus-1.md)
+- [Returns the dealership specific or default set of KPIs](https://developer.dealerware.com/reference/getdealershipkpis-1.md)
+- [Get All makes and all models for that make in a Dealership](https://developer.dealerware.com/reference/getdealershipmakesandmodels-1.md)
+- [Get Dealership Receivables Report Data](https://developer.dealerware.com/reference/getdealershipreportreceivables-1.md): Get statements with balances greater than zero
+- [Get Dealership Report Revenue Data](https://developer.dealerware.com/reference/getdealershipreportrevenue-1.md): Get Dealership Report Revenue Data within a given time frame
+- [Get Dealership Report Summary](https://developer.dealerware.com/reference/getdealershipreportrevenuesummary-1.md): Get Dealership Revenue Data Summary within a given time frame
+- [Get Dealership Report Transactions Data](https://developer.dealerware.com/reference/getdealershipreporttransactions-1.md): Get Dealership Report Transactions Data within a given time frame
+- [Get Filtered and/or Sorted Dealership Report Transactions Data](https://developer.dealerware.com/reference/getdealershipreporttransactionsfilteredsorted-1.md): Get Filtered and/or Sorted Dealership Report Transactions Data within a given time frame
+- [Returns the list of Service Advisors associated with a dealership](https://developer.dealerware.com/reference/getadmindealershipserviceadvisors-1.md)
+- [Returns the dealership settings](https://developer.dealerware.com/reference/getdealershipsettings-1.md)
+- [Returns a paginated list of Vehicle objects associated with a dealership](https://developer.dealerware.com/reference/getdealershipvehicles-1.md): Returns a paginated list of Vehicle objects associated with a dealership. Supports filtering by date ranges and sorting by various fields including maturity_date, in_service_date, and rdr_date.
+- [Creates a new Vehicle for a Dealership and assigns it to a list of Fleets](https://developer.dealerware.com/reference/postdealershipvehicle-1.md)
+- [Returns the list of Vehicle objects associated with a dealership based on search query](https://developer.dealerware.com/reference/getdealershipvehiclessearch-1.md): Returns the list of Vehicle objects associated with a dealership based on search query. Supports sorting by various fields including maturity_date, in_service_date, and rdr_date.
+- [Deprecated – use `/admin/dealerships?name` instead](https://developer.dealerware.com/reference/getdealershipsearch-1.md): This endpoint is deprecated and will be removed in a future release. Use the `/admin/dealerships` endpoint with the `q` query parameter instead, e.g. `/admin/dealerships?q=AAA`.
+- [Returns the user roles for a given location](https://developer.dealerware.com/reference/getuserdealershiproles-1.md)
+- [Get the customer information for a reservation](https://developer.dealerware.com/reference/getreservationcustomer-1.md)
+- [Update the customer information for a reservation](https://developer.dealerware.com/reference/putreservationcustomer-1.md)
+- [Returns vehicles with estimates for contract selection](https://developer.dealerware.com/reference/getdealershipcontractavailablevehicles.md): Returns vehicles available in a fleet for the requested time range, including estimate data for each vehicle.
+- [Returns a paginated list of dealership webhooks](https://developer.dealerware.com/reference/getadmindealershipwebhooks.md)
+- [Creates a new webhook for a dealership](https://developer.dealerware.com/reference/postadmindealershipwebhook.md)
+- [Returns a dealership webhook](https://developer.dealerware.com/reference/getadmindealershipwebhook.md)
+- [Updates a dealership webhook](https://developer.dealerware.com/reference/putadmindealershipwebhook.md)
+- [Deletes a dealership webhook](https://developer.dealerware.com/reference/deleteadmindealershipwebhook.md)
+- [Get a Driver's details](https://developer.dealerware.com/reference/getadmindriver-1.md)
+- [Update a Driver's details](https://developer.dealerware.com/reference/putadmindriver-1.md)
+- [Delete a Driver](https://developer.dealerware.com/reference/deleteadmindriver-1.md)
+- [Create a Signature Image for the Driver](https://developer.dealerware.com/reference/postdriversignature-1.md)
+- [Returns an employee's profile details](https://developer.dealerware.com/reference/getemployee-1.md)
+- [Update an Employee's details](https://developer.dealerware.com/reference/putemployee-1.md)
+- [Deactivate an Employee](https://developer.dealerware.com/reference/deleteemployeeactivation-1.md)
+- [Activate an Employee](https://developer.dealerware.com/reference/postemployeeactivation-1.md)
+- [Returns an employee's roles for a dealership](https://developer.dealerware.com/reference/getdealershipemployeeroles-1.md)
+- [Update an employee's roles for a dealership](https://developer.dealerware.com/reference/putdealershipemployeeroles-1.md)
+- [Returns the list of Employees associated with a dealership](https://developer.dealerware.com/reference/getadmindealershipemployees-1.md)
+- [Create a new employee associated with a dealership](https://developer.dealerware.com/reference/postadmindealershipemployee-1.md)
+- [Returns the list of Employees associated with a dealership based on search query](https://developer.dealerware.com/reference/getadmindealershipemployeessearch-1.md)
+- [Get a customer's employer information](https://developer.dealerware.com/reference/getadmincustomeremployer-1.md)
+- [Create a customer's employer information](https://developer.dealerware.com/reference/postadmincustomeremployer-1.md)
+- [Updates an employer for a customer](https://developer.dealerware.com/reference/putadmincustomeremployer-1.md)
+- [Returns a given dealerships vehicle trims for all her fleets](https://developer.dealerware.com/reference/getdealershiptrimtypesinfleets-1.md): Returns a given dealerships vehicle trims for all her fleets
+- [Gets a fleet](https://developer.dealerware.com/reference/getfleet-1.md)
+- [Updates a fleet](https://developer.dealerware.com/reference/putfleet-1.md)
+- [Deletes a fleet. NOTE: Temporarily Disabled. See SC-5730.](https://developer.dealerware.com/reference/deletefleet-1.md)
+- [Get active fleet size and required vehicles needed within a time range](https://developer.dealerware.com/reference/getfleetavailability-1.md)
+- [Get availability by 30-minute interval for every interval between start and end, inclusive](https://developer.dealerware.com/reference/getfleetavailabilityintervals-1.md)
+- [Get availability by day for every day between start and end, inclusive](https://developer.dealerware.com/reference/getfleetavailabilityintervalsdaily-1.md)
+- [Get availability from a static time by 30-minute interval for every interval between start and end, inclusive](https://developer.dealerware.com/reference/getfleetavailabilityintervalscontinuous-1.md)
+- [Get availability from a static time by day for every day between start and end, inclusive](https://developer.dealerware.com/reference/getfleetavailabilityintervalscontinuousdaily-1.md)
+- [Creates a new Contract associated with a Fleet](https://developer.dealerware.com/reference/postfleetcontract-1.md)
+- [Creates a new Vehicle associated with a Fleet](https://developer.dealerware.com/reference/postfleetvehicles-1.md)
+- [Returns the distance between 2 addresses and whether the distance falls inside a radial bound](https://developer.dealerware.com/reference/getgeolocationradialdistance-1.md)
+- [Deletes an issue](https://developer.dealerware.com/reference/deleteissue-1.md)
+- [Resolves an issue](https://developer.dealerware.com/reference/putissue-1.md)
+- [Short URL redirect for remote profile links](https://developer.dealerware.com/reference/getshortremoteprofile.md): Redirects a short URL to the full remote profile URL. This endpoint handles the short codes generated by the QR Code endpoint and redirects users to the appropriate remote profile page.  - Short codes are valid for a limited time period (QR code expiration) - Once used, the token becomes invalid to prevent replay attacks - If the short code is invalid, expired, or already used, returns a 404 error  The redirect URL includes the dealership location, authentication token, and optional deep link path.
+- [Returns reporting data for a logical table search](https://developer.dealerware.com/reference/postreportingdata.md): This endpoint executes a report query against a logical table.  The server builds the query for the client from: - `columns`: the exact column labels to include - `filters`: equality filters using `{ column_name, value }` - `runtime_filters`: advanced runtime filters - `runtime_param_override`: parameter overrides  Access scope: - Before querying data, the server resolves `name_patterns` to exactly one logical table available   to the `custom_reporting` user group.  Behavior notes: 1. `/reporting/data.filters` is the simple query-string path and is currently equality-only. 2. `runtime_filters` supports richer operators. Use metadata to determine which operators are valid    for a given field. 3. DATE and DATE_TIME columns may include a date bucket suffix in `columns` and `filters` using    `Column Name.bucket` syntax. The server sends these to ThoughtSpot as `[Column Name].bucket`.    Supported buckets are `detailed`, `hourly`, `daily`, `weekly`, `monthly`, `quarterly`, and `yearly`. 4. ISO 8601 timestamp strings in `runtime_filters` are converted to epoch seconds before the request    is sent only when they include a time component. 5. `runtime_param_override` forwards parameter overrides as numbered `param1`, `paramVal1`, etc. 6. Single-OEM admins may omit `runtime_param_override.oem`; the server infers it from the    authenticated user. 7. OEM admins with access to multiple OEMs must send a non-blank `runtime_param_override`    entry with `name: "oem"`. 8. Non-OEM admins do not get OEM scoping from `runtime_param_override.oem`; any client-supplied    `oem` override is stripped and the server injects a runtime filter equivalent to    `preferred_dealer = true`. 9. The query filter `[filter_oem]=true` is added only when the effective outgoing    `runtime_param_override` includes `oem`. 10. The reporting response is returned with date-like values normalized for API clients.  Validation rules: 1. `name_patterns` must include at least one non-blank pattern. 2. `name_patterns` must resolve to exactly one authorized logical table. 3. At least one column is required. 4. Every filter column must also appear in `columns`. 5. `filters` is equality-only. 6. `runtime_filters` supports richer operators. 7. Multi-OEM admins must provide `runtime_param_override.oem`. 8. Dotted column names must use one of the supported date bucket suffixes.  Pagination: - `page` (1-based) and `per_page` control how many rows are returned in a single response. - Total-record counts are not surfaced because they are known to be inaccurate.  Typical flow: 1. Call `/reporting/metadata`. 2. Copy `data_sources[*].name_patterns`. 3. Choose one or more values from `data_sources[*].column_names`. 4. Optionally apply equality filters using `data_sources[*].filters`. 5. Optionally add `runtime_filters` using `data_sources[*].runtime_filters`, for example date ranges    with `BW_INC`. 6. Optionally add `runtime_param_override` using `data_sources[*].runtime_parameters`.    Include `oem` only when the authenticated user has access to multiple OEMs.    Single-OEM admins may omit `oem`, and non-OEM admins should not rely on sending it. 7. Call `/reporting/data`.  Example query generation: - Request:   `columns: ["OEM", "Region"]`   `filters: [{ "column_name": "Region", "value": "West" }]` - Generated query string:   `[OEM] [Region] [Region]="West"` - Date bucket request:   `columns: ["Actual Pickup At.daily"]` - Generated date bucket token:   `[Actual Pickup At].daily`
+- [Returns reporting metadata for logical tables](https://developer.dealerware.com/reference/postreportingmetadata.md): This endpoint is the discovery step for reporting.  It searches logical tables and returns a reduced response built for API clients: - `name_patterns`: the stable selector to send to `/reporting/data` - `column_names`: the exact column labels clients may request in `/reporting/data.columns` - `filters`: query-string filter metadata for `/reporting/data.filters` - `runtime_filters`: column-level runtime filter metadata for `/reporting/data.runtime_filters` - `runtime_parameters`: parameter metadata for `/reporting/data.runtime_param_override`  The response intentionally strips out the large raw metadata detail payload. Results are limited to logical tables available to the `custom_reporting` user group.  Typical flow: 1. Call `/reporting/metadata` with optional `name_patterns` that match the worksheet or logical table. 2. Read `data_sources[*].column_names` and let the user choose which columns to include. 3. Read `data_sources[*].filters[*]` to build `/reporting/data.filters`. 4. Read `data_sources[*].runtime_filters[*]` to build `/reporting/data.runtime_filters`. 5. Read `data_sources[*].runtime_parameters[*]` to build `/reporting/data.runtime_param_override`. 6. Call `/reporting/data` with `name_patterns`, `columns`, and whichever of those three inputs you need.  Behavior notes: 1. `column_names` comes from `metadata_detail.columns[*].header.name`. 2. If only top-level `column_names` are available, the API still returns them but leaves    `filters` and `runtime_filters` empty because filterability cannot be inferred. 3. `filters[*].operators` only describes `/reporting/data.filters`, which is currently equality-only. 4. `runtime_filters[*].operators` describes `/reporting/data.runtime_filters`. 5. Date and datetime runtime filters expose range operators such as `BW` and `BW_INC`. 6. `runtime_parameters` is sourced from useful raw parameter metadata when present. 7. Date-like metadata values are returned as ISO 8601 strings. DATE values use `YYYY-MM-DD`;    DATE_TIME values use UTC timestamps such as `2026-04-01T00:00:00Z`.  Pagination: - `page` (1-based) and `per_page` control how many logical tables are returned in a single response. - Total-record counts are not surfaced because they are known to be inaccurate.  Access scope: - `name_patterns` defaults to `["%"]` when omitted. - Results are permission-scoped to the `custom_reporting` user group.
+- [Returns the dealership telematics settings](https://developer.dealerware.com/reference/getdealershiptelematicssettings-1.md)
+- [Updates a dealership's telematics settings - Available to customer support users only.](https://developer.dealerware.com/reference/putdealershiptelematicssettings-1.md)
+- [Get the currently logged in user](https://developer.dealerware.com/reference/getuser-1.md)
+- [Update the currently logged in user's details](https://developer.dealerware.com/reference/putuser-1.md)
+- [Update the currently logged in user's password](https://developer.dealerware.com/reference/putuserpassword-1.md)
+- [Update the currently logged in user's dw-web preferences](https://developer.dealerware.com/reference/putuserpreference-1.md)
+- [Return the currently logged in user's dw-web preferences](https://developer.dealerware.com/reference/getuserpreferences.md)
+- [Create a user's password, confirm their account](https://developer.dealerware.com/reference/postuserconfirmations-1.md): Note: Returns a 204 if confirmation token is not found
+- [Send Password Reset Email](https://developer.dealerware.com/reference/postuserpasswordforgot-1.md): Send an email to the provided email address to reset that user's password
+- [Reset a user's password](https://developer.dealerware.com/reference/putuserpasswordreset-1.md): Reset a user's password using their email address. Note: Returns a 204 if user is not found
+- [Returns a singular Vehicle object](https://developer.dealerware.com/reference/getvehicle-1.md)
+- [Updates a Vehicle's Fleets](https://developer.dealerware.com/reference/putvehiclefleets-1.md)
+- [Get all telematics events for a given vehicle](https://developer.dealerware.com/reference/getvehicleevents-1.md)
+- [Updates a Vehicle's Fleet](https://developer.dealerware.com/reference/putvehiclefleet-1.md)
+- [Get all issues for a given vehicle (paginated)](https://developer.dealerware.com/reference/getvehicleissues-1.md)
+- [Create new issue for the vehicle](https://developer.dealerware.com/reference/postvehicleissue-1.md)
+- [Fetch the last recorded telemetry for a given vehicle](https://developer.dealerware.com/reference/getvehicletelemetry-1.md)
+- [Returns the list of Notes associated with a customer wthin the dealership](https://developer.dealerware.com/reference/getadmindealershipcustomernotes.md)
+- [Create a new note for a customer associated with a dealership](https://developer.dealerware.com/reference/postadmindealershipcustomernote.md)
+- [Query a customer whether he is in DNR list](https://developer.dealerware.com/reference/querydnr-1.md)
+- [Create a blacklist record for customer](https://developer.dealerware.com/reference/createblacklist-1.md)
+- [Delete a customer from blacklist](https://developer.dealerware.com/reference/deletecustomerfromblacklist-1.md)
+- [Return the current active insurance the customer has](https://developer.dealerware.com/reference/getadmincustomerinsurance-1.md)
+- [Create a insurance for a customer](https://developer.dealerware.com/reference/postadmincustomerinsurance-1.md)
+- [Update insurance for a customer](https://developer.dealerware.com/reference/updateadmincustomerinsurance-1.md)
+- [Deletes a single note associated with the id passed in URL of request.](https://developer.dealerware.com/reference/deletedealershipcustomernotes.md): delete Note per Customer per dealership
+- [Update a single note associated with the id passed in URL of request.](https://developer.dealerware.com/reference/putdealershipcustomernote.md): Update Note per Customer per dealership
+- [Gets a fleet settings instance](https://developer.dealerware.com/reference/getfleetsettings-1.md)
+- [Updates a fleet settings instance](https://developer.dealerware.com/reference/putfleetsettings-1.md)
+- [Returns Fleet Settings for a Vehicle Group](https://developer.dealerware.com/reference/getvehiclegroupdefleetsettings.md)
+- [Returns the grantable roles for a given dealership](https://developer.dealerware.com/reference/getdealershiproles-1.md)
+- [Gets Dealership Availability](https://developer.dealerware.com/reference/getdealershipavailability-1.md): Gets Dealership Availability
+- [Gets Dealership Fleet Pricing](https://developer.dealerware.com/reference/getdealershipfleetpricing-1.md): Gets Dealership Fleet Pricing
+- [Returns the document with the given ID](https://developer.dealerware.com/reference/getdocument-1.md): Returns the document with the given ID
+
+## Recipes
+- [Contactless Reservation Management](https://developer.dealerware.com/recipes/contactless-reservation-management.md)
+- [Contract-Ready Customer Profile](https://developer.dealerware.com/recipes/contract-ready-customer-profile.md)
+- [Customer Credit Card Management](https://developer.dealerware.com/recipes/customer-credit-card-management.md)
+- [Customer Driver's License](https://developer.dealerware.com/recipes/customer-drivers-license.md)
+- [Customer Insurance Management](https://developer.dealerware.com/recipes/customer-insurance-management.md)
+- [Customer Profile Management](https://developer.dealerware.com/recipes/customer-profile-management.md)
+- [Dealership Employee Configuration](https://developer.dealerware.com/recipes/dealership-employee-configuration.md)
+- [Dealership Settings (Fleet Settings)](https://developer.dealerware.com/recipes/dealership-settings-fleet-settings.md)
+- [Dealership Settings](https://developer.dealerware.com/recipes/dealership-settings.md)
+- [Dealerware API Authentication](https://developer.dealerware.com/recipes/dealerware-api-authentication.md)
+- [Future Vehicle Availability](https://developer.dealerware.com/recipes/future-vehicle-availability.md)
+- [Interval-Based Vehicle Availability](https://developer.dealerware.com/recipes/interval-based-vehicle-availability.md)
+- [Retrieve Dealership Data](https://developer.dealerware.com/recipes/retrieve-dealership-data.md)
+- [Vehicle Management](https://developer.dealerware.com/recipes/vehicle-management.md)

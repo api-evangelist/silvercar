@@ -1,0 +1,46 @@
+generated: '2026-07-21'
+method: searched
+source: https://developer.dealerware.com/docs/api-integration-process.md
+type: Webhooks
+name: Dealerware Partner Integration API — Webhook Surface
+note: >-
+  Silvercar's technology now operates as Dealerware; the event/webhook surface
+  is documented at developer.dealerware.com. No AsyncAPI document is published
+  (the API is REST + webhooks over a ReadMe developer hub), so this captures the
+  documented webhook catalog rather than a verbatim AsyncAPI spec.
+patterns:
+- direction: outbound
+  name: Outbound Webhooks
+  description: >-
+    Event-based updates delivered from Dealerware to a partner's registered
+    endpoint(s) for asynchronous, event-driven integration (e.g. reservation,
+    vehicle, and fleet state changes surfaced via the REST resources).
+- direction: inbound
+  name: Inbound Webhooks
+  description: >-
+    System-to-system messages sent to Dealerware and verified using HMAC for
+    payload integrity.
+  security: HMAC payload signature verification
+management_endpoints:
+- operationId: getadmindealershipwebhooks
+  method: GET
+  summary: Returns a paginated list of dealership webhooks
+  source: https://developer.dealerware.com/reference/getadmindealershipwebhooks.md
+- operationId: postadmindealershipwebhook
+  method: POST
+  summary: Creates a new webhook for a dealership
+  source: https://developer.dealerware.com/reference/postadmindealershipwebhook.md
+- operationId: getadmindealershipwebhook
+  method: GET
+  summary: Returns a dealership webhook
+  source: https://developer.dealerware.com/reference/getadmindealershipwebhook.md
+- operationId: putadmindealershipwebhook
+  method: PUT
+  summary: Updates a dealership webhook
+  source: https://developer.dealerware.com/reference/putadmindealershipwebhook.md
+- operationId: deleteadmindealershipwebhook
+  method: DELETE
+  summary: Deletes a dealership webhook
+  source: https://developer.dealerware.com/reference/deleteadmindealershipwebhook.md
+docs:
+- https://developer.dealerware.com/docs/api-integration-process.md

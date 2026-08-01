@@ -1,0 +1,38 @@
+generated: '2026-07-21'
+method: searched
+source: https://developer.dealerware.com/docs/api-integration-process.md
+name: Dealerware Partner Integration API — Authentication Profile
+note: >-
+  Silvercar's technology and developer surface now operate as Dealerware;
+  silvercar.com issues a 301 redirect to dealerware.com. The public API and its
+  authentication are documented at developer.dealerware.com.
+schemes:
+- type: oauth2
+  flow: clientCredentials
+  grant_type: client_credentials
+  description: >-
+    Machine-to-machine (M2M) authentication. Partners exchange a Client ID and
+    Client Secret (issued by Dealerware, requested via partnersupport@dealerware.com)
+    at the Auth0 authorization server for a short-lived, RS256-signed JWT access
+    token. Subsequent Dealerware API calls send only the access token.
+  authorization_server: https://dealerware.auth0.com/
+  token_endpoint: https://dealerware.auth0.com/oauth/token
+  jwks_uri: https://dealerware.auth0.com/.well-known/jwks.json
+  token_format: JWT
+  token_signing_alg: RS256
+  identity_provider: Auth0
+- type: http
+  scheme: bearer
+  bearer_format: JWT
+  description: >-
+    All Dealerware API requests carry the access token as a Bearer token in the
+    Authorization header. HTTPS is required for every request. Requests missing
+    or presenting an invalid token are rejected with an authentication error.
+  in: header
+  header: Authorization
+credential_issuance: manual
+credential_contact: partnersupport@dealerware.com
+api_host: https://api.dealerware.com
+docs:
+- https://developer.dealerware.com/docs/api-integration-process.md
+- https://developer.dealerware.com/recipes/dealerware-api-authentication.md

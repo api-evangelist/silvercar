@@ -1,0 +1,33 @@
+generated: '2026-07-21'
+method: probed
+source: >-
+  Probed well-known endpoints for the Dealerware developer/API and its Auth0
+  authorization server (silvercar.com 301-redirects to dealerware.com).
+entries:
+- host: https://dealerware.auth0.com
+  path: /.well-known/openid-configuration
+  status: 200
+  file: silvercar-openid-configuration.json
+  note: >-
+    OpenID Connect / OAuth 2.0 discovery document for Dealerware's Auth0
+    authorization server. issuer https://dealerware.auth0.com/, token_endpoint
+    /oauth/token, supports client_credentials grant, RS256.
+- host: https://dealerware.auth0.com
+  path: /.well-known/jwks.json
+  status: 200
+  note: JSON Web Key Set for verifying RS256-signed access tokens.
+- host: https://developer.dealerware.com
+  path: /llms.txt
+  status: 200
+  file: ../llms/silvercar-llms.txt
+  note: AI-agent index of all docs pages (Markdown) and API endpoints (OpenAPI).
+- host: https://developer.dealerware.com
+  path: /.well-known/security.txt
+  status: 404
+- host: https://www.dealerware.com
+  path: /.well-known/security.txt
+  status: 404
+- host: https://developer.dealerware.com
+  path: /openapi.json
+  status: 404
+  note: OpenAPI is hosted inside the ReadMe SuperHub reference and not exposed at a stable download URL.
