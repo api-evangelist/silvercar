@@ -43,6 +43,7 @@ accessModel:
   confidence: medium
   source:
   - authentication
+  - {url: 'https://silvercar.com', status: 301, note: 'declared website redirects to https://www.dealerware.com/ — a different registrable domain (silvercar.com -> dealerware.com), possible rename or acquisition (probed 2026-09-03, roadmap#169)'}
   generated: '2026-07-22'
   method: derived
 specificationVersion: '0.23'
