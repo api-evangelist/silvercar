@@ -1,0 +1,59 @@
+generated: '2026-10-14'
+method: derived
+source: the pre-flight dossier, apis.yml pointers, spec servers, well-known, vendors -- nothing fetched here
+generator: derive-hosts.py
+summary:
+  hosts: 4
+  own: 1
+  other_domain: 3
+  platform: 0
+  roles:
+  - api
+  - legal
+  - portal
+  - website
+hosts:
+- host: api.dealerware.com
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - api
+  registrable_domain: dealerware.com
+  role: api
+  relation: other-domain
+- host: developer.dealerware.com
+  found_by:
+  - pointer
+  - apis[]
+  types:
+  - DeveloperPortal
+  - Documentation
+  - APIReference
+  - GettingStarted
+  - Deprecation
+  - Support
+  serves:
+  - docs
+  registrable_domain: dealerware.com
+  role: portal
+  relation: other-domain
+- host: silvercar.com
+  found_by:
+  - pointer
+  types:
+  - Website
+  serves: []
+  registrable_domain: silvercar.com
+  role: website
+  relation: own
+- host: www.dealerware.com
+  found_by:
+  - pointer
+  types:
+  - TermsOfService
+  - PrivacyPolicy
+  serves: []
+  registrable_domain: dealerware.com
+  role: legal
+  relation: other-domain

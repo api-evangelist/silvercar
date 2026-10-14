@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/silvercar/main/json-schema/silvercar-admin-fleet-response-schema.json",
+  "title": "AdminFleetResponse",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminFleetResponse",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "agreement_id",
+    "created_at",
+    "contractable",
+    "external_availability_group",
+    "repair_order_number_required",
+    "exclude_rate",
+    "pdf_agreement_url",
+    "program_type",
+    "source_of_business",
+    "reservation_time_cap",
+    "reservation_time_cap_warning",
+    "allow_charge_later",
+    "allow_manual_signature",
+    "require_customer_vin",
+    "guided_walkaround_enforced",
+    "require_insurance_sufficiency",
+    "misc"
+  ],
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "name": {
+      "type": "string"
+    },
+    "agreement_id": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "the ID of the agreement to assign to the fleet"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "the date and time when the fleet was created"
+    },
+    "contractable": {
+      "type": "boolean",
+      "description": "whether or not this fleet is allowed to start a contract"
+    },
+    "external_availability_group": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "whether the fleet is an external availability group"
+    },
+    "repair_order_number_required": {
+      "type": "boolean",
+      "nullable": false,
+      "description": "whether repair order numbers are required for this fleet"
+    },
+    "exclude_rate": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "whether the fleet should use rates"
+    },
+    "pdf_agreement_url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "the pdf of the agreement to assign to the fleet"
+    },
+    "program_type": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "A string representing the type of program the fleet is in (courtesy, rental, etc)"
+    },
+    "source_of_business": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "customer",
+        "internal",
+        "warranty"
+      ],
+      "description": "Source of business classification for the fleet"
+    },
+    "reservation_time_cap": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "the maximum amount of time a reservation should be active for, in days"
+    },
+    "reservation_time_cap_warning": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "the number of days before a reservation hits the cap that a warning should be sent"
+    },
+    "allow_charge_later": {
+      "type": "boolean"
+    },
+    "allow_manual_signature": {
+      "type": "boolean"
+    },
+    "require_customer_vin": {
+      "type": "boolean"
+    },
+    "guided_walkaround_enforced": {
+      "type": "boolean"
+    },
+    "require_insurance_sufficiency": {
+      "type": "string",
+      "enum": [
+        "none",
+        "loaner",
+        "rental",
+        "loaner_rental"
+      ],
+      "description": "Specifies when insurance sufficiency checks are required (none, loaner, rental, or loaner_rental)"
+    },
+    "sales_lead_enabled": {
+      "type": "boolean",
+      "description": "whether Service to Sales lead generation is enabled for the fleet"
+    },
+    "sales_lead_offset_hours": {
+      "type": "integer",
+      "description": "how many hours after service intake a sales lead should be created (1-12)"
+    },
+    "sales_lead_cms_config_email": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "email address the Service to Sales lead configuration should notify"
+    },
+    "misc": {
+      "type": "object",
+      "description": "a JSON object for storing miscellaneous data"
+    }
+  }
+}

@@ -1,0 +1,271 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/silvercar/main/json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json",
+  "title": "AdminDealershipContractManifestResponse",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminDealershipContractManifestResponse",
+  "type": "object",
+  "required": [
+    "id",
+    "actual_dropoff_at",
+    "actual_pickup_at",
+    "booking_application",
+    "booking_channel",
+    "ccpa",
+    "confirmation_token",
+    "contactless",
+    "created_at",
+    "customer_name",
+    "customer_profile_complete",
+    "days_on_loan",
+    "fleet_name",
+    "links",
+    "location_sequence",
+    "purchase_order",
+    "repair_order",
+    "scheduled_dropoff_at",
+    "scheduled_pickup_at",
+    "service_advisor_name",
+    "service_vehicle_id",
+    "service_vehicle_id_valid",
+    "signed",
+    "status",
+    "vehicle_license",
+    "vehicle_make",
+    "vehicle_model",
+    "vehicle_stock_number",
+    "vehicle_year",
+    "vin"
+  ],
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "database id of the contract"
+    },
+    "ccpa": {
+      "type": "boolean",
+      "description": "Customers CCPA status, deleted or not deleted"
+    },
+    "confirmation_token": {
+      "type": "string",
+      "description": "also referred to as contract id"
+    },
+    "contactless": {
+      "type": "boolean",
+      "description": "determines whether a contract's agreement is being signed contactlessly or not"
+    },
+    "location_sequence": {
+      "type": "integer",
+      "description": "sequence id of the contract for its location"
+    },
+    "status": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "booked",
+        "cancelled",
+        "pending_agreement",
+        "started",
+        "finished",
+        "no_showed"
+      ],
+      "description": "current state of the contract"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "time at which the contract was created"
+    },
+    "actual_dropoff_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "time at which the vehicle was dropped off, also indicates the contract finish time"
+    },
+    "actual_pickup_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "time at which the vehicle was picked up, also indicates the contract start time"
+    },
+    "days_on_loan": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "number of days the vehicle has been out on loan (diff between now and actual_pickup_at, rounded up)"
+    },
+    "vehicle_stock_number": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "the attached vehicle's stock number, nil if no vehicle attached"
+    },
+    "vehicle_license": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "the attached vehicle's license plate number, nil if no vehicle attached"
+    },
+    "vin": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "the attached vehicle's VIN, nil if no vehicle attached"
+    },
+    "service_vehicle_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "the service vehicle's VIN"
+    },
+    "repair_order": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "linked repair order number, if present"
+    },
+    "purchase_order": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "linked purchase order number, if present"
+    },
+    "booking_application": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Client application type that created the reservation (e.g. web, iphone-appstore, scheduler)."
+    },
+    "booking_channel": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Partner integration source for the booking (e.g. mykaarma, xtime, redcap, toyota-oneapp) or dealerware for Dealerware-native bookings."
+    },
+    "service_advisor_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "first and last name of the service advisor linked to contract"
+    },
+    "customer_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "first and last name of the customer linked to the contract"
+    },
+    "customer_profile_complete": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "indication of whether the customer's profile is complete and eligible to start a contract"
+    },
+    "vehicle_make": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "the automobile manufacturer"
+    },
+    "vehicle_model": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "the vehicle model name"
+    },
+    "vehicle_year": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "the year the vehicle was manufactured"
+    },
+    "signed": {
+      "type": "boolean",
+      "description": "indicates whether or not the contract has been signed"
+    },
+    "scheduled_pickup_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "the time the customer has scheduled to pick up the vehicle"
+    },
+    "scheduled_dropoff_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "the time the customer has scheduled to drop off the vehicle"
+    },
+    "fleet_name": {
+      "type": "string",
+      "description": "The name of the vehicle group that is assigned to the contract"
+    },
+    "links": {
+      "type": "object",
+      "properties": {
+        "vehicle": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/HypermediaLink"
+            }
+          ]
+        },
+        "employee": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/HypermediaLink"
+            }
+          ]
+        },
+        "customer": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/HypermediaLink"
+            }
+          ]
+        },
+        "fleet": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/HypermediaLink"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "HypermediaLink": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "ID of the associated resource"
+        },
+        "href": {
+          "type": "string",
+          "description": "Link to the associated resource"
+        }
+      }
+    }
+  }
+}

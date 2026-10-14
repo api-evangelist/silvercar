@@ -1,0 +1,499 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/silvercar/main/json-schema/silvercar-admin-dealership-contract-response-schema.json",
+  "title": "AdminDealershipContractResponse",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminDealershipContractResponse",
+  "type": "object",
+  "required": [
+    "id",
+    "actual_dropoff_at",
+    "actual_pickup_at",
+    "booked_by_name",
+    "booked_car_detailed_description",
+    "booking_application",
+    "booking_channel",
+    "capabilities",
+    "confirmation_token",
+    "contactless",
+    "created_at",
+    "credit_card_id",
+    "customer",
+    "daily_rate_override",
+    "damage_inspections",
+    "external_deposit_amount",
+    "finished_by_name",
+    "fuel",
+    "ineligibility_reasons",
+    "is_contract_eligible",
+    "links",
+    "location_sequence",
+    "max_vehicle_swaps",
+    "odometer",
+    "program_minimum_age",
+    "purchase_order",
+    "repair_order",
+    "scheduled_dropoff_at",
+    "scheduled_pickup_at",
+    "service_advisor_id",
+    "service_advisor_name",
+    "service_vehicle_id",
+    "signed",
+    "status",
+    "updated_at",
+    "vehicle_swaps_performed"
+  ],
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "database id of the contract"
+    },
+    "actual_pickup_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "actual_dropoff_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "booked_car_detailed_description": {
+      "type": "object",
+      "properties": {
+        "acriss_code": {
+          "type": "string"
+        },
+        "acriss_model_description": {
+          "type": "string"
+        },
+        "city_mpg": {
+          "type": "string"
+        },
+        "fuel_tank": {
+          "type": "string"
+        },
+        "hwy_mpg": {
+          "type": "string"
+        },
+        "luggage": {
+          "type": "string"
+        },
+        "make": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "passengers": {
+          "type": "string"
+        },
+        "style": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "year": {
+          "type": "string"
+        }
+      }
+    },
+    "booked_by_name": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "booking_application": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Client application type that created the reservation (e.g. web, iphone-appstore, scheduler)."
+    },
+    "booking_channel": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Partner integration source for the booking (e.g. mykaarma, xtime, redcap, toyota-oneapp) or dealerware for Dealerware-native bookings."
+    },
+    "capabilities": {
+      "type": "object",
+      "required": [
+        "payments",
+        "valet_moves"
+      ],
+      "properties": {
+        "payments": {
+          "type": "object",
+          "required": [
+            "on_platform",
+            "off_platform"
+          ],
+          "properties": {
+            "on_platform": {
+              "type": "boolean",
+              "description": "Whether the contract allows on-platform payments."
+            },
+            "off_platform": {
+              "type": "boolean",
+              "description": "Whether the contract allows off-platform payments."
+            }
+          }
+        },
+        "valet_moves": {
+          "type": "object",
+          "required": [
+            "enabled"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Whether the contract dealership supports HopDrive Valet Moves controls."
+            }
+          }
+        }
+      }
+    },
+    "confirmation_token": {
+      "type": "string",
+      "description": "also referred to as contract id"
+    },
+    "contactless": {
+      "type": "boolean",
+      "description": "denotes whether or not the contract is a contactless contract"
+    },
+    "credit_card_id": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "ID of the credit card selected on the contract, or null when no card is selected."
+    },
+    "customer": {
+      "type": "object",
+      "description": "Customer summary. A missing or soft-deleted customer results in a 404 response.",
+      "required": [
+        "id",
+        "full_name",
+        "has_complete_profile",
+        "permitted_to_rent"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "full_name": {
+          "type": "string",
+          "description": "Customer name, masked as Deleted Customer for privacy-deleted customers."
+        },
+        "has_complete_profile": {
+          "type": "boolean"
+        },
+        "permitted_to_rent": {
+          "type": "boolean",
+          "description": "Whether the customer is permitted to rent based on the active Do Not Rent list."
+        }
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "daily_rate_override": {
+      "description": "The daily rate to charge for this contract, if different from the default rate for the vehicle",
+      "type": "number"
+    },
+    "damage_inspections": {
+      "type": "array",
+      "description": "Damage inspection statuses for the active car reservations on this contract.",
+      "items": {
+        "type": "object",
+        "required": [
+          "vehicle_id",
+          "status",
+          "pdf_report_url"
+        ],
+        "properties": {
+          "vehicle_id": {
+            "type": "integer",
+            "description": "The vehicle ID for the associated car reservation."
+          },
+          "status": {
+            "type": "string",
+            "description": "The status of the associated damage inspection. Returns `not_inspected`\nwhen no damage inspection exists for that car reservation.\n"
+          },
+          "pdf_report_url": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uri",
+            "description": "The URL for the attached damage inspection PDF report, if present.\nReturns `null` when no PDF report has been attached for that car reservation.\n"
+          }
+        }
+      }
+    },
+    "external_deposit_amount": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "The amount of the external deposit, if any, that was collected for this contract"
+    },
+    "finished_by_name": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "fuel": {
+      "type": "object",
+      "properties": {
+        "starting_fuel_gallons": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Fuel amount at the start of the contract in gallons"
+        },
+        "starting_fuel_liters": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Fuel amount at the start of the contract in liters"
+        },
+        "ending_fuel_gallons": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Fuel amount at the end of the contract in gallons"
+        },
+        "ending_fuel_liters": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Fuel amount at the end of the contract in liters"
+        },
+        "starting_fuel_percentage": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "float",
+          "description": "Starting fuel as a percentage of the tank capacity"
+        },
+        "ending_fuel_percentage": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "float",
+          "description": "Ending fuel as a percentage of the tank capacity"
+        }
+      }
+    },
+    "location_sequence": {
+      "type": "integer",
+      "description": "sequence id of the contract for its location"
+    },
+    "odometer": {
+      "type": "object",
+      "properties": {
+        "starting_odometer_miles": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Odometer reading at the start of the contract in miles"
+        },
+        "starting_odometer_km": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Odometer reading at the start of the contract in kilometers"
+        },
+        "ending_odometer_miles": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Odometer reading at the end of the contract in miles"
+        },
+        "ending_odometer_km": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Odometer reading at the end of the contract in kilometers"
+        }
+      }
+    },
+    "purchase_order": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The optional purchase order number associated with this contract"
+    },
+    "repair_order": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The optional repair order sent from a contract creation request"
+    },
+    "service_vehicle_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The optional service vehicle ID sent from a contract creation request"
+    },
+    "service_vehicle_id_valid": {
+      "type": "boolean",
+      "description": "Whether the service vehicle ID is a valid VIN"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "booked",
+        "cancelled",
+        "pending_agreement",
+        "started",
+        "finished",
+        "no_showed"
+      ]
+    },
+    "scheduled_pickup_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "scheduled_dropoff_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "service_advisor_name": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "service_advisor_id": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "signed": {
+      "type": "boolean",
+      "description": "denotes whether or not the required contract signatures are present"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "program_minimum_age": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "The applicable minimum age requirement for drivers, including Drive Protection rules when enforced"
+    },
+    "ineligibility_reasons": {
+      "type": "object",
+      "description": "Detailed information about why drivers may be ineligible for this contract",
+      "properties": {
+        "ineligible_drivers": {
+          "type": "array",
+          "description": "Array of drivers who do not meet the program requirements",
+          "items": {
+            "type": "object",
+            "properties": {
+              "customer_id": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "description": "The customer ID (null for additional drivers)"
+              },
+              "is_primary_driver": {
+                "type": "boolean",
+                "description": "Whether this is the primary driver"
+              },
+              "drivers_name": {
+                "type": "string",
+                "description": "The driver's full name"
+              },
+              "born_on": {
+                "type": "string",
+                "format": "date",
+                "description": "The driver's date of birth in YYYY-MM-DD format"
+              },
+              "reason": {
+                "type": "string",
+                "description": "The reason for ineligibility"
+              }
+            }
+          }
+        }
+      }
+    },
+    "is_contract_eligible": {
+      "type": "boolean",
+      "description": "Whether the contract is eligible to start based on all eligibility checks"
+    },
+    "max_vehicle_swaps": {
+      "type": "integer",
+      "description": "The maximum number of vehicle swaps that can be performed for this contract."
+    },
+    "vehicle_swaps_performed": {
+      "type": "integer",
+      "description": "The number of vehicle swaps that have been performed for this contract."
+    },
+    "links": {
+      "type": "object",
+      "properties": {
+        "vehicle": {
+          "$ref": "#/$defs/HypermediaLink"
+        },
+        "fleet": {
+          "$ref": "#/$defs/HypermediaLink"
+        },
+        "customer": {
+          "$ref": "#/$defs/HypermediaLink"
+        },
+        "dealership": {
+          "$ref": "#/$defs/HypermediaLink"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "HypermediaLink": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "ID of the associated resource"
+        },
+        "href": {
+          "type": "string",
+          "description": "Link to the associated resource"
+        }
+      }
+    }
+  }
+}

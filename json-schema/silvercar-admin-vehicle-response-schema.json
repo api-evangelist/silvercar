@@ -1,0 +1,245 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/silvercar/main/json-schema/silvercar-admin-vehicle-response-schema.json",
+  "title": "AdminVehicleResponse",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminVehicleResponse",
+  "type": "object",
+  "properties": {
+    "available_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    },
+    "unavailable_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    },
+    "registration": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    },
+    "registration_expiration": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    },
+    "emissions_expiration": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    },
+    "license_state": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "next_contract_finish_state": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "connected": {
+      "type": "boolean"
+    },
+    "connected_car_device_firmware": {
+      "type": "string"
+    },
+    "connected_car_device_last_updated": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "device": {
+      "type": "string"
+    },
+    "fuel": {
+      "type": "object",
+      "required": [
+        "unit",
+        "capacity"
+      ],
+      "properties": {
+        "unit": {
+          "type": "string"
+        },
+        "capacity": {
+          "type": "number"
+        },
+        "value": {
+          "type": "number"
+        }
+      }
+    },
+    "id": {
+      "type": "integer"
+    },
+    "license": {
+      "type": "string"
+    },
+    "links": {
+      "properties": {
+        "fleet": {
+          "$ref": "#/$defs/HypermediaLink"
+        },
+        "fleet_ids": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "fleets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/HypermediaLink"
+          }
+        }
+      }
+    },
+    "make": {
+      "type": "string"
+    },
+    "model": {
+      "type": "string"
+    },
+    "color": {
+      "description": "The color of the vehicle. may not be defined for non-Sedgwick location",
+      "type": "string"
+    },
+    "odometer": {
+      "type": "object",
+      "$ref": "#/$defs/AdminOdometer"
+    },
+    "off_lot": {
+      "type": "boolean"
+    },
+    "physical_location": {
+      "type": "string"
+    },
+    "power_train": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "stock_number": {
+      "type": "string"
+    },
+    "telematics_source": {
+      "type": "string"
+    },
+    "telematics_enrolled": {
+      "type": "boolean"
+    },
+    "toll_tag_number": {
+      "type": "string"
+    },
+    "vin": {
+      "type": "string"
+    },
+    "year": {
+      "type": "integer"
+    },
+    "acriss_code": {
+      "type": "string"
+    },
+    "acriss_model_description": {
+      "type": "string"
+    },
+    "updated_at": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "days_off_contract": {
+      "type": "integer"
+    },
+    "rdr_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date",
+      "description": "The retail delivery report (RDR) date from the associated parking lot"
+    },
+    "maturity_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date",
+      "description": "The maturity date of the vehicle"
+    },
+    "disposed_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date",
+      "description": "The disposed_at date of the vehicle if exists"
+    },
+    "in_service_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date",
+      "description": "The competitor in-service date of the vehicle, defaults to created_at."
+    },
+    "currently_rented_to_customer_id": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "The ID of the customer currently renting the vehicle, if rented"
+    }
+  },
+  "$defs": {
+    "AdminOdometer": {
+      "type": "object",
+      "required": [
+        "value",
+        "unit"
+      ],
+      "properties": {
+        "value": {
+          "type": "number",
+          "format": "float",
+          "description": "0.0 indicates no reading was found"
+        },
+        "unit": {
+          "type": "string"
+        }
+      }
+    },
+    "HypermediaLink": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "ID of the associated resource"
+        },
+        "href": {
+          "type": "string",
+          "description": "Link to the associated resource"
+        }
+      }
+    }
+  }
+}

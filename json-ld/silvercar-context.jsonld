@@ -1,0 +1,1686 @@
+{
+  "@context": {
+    "@vocab": "https://silvercar.com/schema#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "silvercar": "https://silvercar.com/schema#",
+    "AdminContactlessMessagesRequest": "silvercar:AdminContactlessMessagesRequest",
+    "fuel_percentage": {
+      "@id": "silvercar:fuel_percentage",
+      "@type": "xsd:decimal"
+    },
+    "odometer": {
+      "@id": "silvercar:odometer"
+    },
+    "AdminLoginRequest": "silvercar:AdminLoginRequest",
+    "email": {
+      "@id": "silvercar:email",
+      "@type": "xsd:string"
+    },
+    "password": {
+      "@id": "silvercar:password",
+      "@type": "xsd:string"
+    },
+    "AdminLoginResponse": "silvercar:AdminLoginResponse",
+    "auth_token": {
+      "@id": "silvercar:auth_token",
+      "@type": "xsd:string"
+    },
+    "CustomerNotificationAttempt": "silvercar:CustomerNotificationAttempt",
+    "id": {
+      "@id": "silvercar:id",
+      "@type": "xsd:integer"
+    },
+    "attempt_number": {
+      "@id": "silvercar:attempt_number",
+      "@type": "xsd:integer"
+    },
+    "provider": {
+      "@id": "silvercar:provider",
+      "@type": "xsd:string"
+    },
+    "status": {
+      "@id": "silvercar:status",
+      "@type": "xsd:string"
+    },
+    "provider_message_id": {
+      "@id": "silvercar:provider_message_id",
+      "@type": "xsd:string"
+    },
+    "error_code": {
+      "@id": "silvercar:error_code",
+      "@type": "xsd:string"
+    },
+    "error_message": {
+      "@id": "silvercar:error_message",
+      "@type": "xsd:string"
+    },
+    "requested_at": {
+      "@id": "silvercar:requested_at",
+      "@type": "xsd:dateTime"
+    },
+    "completed_at": {
+      "@id": "silvercar:completed_at",
+      "@type": "xsd:dateTime"
+    },
+    "callback_received_at": {
+      "@id": "silvercar:callback_received_at",
+      "@type": "xsd:dateTime"
+    },
+    "FailedCustomerNotification": "silvercar:FailedCustomerNotification",
+    "reservation_id": {
+      "@id": "silvercar:reservation_id",
+      "@type": "xsd:integer"
+    },
+    "customer_id": {
+      "@id": "silvercar:customer_id",
+      "@type": "xsd:integer"
+    },
+    "location_id": {
+      "@id": "silvercar:location_id",
+      "@type": "xsd:integer"
+    },
+    "message_type": {
+      "@id": "silvercar:message_type",
+      "@type": "xsd:string"
+    },
+    "channel": {
+      "@id": "silvercar:channel",
+      "@type": "xsd:string"
+    },
+    "attempt_count": {
+      "@id": "silvercar:attempt_count",
+      "@type": "xsd:integer"
+    },
+    "replay_count": {
+      "@id": "silvercar:replay_count",
+      "@type": "xsd:integer"
+    },
+    "last_error_code": {
+      "@id": "silvercar:last_error_code",
+      "@type": "xsd:string"
+    },
+    "last_error_message": {
+      "@id": "silvercar:last_error_message",
+      "@type": "xsd:string"
+    },
+    "last_failed_at": {
+      "@id": "silvercar:last_failed_at",
+      "@type": "xsd:dateTime"
+    },
+    "created_at": {
+      "@id": "silvercar:created_at",
+      "@type": "xsd:dateTime"
+    },
+    "updated_at": {
+      "@id": "silvercar:updated_at",
+      "@type": "xsd:dateTime"
+    },
+    "latest_attempt": {
+      "@id": "silvercar:latest_attempt",
+      "@type": "@id"
+    },
+    "ReplayCustomerNotificationRequest": "silvercar:ReplayCustomerNotificationRequest",
+    "reason": {
+      "@id": "silvercar:reason",
+      "@type": "xsd:string"
+    },
+    "ReplayCustomerNotificationResponse": "silvercar:ReplayCustomerNotificationResponse",
+    "notification_id": {
+      "@id": "silvercar:notification_id",
+      "@type": "xsd:integer"
+    },
+    "notification_attempt_id": {
+      "@id": "silvercar:notification_attempt_id",
+      "@type": "xsd:integer"
+    },
+    "replay_requested_at": {
+      "@id": "silvercar:replay_requested_at",
+      "@type": "xsd:dateTime"
+    },
+    "AdminAvailabilityVehicles": "silvercar:AdminAvailabilityVehicles",
+    "vin": {
+      "@id": "silvercar:vin",
+      "@type": "xsd:string"
+    },
+    "base_msrp": {
+      "@id": "silvercar:base_msrp",
+      "@type": "xsd:string"
+    },
+    "BillingEstimate": "silvercar:BillingEstimate",
+    "program_id": {
+      "@id": "silvercar:program_id",
+      "@type": "xsd:integer"
+    },
+    "transaction_days": {
+      "@id": "silvercar:transaction_days",
+      "@type": "xsd:integer"
+    },
+    "currency_code": {
+      "@id": "silvercar:currency_code",
+      "@type": "xsd:string"
+    },
+    "taxes": {
+      "@id": "silvercar:taxes",
+      "@container": "@list"
+    },
+    "rates": {
+      "@id": "silvercar:rates",
+      "@container": "@list"
+    },
+    "fees": {
+      "@id": "silvercar:fees",
+      "@container": "@list"
+    },
+    "tax_total": {
+      "@id": "silvercar:tax_total",
+      "@type": "xsd:decimal"
+    },
+    "rates_total": {
+      "@id": "silvercar:rates_total",
+      "@type": "xsd:decimal"
+    },
+    "fees_total": {
+      "@id": "silvercar:fees_total",
+      "@type": "xsd:decimal"
+    },
+    "tax_average_per_day": {
+      "@id": "silvercar:tax_average_per_day",
+      "@type": "xsd:decimal"
+    },
+    "rates_average_per_day": {
+      "@id": "silvercar:rates_average_per_day",
+      "@type": "xsd:decimal"
+    },
+    "fees_average_per_day": {
+      "@id": "silvercar:fees_average_per_day",
+      "@type": "xsd:decimal"
+    },
+    "AdminAvailabilityGroupResponse": "silvercar:AdminAvailabilityGroupResponse",
+    "name": {
+      "@id": "silvercar:name",
+      "@type": "xsd:string"
+    },
+    "available_vehicle_count": {
+      "@id": "silvercar:available_vehicle_count",
+      "@type": "xsd:decimal"
+    },
+    "total_vehicle_count": {
+      "@id": "silvercar:total_vehicle_count",
+      "@type": "xsd:decimal"
+    },
+    "make": {
+      "@id": "silvercar:make",
+      "@type": "xsd:string"
+    },
+    "model": {
+      "@id": "silvercar:model",
+      "@type": "xsd:string"
+    },
+    "trim": {
+      "@id": "silvercar:trim",
+      "@type": "xsd:string"
+    },
+    "body_type": {
+      "@id": "silvercar:body_type",
+      "@type": "xsd:string"
+    },
+    "power_train": {
+      "@id": "silvercar:power_train",
+      "@type": "xsd:string"
+    },
+    "available_vehicles": {
+      "@id": "silvercar:available_vehicles",
+      "@container": "@list"
+    },
+    "estimate": {
+      "@id": "silvercar:estimate",
+      "@type": "@id"
+    },
+    "AdminAvailabilityGroups": "silvercar:AdminAvailabilityGroups",
+    "AdminAvailabilityIntervals": "silvercar:AdminAvailabilityIntervals",
+    "start_at": {
+      "@id": "silvercar:start_at",
+      "@type": "xsd:string"
+    },
+    "end_at": {
+      "@id": "silvercar:end_at",
+      "@type": "xsd:string"
+    },
+    "groups": {
+      "@id": "silvercar:groups",
+      "@container": "@list"
+    },
+    "AdminAvailabilityGroupIntervalsResponse": "silvercar:AdminAvailabilityGroupIntervalsResponse",
+    "intervals": {
+      "@id": "silvercar:intervals",
+      "@container": "@list"
+    },
+    "ContactlessContractDriverResponse": "silvercar:ContactlessContractDriverResponse",
+    "agreement_url": {
+      "@id": "silvercar:agreement_url",
+      "@type": "xsd:string"
+    },
+    "customer_name": {
+      "@id": "silvercar:customer_name",
+      "@type": "xsd:string"
+    },
+    "dealership_name": {
+      "@id": "silvercar:dealership_name",
+      "@type": "xsd:string"
+    },
+    "first_name": {
+      "@id": "silvercar:first_name",
+      "@type": "xsd:string"
+    },
+    "fuel": {
+      "@id": "silvercar:fuel",
+      "@type": "xsd:string"
+    },
+    "last_name": {
+      "@id": "silvercar:last_name",
+      "@type": "xsd:string"
+    },
+    "metric": {
+      "@id": "silvercar:metric",
+      "@type": "xsd:boolean"
+    },
+    "signature": {
+      "@id": "silvercar:signature",
+      "@type": "xsd:boolean"
+    },
+    "HypermediaLink": "silvercar:HypermediaLink",
+    "href": {
+      "@id": "silvercar:href",
+      "@type": "xsd:string"
+    },
+    "AdminDealershipContractResponse": "silvercar:AdminDealershipContractResponse",
+    "actual_pickup_at": {
+      "@id": "silvercar:actual_pickup_at",
+      "@type": "xsd:dateTime"
+    },
+    "actual_dropoff_at": {
+      "@id": "silvercar:actual_dropoff_at",
+      "@type": "xsd:dateTime"
+    },
+    "booked_car_detailed_description": {
+      "@id": "silvercar:booked_car_detailed_description"
+    },
+    "booked_by_name": {
+      "@id": "silvercar:booked_by_name",
+      "@type": "xsd:string"
+    },
+    "booking_application": {
+      "@id": "silvercar:booking_application",
+      "@type": "xsd:string"
+    },
+    "booking_channel": {
+      "@id": "silvercar:booking_channel",
+      "@type": "xsd:string"
+    },
+    "capabilities": {
+      "@id": "silvercar:capabilities"
+    },
+    "confirmation_token": {
+      "@id": "silvercar:confirmation_token",
+      "@type": "xsd:string"
+    },
+    "contactless": {
+      "@id": "silvercar:contactless",
+      "@type": "xsd:boolean"
+    },
+    "credit_card_id": {
+      "@id": "silvercar:credit_card_id",
+      "@type": "xsd:integer"
+    },
+    "customer": {
+      "@id": "silvercar:customer"
+    },
+    "daily_rate_override": {
+      "@id": "silvercar:daily_rate_override",
+      "@type": "xsd:decimal"
+    },
+    "damage_inspections": {
+      "@id": "silvercar:damage_inspections",
+      "@container": "@list"
+    },
+    "external_deposit_amount": {
+      "@id": "silvercar:external_deposit_amount",
+      "@type": "xsd:decimal"
+    },
+    "finished_by_name": {
+      "@id": "silvercar:finished_by_name",
+      "@type": "xsd:string"
+    },
+    "location_sequence": {
+      "@id": "silvercar:location_sequence",
+      "@type": "xsd:integer"
+    },
+    "purchase_order": {
+      "@id": "silvercar:purchase_order",
+      "@type": "xsd:string"
+    },
+    "repair_order": {
+      "@id": "silvercar:repair_order",
+      "@type": "xsd:string"
+    },
+    "service_vehicle_id": {
+      "@id": "silvercar:service_vehicle_id",
+      "@type": "xsd:string"
+    },
+    "service_vehicle_id_valid": {
+      "@id": "silvercar:service_vehicle_id_valid",
+      "@type": "xsd:boolean"
+    },
+    "scheduled_pickup_at": {
+      "@id": "silvercar:scheduled_pickup_at",
+      "@type": "xsd:dateTime"
+    },
+    "scheduled_dropoff_at": {
+      "@id": "silvercar:scheduled_dropoff_at",
+      "@type": "xsd:dateTime"
+    },
+    "service_advisor_name": {
+      "@id": "silvercar:service_advisor_name",
+      "@type": "xsd:string"
+    },
+    "service_advisor_id": {
+      "@id": "silvercar:service_advisor_id",
+      "@type": "xsd:integer"
+    },
+    "signed": {
+      "@id": "silvercar:signed",
+      "@type": "xsd:boolean"
+    },
+    "program_minimum_age": {
+      "@id": "silvercar:program_minimum_age",
+      "@type": "xsd:integer"
+    },
+    "ineligibility_reasons": {
+      "@id": "silvercar:ineligibility_reasons"
+    },
+    "is_contract_eligible": {
+      "@id": "silvercar:is_contract_eligible",
+      "@type": "xsd:boolean"
+    },
+    "max_vehicle_swaps": {
+      "@id": "silvercar:max_vehicle_swaps",
+      "@type": "xsd:integer"
+    },
+    "vehicle_swaps_performed": {
+      "@id": "silvercar:vehicle_swaps_performed",
+      "@type": "xsd:integer"
+    },
+    "links": {
+      "@id": "silvercar:links"
+    },
+    "AdminContractUpdateRequest": "silvercar:AdminContractUpdateRequest",
+    "fleet_id": {
+      "@id": "silvercar:fleet_id",
+      "@type": "xsd:decimal"
+    },
+    "vehicle_id": {
+      "@id": "silvercar:vehicle_id",
+      "@type": "xsd:decimal"
+    },
+    "AdminAgreementToggleResponse": "silvercar:AdminAgreementToggleResponse",
+    "active": {
+      "@id": "silvercar:active",
+      "@type": "xsd:boolean"
+    },
+    "text": {
+      "@id": "silvercar:text",
+      "@type": "xsd:string"
+    },
+    "numeric_order": {
+      "@id": "silvercar:numeric_order",
+      "@type": "xsd:integer"
+    },
+    "language": {
+      "@id": "silvercar:language",
+      "@type": "xsd:string"
+    },
+    "style": {
+      "@id": "silvercar:style",
+      "@type": "xsd:string"
+    },
+    "translations": {
+      "@id": "silvercar:translations",
+      "@type": "xsd:string"
+    },
+    "read_only": {
+      "@id": "silvercar:read_only",
+      "@type": "xsd:boolean"
+    },
+    "AdminContractAuthorizationResponse": "silvercar:AdminContractAuthorizationResponse",
+    "amount": {
+      "@id": "silvercar:amount",
+      "@type": "xsd:decimal"
+    },
+    "AdminDriversResponse": "silvercar:AdminDriversResponse",
+    "license_number": {
+      "@id": "silvercar:license_number",
+      "@type": "xsd:string"
+    },
+    "license_subregion": {
+      "@id": "silvercar:license_subregion",
+      "@type": "xsd:string"
+    },
+    "license_expires_on": {
+      "@id": "silvercar:license_expires_on",
+      "@type": "xsd:string"
+    },
+    "born_on": {
+      "@id": "silvercar:born_on",
+      "@type": "xsd:string"
+    },
+    "country": {
+      "@id": "silvercar:country",
+      "@type": "xsd:string"
+    },
+    "phone_number": {
+      "@id": "silvercar:phone_number",
+      "@type": "xsd:string"
+    },
+    "AdminDriversRequest": "silvercar:AdminDriversRequest",
+    "AdminContractBillingAdjustmentsResponse": "silvercar:AdminContractBillingAdjustmentsResponse",
+    "CreateAdminContractBillingAdjustmentRequest": "silvercar:CreateAdminContractBillingAdjustmentRequest",
+    "type_id": {
+      "@id": "silvercar:type_id",
+      "@type": "xsd:integer"
+    },
+    "description": {
+      "@id": "silvercar:description",
+      "@type": "xsd:string"
+    },
+    "AdminContractCustomerResponse": "silvercar:AdminContractCustomerResponse",
+    "ContractNoteAddRequest": "silvercar:ContractNoteAddRequest",
+    "content": {
+      "@id": "silvercar:content",
+      "@type": "xsd:string"
+    },
+    "ContractNoteUpdateRequest": "silvercar:ContractNoteUpdateRequest",
+    "AdminContractPaymentResponse": "silvercar:AdminContractPaymentResponse",
+    "last_four": {
+      "@id": "silvercar:last_four",
+      "@type": "xsd:string"
+    },
+    "card_type": {
+      "@id": "silvercar:card_type",
+      "@type": "xsd:string"
+    },
+    "refund_of_id": {
+      "@id": "silvercar:refund_of_id",
+      "@type": "xsd:integer"
+    },
+    "refundable_amount": {
+      "@id": "silvercar:refundable_amount",
+      "@type": "xsd:decimal"
+    },
+    "AdminContractPricing": "silvercar:AdminContractPricing",
+    "type": {
+      "@id": "silvercar:type",
+      "@type": "xsd:string"
+    },
+    "total": {
+      "@id": "silvercar:total",
+      "@type": "xsd:decimal"
+    },
+    "AdminContractAdditionalPayerTotals": "silvercar:AdminContractAdditionalPayerTotals",
+    "AdminContractPricingResponse": "silvercar:AdminContractPricingResponse",
+    "balance": {
+      "@id": "silvercar:balance",
+      "@type": "xsd:decimal"
+    },
+    "customer_balance": {
+      "@id": "silvercar:customer_balance",
+      "@type": "xsd:decimal"
+    },
+    "customer_total": {
+      "@id": "silvercar:customer_total",
+      "@type": "xsd:decimal"
+    },
+    "customer_payments_total": {
+      "@id": "silvercar:customer_payments_total",
+      "@type": "xsd:decimal"
+    },
+    "payer_total": {
+      "@id": "silvercar:payer_total",
+      "@type": "xsd:decimal"
+    },
+    "payer_payments_total": {
+      "@id": "silvercar:payer_payments_total",
+      "@type": "xsd:decimal"
+    },
+    "payer_balance": {
+      "@id": "silvercar:payer_balance",
+      "@type": "xsd:decimal"
+    },
+    "payments_total": {
+      "@id": "silvercar:payments_total",
+      "@type": "xsd:decimal"
+    },
+    "pricing": {
+      "@id": "silvercar:pricing",
+      "@container": "@list"
+    },
+    "additional_payer_totals": {
+      "@id": "silvercar:additional_payer_totals",
+      "@container": "@list"
+    },
+    "AdminContractSplitBillResponse": "silvercar:AdminContractSplitBillResponse",
+    "reference_number": {
+      "@id": "silvercar:reference_number",
+      "@type": "xsd:string"
+    },
+    "contact_name": {
+      "@id": "silvercar:contact_name",
+      "@type": "xsd:string"
+    },
+    "line1": {
+      "@id": "silvercar:line1",
+      "@type": "xsd:string"
+    },
+    "line2": {
+      "@id": "silvercar:line2",
+      "@type": "xsd:string"
+    },
+    "city": {
+      "@id": "silvercar:city",
+      "@type": "xsd:string"
+    },
+    "postal_code": {
+      "@id": "silvercar:postal_code",
+      "@type": "xsd:string"
+    },
+    "subregion": {
+      "@id": "silvercar:subregion",
+      "@type": "xsd:string"
+    },
+    "downloaded_at": {
+      "@id": "silvercar:downloaded_at",
+      "@type": "xsd:dateTime"
+    },
+    "paid": {
+      "@id": "silvercar:paid",
+      "@type": "xsd:boolean"
+    },
+    "AdminContractSplitBillRequest": "silvercar:AdminContractSplitBillRequest",
+    "AdminContractSplitBillAdjustmentResponse": "silvercar:AdminContractSplitBillAdjustmentResponse",
+    "taxable": {
+      "@id": "silvercar:taxable",
+      "@type": "xsd:boolean"
+    },
+    "AdminContractSplitBillAdjustmentRequest": "silvercar:AdminContractSplitBillAdjustmentRequest",
+    "split_bill_id": {
+      "@id": "silvercar:split_bill_id",
+      "@type": "xsd:decimal"
+    },
+    "AdminContractStartRequest": "silvercar:AdminContractStartRequest",
+    "confirm_plateless_start": {
+      "@id": "silvercar:confirm_plateless_start",
+      "@type": "xsd:boolean"
+    },
+    "bypass_signatures": {
+      "@id": "silvercar:bypass_signatures",
+      "@type": "xsd:boolean"
+    },
+    "bypass_credit_card_check": {
+      "@id": "silvercar:bypass_credit_card_check",
+      "@type": "xsd:boolean"
+    },
+    "actual_pickup": {
+      "@id": "silvercar:actual_pickup",
+      "@type": "xsd:dateTime"
+    },
+    "pickup": {
+      "@id": "silvercar:pickup",
+      "@type": "xsd:dateTime"
+    },
+    "dropoff": {
+      "@id": "silvercar:dropoff",
+      "@type": "xsd:dateTime"
+    },
+    "AdminContractFinishRequest": "silvercar:AdminContractFinishRequest",
+    "dropoff_at": {
+      "@id": "silvercar:dropoff_at",
+      "@type": "xsd:string"
+    },
+    "AdminContractVehicleRequest": "silvercar:AdminContractVehicleRequest",
+    "AdminOdometer": "silvercar:AdminOdometer",
+    "value": {
+      "@id": "silvercar:value",
+      "@type": "xsd:decimal"
+    },
+    "unit": {
+      "@id": "silvercar:unit",
+      "@type": "xsd:string"
+    },
+    "AdminVehicleResponse": "silvercar:AdminVehicleResponse",
+    "available_date": {
+      "@id": "silvercar:available_date",
+      "@type": "xsd:date"
+    },
+    "unavailable_date": {
+      "@id": "silvercar:unavailable_date",
+      "@type": "xsd:date"
+    },
+    "registration": {
+      "@id": "silvercar:registration",
+      "@type": "xsd:date"
+    },
+    "registration_expiration": {
+      "@id": "silvercar:registration_expiration",
+      "@type": "xsd:date"
+    },
+    "emissions_expiration": {
+      "@id": "silvercar:emissions_expiration",
+      "@type": "xsd:date"
+    },
+    "license_state": {
+      "@id": "silvercar:license_state",
+      "@type": "xsd:string"
+    },
+    "next_contract_finish_state": {
+      "@id": "silvercar:next_contract_finish_state",
+      "@type": "xsd:string"
+    },
+    "connected": {
+      "@id": "silvercar:connected",
+      "@type": "xsd:boolean"
+    },
+    "connected_car_device_firmware": {
+      "@id": "silvercar:connected_car_device_firmware",
+      "@type": "xsd:string"
+    },
+    "connected_car_device_last_updated": {
+      "@id": "silvercar:connected_car_device_last_updated",
+      "@type": "xsd:dateTime"
+    },
+    "device": {
+      "@id": "silvercar:device",
+      "@type": "xsd:string"
+    },
+    "license": {
+      "@id": "silvercar:license",
+      "@type": "xsd:string"
+    },
+    "color": {
+      "@id": "silvercar:color",
+      "@type": "xsd:string"
+    },
+    "off_lot": {
+      "@id": "silvercar:off_lot",
+      "@type": "xsd:boolean"
+    },
+    "physical_location": {
+      "@id": "silvercar:physical_location",
+      "@type": "xsd:string"
+    },
+    "stock_number": {
+      "@id": "silvercar:stock_number",
+      "@type": "xsd:string"
+    },
+    "telematics_source": {
+      "@id": "silvercar:telematics_source",
+      "@type": "xsd:string"
+    },
+    "telematics_enrolled": {
+      "@id": "silvercar:telematics_enrolled",
+      "@type": "xsd:boolean"
+    },
+    "toll_tag_number": {
+      "@id": "silvercar:toll_tag_number",
+      "@type": "xsd:string"
+    },
+    "year": {
+      "@id": "silvercar:year",
+      "@type": "xsd:integer"
+    },
+    "acriss_code": {
+      "@id": "silvercar:acriss_code",
+      "@type": "xsd:string"
+    },
+    "acriss_model_description": {
+      "@id": "silvercar:acriss_model_description",
+      "@type": "xsd:string"
+    },
+    "days_off_contract": {
+      "@id": "silvercar:days_off_contract",
+      "@type": "xsd:integer"
+    },
+    "rdr_date": {
+      "@id": "silvercar:rdr_date",
+      "@type": "xsd:date"
+    },
+    "maturity_date": {
+      "@id": "silvercar:maturity_date",
+      "@type": "xsd:date"
+    },
+    "disposed_at": {
+      "@id": "silvercar:disposed_at",
+      "@type": "xsd:date"
+    },
+    "in_service_date": {
+      "@id": "silvercar:in_service_date",
+      "@type": "xsd:date"
+    },
+    "currently_rented_to_customer_id": {
+      "@id": "silvercar:currently_rented_to_customer_id",
+      "@type": "xsd:integer"
+    },
+    "AdminVehicleSortColumns": "silvercar:AdminVehicleSortColumns",
+    "AdminContractsWarranty": "silvercar:AdminContractsWarranty",
+    "daily_rate": {
+      "@id": "silvercar:daily_rate",
+      "@type": "xsd:decimal"
+    },
+    "warranty_days": {
+      "@id": "silvercar:warranty_days",
+      "@type": "xsd:decimal"
+    },
+    "tax_percentage": {
+      "@id": "silvercar:tax_percentage",
+      "@type": "xsd:decimal"
+    },
+    "authorization_number": {
+      "@id": "silvercar:authorization_number",
+      "@type": "xsd:string"
+    },
+    "AdminCustomerContractResponse": "silvercar:AdminCustomerContractResponse",
+    "token": {
+      "@id": "silvercar:token",
+      "@type": "xsd:string"
+    },
+    "AdminCustomerPaymentMethodResponse": "silvercar:AdminCustomerPaymentMethodResponse",
+    "expires_on": {
+      "@id": "silvercar:expires_on",
+      "@type": "xsd:string"
+    },
+    "default": {
+      "@id": "silvercar:default",
+      "@type": "xsd:boolean"
+    },
+    "AdminDealershipContractSortColumns": "silvercar:AdminDealershipContractSortColumns",
+    "AdminDealershipContractManifestResponse": "silvercar:AdminDealershipContractManifestResponse",
+    "ccpa": {
+      "@id": "silvercar:ccpa",
+      "@type": "xsd:boolean"
+    },
+    "days_on_loan": {
+      "@id": "silvercar:days_on_loan",
+      "@type": "xsd:integer"
+    },
+    "vehicle_stock_number": {
+      "@id": "silvercar:vehicle_stock_number",
+      "@type": "xsd:string"
+    },
+    "vehicle_license": {
+      "@id": "silvercar:vehicle_license",
+      "@type": "xsd:string"
+    },
+    "customer_profile_complete": {
+      "@id": "silvercar:customer_profile_complete",
+      "@type": "xsd:boolean"
+    },
+    "vehicle_make": {
+      "@id": "silvercar:vehicle_make",
+      "@type": "xsd:string"
+    },
+    "vehicle_model": {
+      "@id": "silvercar:vehicle_model",
+      "@type": "xsd:string"
+    },
+    "vehicle_year": {
+      "@id": "silvercar:vehicle_year",
+      "@type": "xsd:integer"
+    },
+    "fleet_name": {
+      "@id": "silvercar:fleet_name",
+      "@type": "xsd:string"
+    },
+    "AdminDealershipFleetsContractsVehiclesResponse": "silvercar:AdminDealershipFleetsContractsVehiclesResponse",
+    "vehicle_groups": {
+      "@id": "silvercar:vehicle_groups",
+      "@container": "@list"
+    },
+    "SignatureRequest": "silvercar:SignatureRequest",
+    "image": {
+      "@id": "silvercar:image",
+      "@type": "xsd:string"
+    },
+    "ContactlessContractResponse": "silvercar:ContactlessContractResponse",
+    "drive_protection_selections": {
+      "@id": "silvercar:drive_protection_selections"
+    },
+    "toggles": {
+      "@id": "silvercar:toggles",
+      "@container": "@list"
+    },
+    "AdminCustomerResponse": "silvercar:AdminCustomerResponse",
+    "amount_due": {
+      "@id": "silvercar:amount_due",
+      "@type": "xsd:string"
+    },
+    "complete_profile": {
+      "@id": "silvercar:complete_profile",
+      "@type": "xsd:boolean"
+    },
+    "permitted_to_rent": {
+      "@id": "silvercar:permitted_to_rent",
+      "@type": "xsd:boolean"
+    },
+    "has_ongoing_contracts": {
+      "@id": "silvercar:has_ongoing_contracts",
+      "@type": "xsd:boolean"
+    },
+    "AdminCustomerRequest": "silvercar:AdminCustomerRequest",
+    "AdminCustomerSortColumns": "silvercar:AdminCustomerSortColumns",
+    "AdminRemoteProfileResponse": "silvercar:AdminRemoteProfileResponse",
+    "dealership": {
+      "@id": "silvercar:dealership"
+    },
+    "AdminDealershipCustomerProfileMessageRequest": "silvercar:AdminDealershipCustomerProfileMessageRequest",
+    "AdminRemoteProfileSearchRequest": "silvercar:AdminRemoteProfileSearchRequest",
+    "drivers_license_number": {
+      "@id": "silvercar:drivers_license_number",
+      "@type": "xsd:integer"
+    },
+    "drivers_license_state": {
+      "@id": "silvercar:drivers_license_state",
+      "@type": "xsd:string"
+    },
+    "AdminRemoteProfileQrCodeRequest": "silvercar:AdminRemoteProfileQrCodeRequest",
+    "deeplink_to": {
+      "@id": "silvercar:deeplink_to",
+      "@type": "xsd:string"
+    },
+    "AdminDealershipsResponse": "silvercar:AdminDealershipsResponse",
+    "formatted_hours": {
+      "@id": "silvercar:formatted_hours",
+      "@type": "xsd:string"
+    },
+    "onboarding_complete": {
+      "@id": "silvercar:onboarding_complete",
+      "@type": "xsd:boolean"
+    },
+    "has_ccs": {
+      "@id": "silvercar:has_ccs",
+      "@type": "xsd:boolean"
+    },
+    "oem_dealer_codes": {
+      "@id": "silvercar:oem_dealer_codes",
+      "@container": "@list"
+    },
+    "AdminDealershipDetailsResponse": "silvercar:AdminDealershipDetailsResponse",
+    "insurance_form_provider": {
+      "@id": "silvercar:insurance_form_provider",
+      "@type": "xsd:string"
+    },
+    "salesforce_id": {
+      "@id": "silvercar:salesforce_id",
+      "@type": "xsd:string"
+    },
+    "time_zone": {
+      "@id": "silvercar:time_zone",
+      "@type": "xsd:string"
+    },
+    "address": {
+      "@id": "silvercar:address"
+    },
+    "dealership_hours": {
+      "@id": "silvercar:dealership_hours",
+      "@container": "@list"
+    },
+    "has_tolls": {
+      "@id": "silvercar:has_tolls",
+      "@type": "xsd:boolean"
+    },
+    "locale": {
+      "@id": "silvercar:locale",
+      "@type": "xsd:string"
+    },
+    "pdp": {
+      "@id": "silvercar:pdp",
+      "@type": "xsd:boolean"
+    },
+    "contract_required": {
+      "@id": "silvercar:contract_required",
+      "@type": "xsd:boolean"
+    },
+    "open_days": {
+      "@id": "silvercar:open_days",
+      "@container": "@list"
+    },
+    "verified_insurance_client_id": {
+      "@id": "silvercar:verified_insurance_client_id",
+      "@type": "xsd:string"
+    },
+    "oems": {
+      "@id": "silvercar:oems",
+      "@container": "@list"
+    },
+    "oem_program_location": {
+      "@id": "silvercar:oem_program_location",
+      "@type": "xsd:boolean"
+    },
+    "dealer_group": {
+      "@id": "silvercar:dealer_group",
+      "@type": "xsd:string"
+    },
+    "integrations": {
+      "@id": "silvercar:integrations",
+      "@container": "@list"
+    },
+    "UpdateAdminDealershipRequest": "silvercar:UpdateAdminDealershipRequest",
+    "fleet_settings": {
+      "@id": "silvercar:fleet_settings",
+      "@container": "@list"
+    },
+    "AdminDealershipAddressResponse": "silvercar:AdminDealershipAddressResponse",
+    "AdminDealershipAddressRequest": "silvercar:AdminDealershipAddressRequest",
+    "state": {
+      "@id": "silvercar:state",
+      "@type": "xsd:string"
+    },
+    "zip": {
+      "@id": "silvercar:zip",
+      "@type": "xsd:string"
+    },
+    "latitude": {
+      "@id": "silvercar:latitude",
+      "@type": "xsd:decimal"
+    },
+    "longitude": {
+      "@id": "silvercar:longitude",
+      "@type": "xsd:decimal"
+    },
+    "AdminDealershipAvailabilityIntervalResponse": "silvercar:AdminDealershipAvailabilityIntervalResponse",
+    "available": {
+      "@id": "silvercar:available",
+      "@type": "xsd:boolean"
+    },
+    "active_vehicle_count": {
+      "@id": "silvercar:active_vehicle_count",
+      "@type": "xsd:integer"
+    },
+    "required_vehicle_count": {
+      "@id": "silvercar:required_vehicle_count",
+      "@type": "xsd:integer"
+    },
+    "AdminCalendarAgreementResponse": "silvercar:AdminCalendarAgreementResponse",
+    "insurance_form": {
+      "@id": "silvercar:insurance_form",
+      "@type": "xsd:string"
+    },
+    "AdminCalendarCustomerResponse": "silvercar:AdminCalendarCustomerResponse",
+    "full_name": {
+      "@id": "silvercar:full_name",
+      "@type": "xsd:string"
+    },
+    "AdminCalendarContractResponse": "silvercar:AdminCalendarContractResponse",
+    "contract_type": {
+      "@id": "silvercar:contract_type",
+      "@type": "xsd:string"
+    },
+    "service_advisor": {
+      "@id": "silvercar:service_advisor",
+      "@type": "xsd:string"
+    },
+    "calendar_group": {
+      "@id": "silvercar:calendar_group",
+      "@type": "xsd:string"
+    },
+    "has_valet_task": {
+      "@id": "silvercar:has_valet_task",
+      "@type": "xsd:boolean"
+    },
+    "task_ids": {
+      "@id": "silvercar:task_ids",
+      "@container": "@list"
+    },
+    "agreement": {
+      "@id": "silvercar:agreement",
+      "@type": "@id"
+    },
+    "AdminCalendarVehicleResponse": "silvercar:AdminCalendarVehicleResponse",
+    "mileage": {
+      "@id": "silvercar:mileage"
+    },
+    "AdminFleetResponse": "silvercar:AdminFleetResponse",
+    "agreement_id": {
+      "@id": "silvercar:agreement_id",
+      "@type": "xsd:integer"
+    },
+    "contractable": {
+      "@id": "silvercar:contractable",
+      "@type": "xsd:boolean"
+    },
+    "external_availability_group": {
+      "@id": "silvercar:external_availability_group",
+      "@type": "xsd:boolean"
+    },
+    "repair_order_number_required": {
+      "@id": "silvercar:repair_order_number_required",
+      "@type": "xsd:boolean"
+    },
+    "exclude_rate": {
+      "@id": "silvercar:exclude_rate",
+      "@type": "xsd:boolean"
+    },
+    "pdf_agreement_url": {
+      "@id": "silvercar:pdf_agreement_url",
+      "@type": "xsd:string"
+    },
+    "program_type": {
+      "@id": "silvercar:program_type",
+      "@type": "xsd:string"
+    },
+    "source_of_business": {
+      "@id": "silvercar:source_of_business",
+      "@type": "xsd:string"
+    },
+    "reservation_time_cap": {
+      "@id": "silvercar:reservation_time_cap",
+      "@type": "xsd:integer"
+    },
+    "reservation_time_cap_warning": {
+      "@id": "silvercar:reservation_time_cap_warning",
+      "@type": "xsd:integer"
+    },
+    "allow_charge_later": {
+      "@id": "silvercar:allow_charge_later",
+      "@type": "xsd:boolean"
+    },
+    "allow_manual_signature": {
+      "@id": "silvercar:allow_manual_signature",
+      "@type": "xsd:boolean"
+    },
+    "require_customer_vin": {
+      "@id": "silvercar:require_customer_vin",
+      "@type": "xsd:boolean"
+    },
+    "guided_walkaround_enforced": {
+      "@id": "silvercar:guided_walkaround_enforced",
+      "@type": "xsd:boolean"
+    },
+    "require_insurance_sufficiency": {
+      "@id": "silvercar:require_insurance_sufficiency",
+      "@type": "xsd:string"
+    },
+    "sales_lead_enabled": {
+      "@id": "silvercar:sales_lead_enabled",
+      "@type": "xsd:boolean"
+    },
+    "sales_lead_offset_hours": {
+      "@id": "silvercar:sales_lead_offset_hours",
+      "@type": "xsd:integer"
+    },
+    "sales_lead_cms_config_email": {
+      "@id": "silvercar:sales_lead_cms_config_email",
+      "@type": "xsd:string"
+    },
+    "misc": {
+      "@id": "silvercar:misc"
+    },
+    "AdminFleetRequest": "silvercar:AdminFleetRequest",
+    "AdminOnBoardingVehiclesResponse": "silvercar:AdminOnBoardingVehiclesResponse",
+    "failure_cars": {
+      "@id": "silvercar:failure_cars",
+      "@container": "@list"
+    },
+    "success_cars": {
+      "@id": "silvercar:success_cars",
+      "@container": "@list"
+    },
+    "AdminDealershipKpisRequest": "silvercar:AdminDealershipKpisRequest",
+    "kpi_types": {
+      "@id": "silvercar:kpi_types",
+      "@container": "@list"
+    },
+    "range_type": {
+      "@id": "silvercar:range_type",
+      "@type": "xsd:string"
+    },
+    "start_date": {
+      "@id": "silvercar:start_date",
+      "@type": "xsd:date"
+    },
+    "end_date": {
+      "@id": "silvercar:end_date",
+      "@type": "xsd:date"
+    },
+    "AdminDealershipKpisResponse": "silvercar:AdminDealershipKpisResponse",
+    "avg_length_of_loan": {
+      "@id": "silvercar:avg_length_of_loan",
+      "@type": "xsd:string"
+    },
+    "avg_length_of_loan_meta": {
+      "@id": "silvercar:avg_length_of_loan_meta"
+    },
+    "avg_prep_time": {
+      "@id": "silvercar:avg_prep_time",
+      "@type": "xsd:string"
+    },
+    "avg_turn_rate": {
+      "@id": "silvercar:avg_turn_rate",
+      "@type": "xsd:string"
+    },
+    "avg_time_on_lot": {
+      "@id": "silvercar:avg_time_on_lot",
+      "@type": "xsd:string"
+    },
+    "avg_time_not_in_service": {
+      "@id": "silvercar:avg_time_not_in_service",
+      "@type": "xsd:string"
+    },
+    "fuel_consumed_amount": {
+      "@id": "silvercar:fuel_consumed_amount",
+      "@type": "xsd:string"
+    },
+    "fuel_recovered_percent": {
+      "@id": "silvercar:fuel_recovered_percent",
+      "@type": "xsd:string"
+    },
+    "program_car_utilization": {
+      "@id": "silvercar:program_car_utilization",
+      "@type": "xsd:decimal"
+    },
+    "tolls_incurred_amount": {
+      "@id": "silvercar:tolls_incurred_amount",
+      "@type": "xsd:string"
+    },
+    "contract_tolls_amount": {
+      "@id": "silvercar:contract_tolls_amount",
+      "@type": "xsd:string"
+    },
+    "net_to_dealership": {
+      "@id": "silvercar:net_to_dealership",
+      "@type": "xsd:string"
+    },
+    "unsettled_balances": {
+      "@id": "silvercar:unsettled_balances",
+      "@type": "xsd:string"
+    },
+    "total_contracts": {
+      "@id": "silvercar:total_contracts",
+      "@type": "xsd:integer"
+    },
+    "finished_contracts": {
+      "@id": "silvercar:finished_contracts",
+      "@type": "xsd:integer"
+    },
+    "total_vehicles": {
+      "@id": "silvercar:total_vehicles",
+      "@type": "xsd:integer"
+    },
+    "utilization": {
+      "@id": "silvercar:utilization",
+      "@type": "xsd:decimal"
+    },
+    "utilization_by_fleet": {
+      "@id": "silvercar:utilization_by_fleet",
+      "@type": "xsd:decimal"
+    },
+    "UnsettledBalanceDetails": "silvercar:UnsettledBalanceDetails",
+    "contract_finished_at": {
+      "@id": "silvercar:contract_finished_at",
+      "@type": "xsd:string"
+    },
+    "vehicle_group_name": {
+      "@id": "silvercar:vehicle_group_name",
+      "@type": "xsd:string"
+    },
+    "outstanding_balance": {
+      "@id": "silvercar:outstanding_balance",
+      "@type": "xsd:decimal"
+    },
+    "ro_number": {
+      "@id": "silvercar:ro_number",
+      "@type": "xsd:string"
+    },
+    "transaction_status": {
+      "@id": "silvercar:transaction_status",
+      "@type": "xsd:string"
+    },
+    "contract_id": {
+      "@id": "silvercar:contract_id",
+      "@type": "xsd:integer"
+    },
+    "statement_id": {
+      "@id": "silvercar:statement_id",
+      "@type": "xsd:integer"
+    },
+    "payer_type": {
+      "@id": "silvercar:payer_type",
+      "@type": "xsd:string"
+    },
+    "RevenueReportItemization": "silvercar:RevenueReportItemization",
+    "fuel_service": {
+      "@id": "silvercar:fuel_service",
+      "@type": "xsd:decimal"
+    },
+    "other": {
+      "@id": "silvercar:other",
+      "@type": "xsd:decimal"
+    },
+    "payment_processor_fee": {
+      "@id": "silvercar:payment_processor_fee",
+      "@type": "xsd:decimal"
+    },
+    "RevenueSummaryDetails": "silvercar:RevenueSummaryDetails",
+    "contract_token": {
+      "@id": "silvercar:contract_token",
+      "@type": "xsd:string"
+    },
+    "disbursed_on": {
+      "@id": "silvercar:disbursed_on",
+      "@type": "xsd:string"
+    },
+    "vehicle_group": {
+      "@id": "silvercar:vehicle_group",
+      "@type": "xsd:string"
+    },
+    "itemization": {
+      "@id": "silvercar:itemization",
+      "@type": "@id"
+    },
+    "ReportRevenueSummary": "silvercar:ReportRevenueSummary",
+    "transaction_amount": {
+      "@id": "silvercar:transaction_amount",
+      "@type": "xsd:decimal"
+    },
+    "tolls": {
+      "@id": "silvercar:tolls",
+      "@type": "xsd:decimal"
+    },
+    "payment_processing_fees": {
+      "@id": "silvercar:payment_processing_fees",
+      "@type": "xsd:decimal"
+    },
+    "TransactionDetails": "silvercar:TransactionDetails",
+    "reservation_confirmation": {
+      "@id": "silvercar:reservation_confirmation",
+      "@type": "xsd:string"
+    },
+    "transaction_id": {
+      "@id": "silvercar:transaction_id",
+      "@type": "xsd:string"
+    },
+    "transaction_total": {
+      "@id": "silvercar:transaction_total",
+      "@type": "xsd:string"
+    },
+    "transaction_processor_code": {
+      "@id": "silvercar:transaction_processor_code",
+      "@type": "xsd:string"
+    },
+    "transaction_processor_text": {
+      "@id": "silvercar:transaction_processor_text",
+      "@type": "xsd:string"
+    },
+    "transaction_type": {
+      "@id": "silvercar:transaction_type",
+      "@type": "xsd:string"
+    },
+    "reservation_pickup": {
+      "@id": "silvercar:reservation_pickup",
+      "@type": "xsd:dateTime"
+    },
+    "reservation_dropoff": {
+      "@id": "silvercar:reservation_dropoff",
+      "@type": "xsd:dateTime"
+    },
+    "account_name": {
+      "@id": "silvercar:account_name",
+      "@type": "xsd:string"
+    },
+    "transaction_date": {
+      "@id": "silvercar:transaction_date",
+      "@type": "xsd:dateTime"
+    },
+    "settlement_date": {
+      "@id": "silvercar:settlement_date",
+      "@type": "xsd:dateTime"
+    },
+    "disbursement_date": {
+      "@id": "silvercar:disbursement_date",
+      "@type": "xsd:dateTime"
+    },
+    "transaction_fee": {
+      "@id": "silvercar:transaction_fee",
+      "@type": "xsd:string"
+    },
+    "AdminServiceAdvisorsResponse": "silvercar:AdminServiceAdvisorsResponse",
+    "AdminDealershipSettingsResponse": "silvercar:AdminDealershipSettingsResponse",
+    "confirm_res_modify": {
+      "@id": "silvercar:confirm_res_modify",
+      "@type": "xsd:boolean"
+    },
+    "embedded_telematics_provider": {
+      "@id": "silvercar:embedded_telematics_provider",
+      "@type": "xsd:string"
+    },
+    "drive_protection": {
+      "@id": "silvercar:drive_protection"
+    },
+    "fleet_count_range": {
+      "@id": "silvercar:fleet_count_range"
+    },
+    "insurance_verification_enabled": {
+      "@id": "silvercar:insurance_verification_enabled",
+      "@type": "xsd:boolean"
+    },
+    "gl_code_mapping_enabled": {
+      "@id": "silvercar:gl_code_mapping_enabled",
+      "@type": "xsd:boolean"
+    },
+    "guided_walkaround_by": {
+      "@id": "silvercar:guided_walkaround_by",
+      "@type": "xsd:string"
+    },
+    "managed_toggles": {
+      "@id": "silvercar:managed_toggles",
+      "@type": "xsd:boolean"
+    },
+    "mobile_check_in_reminder": {
+      "@id": "silvercar:mobile_check_in_reminder",
+      "@type": "xsd:string"
+    },
+    "mobile_check_in_prepickup_reminder_hours": {
+      "@id": "silvercar:mobile_check_in_prepickup_reminder_hours",
+      "@type": "xsd:integer"
+    },
+    "notification_method": {
+      "@id": "silvercar:notification_method",
+      "@type": "xsd:string"
+    },
+    "pickup_and_delivery": {
+      "@id": "silvercar:pickup_and_delivery"
+    },
+    "pickup_and_delivery_configuration": {
+      "@id": "silvercar:pickup_and_delivery_configuration"
+    },
+    "pickup_and_delivery_integration_status": {
+      "@id": "silvercar:pickup_and_delivery_integration_status",
+      "@type": "xsd:string"
+    },
+    "pickup_and_delivery_provider": {
+      "@id": "silvercar:pickup_and_delivery_provider",
+      "@type": "xsd:string"
+    },
+    "prevailing_rate": {
+      "@id": "silvercar:prevailing_rate",
+      "@type": "xsd:decimal"
+    },
+    "estimated_reservation_minutes": {
+      "@id": "silvercar:estimated_reservation_minutes",
+      "@type": "xsd:integer"
+    },
+    "task_management_enabled": {
+      "@id": "silvercar:task_management_enabled",
+      "@type": "xsd:boolean"
+    },
+    "telematics_enabled": {
+      "@id": "silvercar:telematics_enabled",
+      "@type": "xsd:boolean"
+    },
+    "valet_drivers_enabled": {
+      "@id": "silvercar:valet_drivers_enabled",
+      "@type": "xsd:boolean"
+    },
+    "toll_provider": {
+      "@id": "silvercar:toll_provider"
+    },
+    "AdminVehicleTelematicsState": "silvercar:AdminVehicleTelematicsState",
+    "AdminVehicleRequest": "silvercar:AdminVehicleRequest",
+    "available_on": {
+      "@id": "silvercar:available_on",
+      "@type": "xsd:date"
+    },
+    "fleet_ids": {
+      "@id": "silvercar:fleet_ids",
+      "@container": "@list"
+    },
+    "defleet_vehicles": {
+      "@id": "silvercar:defleet_vehicles",
+      "@type": "xsd:boolean"
+    },
+    "AdminUserDealershipRolesResponse": "silvercar:AdminUserDealershipRolesResponse",
+    "InsuranceSufficiencyLoanerProperties": "silvercar:InsuranceSufficiencyLoanerProperties",
+    "sufficient": {
+      "@id": "silvercar:sufficient",
+      "@type": "xsd:boolean"
+    },
+    "valid_until": {
+      "@id": "silvercar:valid_until",
+      "@type": "xsd:string"
+    },
+    "checked_at": {
+      "@id": "silvercar:checked_at",
+      "@type": "xsd:string"
+    },
+    "details": {
+      "@id": "silvercar:details"
+    },
+    "InsuranceSufficiencyRentalProperties": "silvercar:InsuranceSufficiencyRentalProperties",
+    "ReservationCustomerResponse": "silvercar:ReservationCustomerResponse",
+    "billing": {
+      "@id": "silvercar:billing"
+    },
+    "current_state": {
+      "@id": "silvercar:current_state",
+      "@type": "xsd:string"
+    },
+    "drivers_license": {
+      "@id": "silvercar:drivers_license"
+    },
+    "insurance_expires_on": {
+      "@id": "silvercar:insurance_expires_on",
+      "@type": "xsd:string"
+    },
+    "sufficiency": {
+      "@id": "silvercar:sufficiency"
+    },
+    "ReservationCustomerUpdateRequest": "silvercar:ReservationCustomerUpdateRequest",
+    "AdminContractVehicleResponse": "silvercar:AdminContractVehicleResponse",
+    "AdminDealershipWebhookResponse": "silvercar:AdminDealershipWebhookResponse",
+    "dealership_id": {
+      "@id": "silvercar:dealership_id",
+      "@type": "xsd:integer"
+    },
+    "trigger": {
+      "@id": "silvercar:trigger",
+      "@type": "xsd:string"
+    },
+    "url": {
+      "@id": "silvercar:url",
+      "@type": "xsd:string"
+    },
+    "action": {
+      "@id": "silvercar:action",
+      "@type": "xsd:string"
+    },
+    "handshake": {
+      "@id": "silvercar:handshake",
+      "@type": "xsd:boolean"
+    },
+    "object_version": {
+      "@id": "silvercar:object_version",
+      "@type": "xsd:integer"
+    },
+    "auth_header_name": {
+      "@id": "silvercar:auth_header_name",
+      "@type": "xsd:string"
+    },
+    "auth_header_value": {
+      "@id": "silvercar:auth_header_value",
+      "@type": "xsd:string"
+    },
+    "AdminDealershipWebhookCreateRequest": "silvercar:AdminDealershipWebhookCreateRequest",
+    "AdminDealershipWebhookUpdateRequest": "silvercar:AdminDealershipWebhookUpdateRequest",
+    "AdminEmployeeResponse": "silvercar:AdminEmployeeResponse",
+    "confirmed": {
+      "@id": "silvercar:confirmed",
+      "@type": "xsd:boolean"
+    },
+    "session_replays_enabled_until": {
+      "@id": "silvercar:session_replays_enabled_until",
+      "@type": "xsd:dateTime"
+    },
+    "is_driver": {
+      "@id": "silvercar:is_driver",
+      "@type": "xsd:boolean"
+    },
+    "roles": {
+      "@id": "silvercar:roles",
+      "@container": "@list"
+    },
+    "UpdateAdminEmployeeRequest": "silvercar:UpdateAdminEmployeeRequest",
+    "UpdateAdminEmployeeRolesRequest": "silvercar:UpdateAdminEmployeeRolesRequest",
+    "AdminEmployeeSortColumns": "silvercar:AdminEmployeeSortColumns",
+    "CreateAdminEmployeeRequest": "silvercar:CreateAdminEmployeeRequest",
+    "AdminCustomerEmployerResponse": "silvercar:AdminCustomerEmployerResponse",
+    "AdminCustomerEmployerRequest": "silvercar:AdminCustomerEmployerRequest",
+    "AdminAvailabilityResponse": "silvercar:AdminAvailabilityResponse",
+    "AdminFleetAvailabilityIntervalResponse": "silvercar:AdminFleetAvailabilityIntervalResponse",
+    "AdminFleetContractRequest": "silvercar:AdminFleetContractRequest",
+    "pickup_at": {
+      "@id": "silvercar:pickup_at",
+      "@type": "xsd:dateTime"
+    },
+    "service_vehicle": {
+      "@id": "silvercar:service_vehicle",
+      "@type": "xsd:string"
+    },
+    "AdminVehicleRequest-2": "silvercar:AdminVehicleRequest-2",
+    "AdminIssueRequest": "silvercar:AdminIssueRequest",
+    "AdminIssueResponse": "silvercar:AdminIssueResponse",
+    "created_by": {
+      "@id": "silvercar:created_by",
+      "@type": "xsd:string"
+    },
+    "closed_by": {
+      "@id": "silvercar:closed_by",
+      "@type": "xsd:string"
+    },
+    "closed_description": {
+      "@id": "silvercar:closed_description",
+      "@type": "xsd:string"
+    },
+    "image_count": {
+      "@id": "silvercar:image_count",
+      "@type": "xsd:decimal"
+    },
+    "ReportingColumnFilter": "silvercar:ReportingColumnFilter",
+    "column_name": {
+      "@id": "silvercar:column_name",
+      "@type": "xsd:string"
+    },
+    "ReportingRuntimeFilter": "silvercar:ReportingRuntimeFilter",
+    "operator": {
+      "@id": "silvercar:operator",
+      "@type": "xsd:string"
+    },
+    "values": {
+      "@id": "silvercar:values",
+      "@container": "@list"
+    },
+    "ReportingRuntimeParameter": "silvercar:ReportingRuntimeParameter",
+    "ReportingDataRequest": "silvercar:ReportingDataRequest",
+    "name_patterns": {
+      "@id": "silvercar:name_patterns",
+      "@container": "@list"
+    },
+    "columns": {
+      "@id": "silvercar:columns",
+      "@container": "@list"
+    },
+    "filters": {
+      "@id": "silvercar:filters",
+      "@container": "@list"
+    },
+    "runtime_filters": {
+      "@id": "silvercar:runtime_filters",
+      "@container": "@list"
+    },
+    "runtime_param_override": {
+      "@id": "silvercar:runtime_param_override",
+      "@container": "@list"
+    },
+    "page": {
+      "@id": "silvercar:page",
+      "@type": "xsd:integer"
+    },
+    "per_page": {
+      "@id": "silvercar:per_page",
+      "@type": "xsd:integer"
+    },
+    "ReportingErrorResponse": "silvercar:ReportingErrorResponse",
+    "error": {
+      "@id": "silvercar:error",
+      "@type": "xsd:string"
+    },
+    "ReportingMetadataRequest": "silvercar:ReportingMetadataRequest",
+    "ReportingQueryFilterDefinition": "silvercar:ReportingQueryFilterDefinition",
+    "operators": {
+      "@id": "silvercar:operators",
+      "@container": "@list"
+    },
+    "data_type": {
+      "@id": "silvercar:data_type",
+      "@type": "xsd:string"
+    },
+    "allowed_values": {
+      "@id": "silvercar:allowed_values",
+      "@container": "@list"
+    },
+    "ReportingRuntimeFilterDefinition": "silvercar:ReportingRuntimeFilterDefinition",
+    "ReportingRuntimeParameterDefinition": "silvercar:ReportingRuntimeParameterDefinition",
+    "default_value": {
+      "@id": "silvercar:default_value"
+    },
+    "ReportingDataSource": "silvercar:ReportingDataSource",
+    "logical_table_name": {
+      "@id": "silvercar:logical_table_name",
+      "@type": "xsd:string"
+    },
+    "column_names": {
+      "@id": "silvercar:column_names",
+      "@container": "@list"
+    },
+    "runtime_parameters": {
+      "@id": "silvercar:runtime_parameters",
+      "@container": "@list"
+    },
+    "ReportingMetadataResponse": "silvercar:ReportingMetadataResponse",
+    "data_sources": {
+      "@id": "silvercar:data_sources",
+      "@container": "@list"
+    },
+    "AdminDealershipTelematicsSettingsResponse": "silvercar:AdminDealershipTelematicsSettingsResponse",
+    "AdminDealershipTelematicsSettingsRequest": "silvercar:AdminDealershipTelematicsSettingsRequest",
+    "AdminUserResponse": "silvercar:AdminUserResponse",
+    "elevated": {
+      "@id": "silvercar:elevated",
+      "@type": "xsd:boolean"
+    },
+    "UpdateAdminUserRequest": "silvercar:UpdateAdminUserRequest",
+    "UpdateAdminUserPasswordRequest": "silvercar:UpdateAdminUserPasswordRequest",
+    "UpdateAdminUserPreferencesRequest": "silvercar:UpdateAdminUserPreferencesRequest",
+    "interface_config": {
+      "@id": "silvercar:interface_config",
+      "@type": "xsd:string"
+    },
+    "AdminUserPreferencesResponse": "silvercar:AdminUserPreferencesResponse",
+    "AdminUserConfirmRequest": "silvercar:AdminUserConfirmRequest"
+  },
+  "@type": "schema:Dataset",
+  "schema:name": "silvercar API JSON-LD context",
+  "schema:description": "A JSON-LD @context for the objects silvercar's own API contract declares: one class per component schema, one property per declared field, typed from the contract. Derived by script (derive-json-ld.py, 2026-10-14) from openapi/silvercar-mob-api-openapi.yml.",
+  "dcterms:created": "2026-10-14",
+  "dcterms:source": [
+    "openapi/silvercar-mob-api-openapi.yml"
+  ]
+}

@@ -1,0 +1,440 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/silvercar/main/json-schema/silvercar-admin-vehicle-response-2-schema.json",
+  "title": "AdminVehicleResponse-2",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminVehicleResponse-2",
+  "type": "object",
+  "required": [
+    "available_date",
+    "unavailable_date",
+    "registration",
+    "registration_expiration",
+    "emissions_expiration",
+    "license_state",
+    "next_contract_finish_state",
+    "connected",
+    "connected_car_device_firmware",
+    "connected_car_device_last_updated",
+    "days_off_contract",
+    "device",
+    "fuel",
+    "id",
+    "license",
+    "links",
+    "make",
+    "model",
+    "odometer",
+    "off_lot",
+    "physical_location",
+    "power_train",
+    "status",
+    "stock_number",
+    "toll_tag_number",
+    "vin",
+    "year",
+    "color",
+    "acriss_code",
+    "acriss_model_description",
+    "updated_at",
+    "created_at",
+    "rdr_date",
+    "maturity_date",
+    "in_service_date",
+    "disposed_at",
+    "telematics_source",
+    "telematics_enrolled",
+    "currently_rented_to_customer_id",
+    "toll_transponder"
+  ],
+  "properties": {
+    "available_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    },
+    "unavailable_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    },
+    "registration": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    },
+    "registration_expiration": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    },
+    "emissions_expiration": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    },
+    "license_state": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "next_contract_finish_state": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "connected": {
+      "type": "boolean"
+    },
+    "connected_car_device_firmware": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "connected_car_device_last_updated": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "device": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "fuel": {
+      "type": "object",
+      "required": [
+        "unit",
+        "capacity",
+        "value"
+      ],
+      "properties": {
+        "unit": {
+          "type": "string",
+          "description": "will always return L for Liters"
+        },
+        "capacity": {
+          "type": "number"
+        },
+        "value": {
+          "type": "number"
+        }
+      }
+    },
+    "id": {
+      "type": "integer"
+    },
+    "license": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "links": {
+      "type": "object",
+      "required": [
+        "fleet",
+        "fleets"
+      ],
+      "properties": {
+        "fleet": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/$defs/HypermediaLink"
+            }
+          ]
+        },
+        "fleets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/HypermediaLink"
+          }
+        }
+      }
+    },
+    "make": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "model": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "odometer": {
+      "type": "object",
+      "$ref": "#/$defs/AdminOdometer"
+    },
+    "off_lot": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "physical_location": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "power_train": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "status": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "stock_number": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "toll_tag_number": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "vin": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "year": {
+      "type": "integer"
+    },
+    "color": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "acriss_code": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "acriss_model_description": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "days_off_contract": {
+      "type": "integer"
+    },
+    "rdr_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date",
+      "description": "The retail delivery report (RDR) date from the associated parking lot"
+    },
+    "maturity_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date",
+      "description": "The maturity date of the vehicle"
+    },
+    "in_service_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The in-service date of the vehicle"
+    },
+    "disposed_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "telematics_source": {
+      "type": "string"
+    },
+    "telematics_enrolled": {
+      "type": "boolean"
+    },
+    "currently_rented_to_customer_id": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "toll_transponder": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "allOf": [
+        {
+          "$ref": "#/$defs/AdminDealershipTollTransponderResponse"
+        }
+      ],
+      "description": "The managed toll transponder installed on the vehicle, or null. The backend keeps the legacy toll_tag_number in step with it."
+    }
+  },
+  "$defs": {
+    "AdminDealershipTollTransponderResponse": {
+      "type": "object",
+      "required": [
+        "id",
+        "external_id",
+        "kind",
+        "toll_provider",
+        "created_at",
+        "deactivated_at",
+        "current_assignment"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "external_id": {
+          "type": "string",
+          "description": "Provider-assigned transponder identifier, stored normalized to lowercase letters and digits."
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "unknown",
+            "tag",
+            "device"
+          ],
+          "description": "Whether the transponder is a toll tag or a device; unknown until classified."
+        },
+        "toll_provider": {
+          "type": "object",
+          "required": [
+            "id",
+            "name"
+          ],
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "string"
+            }
+          }
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "deactivated_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "When the transponder was deactivated, or null while it is active."
+        },
+        "current_assignment": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "The vehicle the transponder is installed on now, or null when it is not installed on a vehicle. Null does not guarantee deactivation succeeds: its tag may still be entered on a vehicle at this dealership. A transponder on a rented vehicle cannot be moved, so pickers can show it as unavailable.",
+          "required": [
+            "vehicle_id",
+            "license_plate",
+            "vin",
+            "status"
+          ],
+          "properties": {
+            "vehicle_id": {
+              "type": "integer"
+            },
+            "license_plate": {
+              "type": "string"
+            },
+            "vin": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string",
+              "description": "The vehicle's current state, such as rented or disposed. Tolerate new values."
+            }
+          }
+        }
+      }
+    },
+    "AdminOdometer": {
+      "type": "object",
+      "required": [
+        "value",
+        "unit"
+      ],
+      "properties": {
+        "value": {
+          "type": "number",
+          "format": "float",
+          "description": "0.0 indicates no reading was found"
+        },
+        "unit": {
+          "type": "string"
+        }
+      }
+    },
+    "HypermediaLink": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "ID of the associated resource"
+        },
+        "href": {
+          "type": "string",
+          "description": "Link to the associated resource"
+        }
+      }
+    }
+  }
+}

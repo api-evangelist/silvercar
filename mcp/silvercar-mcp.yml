@@ -1,0 +1,213 @@
+generated: '2026-10-14'
+method: derived
+generator: derive-mcp-candidate.py
+source:
+- openapi/silvercar-mob-api-openapi.yml
+status: candidate
+deployment:
+  mode: none
+  auth: unknown
+  verified: derived
+note: No MCP server was found. No probe result in the dossier. Candidate tools below are derived from the 174 operation(s) in the provider's own
+  OpenAPI (40 listed); they describe what a server WOULD expose, not one that exists.
+tools:
+- name: get_mappable_fields
+  operationId: getMappableFields
+  method: GET
+  path: /admin/agreements/mappable_fields
+  description: Get all fields that can be mapped onto an agreement
+- name: get_program_availability
+  operationId: getProgramAvailability
+  method: GET
+  path: /admin/availability/groups/{group_id}
+  description: Get availability for a Fleet/Program
+- name: get_program_availability_intervals
+  operationId: getProgramAvailabilityIntervals
+  method: GET
+  path: /admin/availability/groups/{group_id}/intervals
+  description: Get availability for a Fleet/Program with intervals
+- name: get_contract_notes
+  operationId: getContractNotes
+  method: GET
+  path: /admin/contracts/{contract_id}/notes
+  description: Get the notes for a contract
+- name: post_contract_note
+  operationId: postContractNote
+  method: POST
+  path: /admin/contracts/{contract_id}/notes
+  description: Add a note for a contract
+- name: put_contract_note
+  operationId: putContractNote
+  method: PUT
+  path: /admin/contracts/{contract_id}/notes/{id}
+  description: Update a note for a contract
+- name: delete_contract_note
+  operationId: deleteContractNote
+  method: DELETE
+  path: /admin/contracts/{contract_id}/notes/{id}
+  description: Delete a note for a contract
+- name: get_contract
+  operationId: getContract
+  method: GET
+  path: /admin/contracts/{id}
+  description: Fetch Details for a Given Contract
+- name: put_contract
+  operationId: putContract
+  method: PUT
+  path: /admin/contracts/{id}
+  description: Update Details for a Given Contract
+- name: get_admin_contracts_toggles
+  operationId: getAdminContractsToggles
+  method: GET
+  path: /admin/contracts/{id}/agreement/toggles
+  description: Get all Toggles attached to a given Contract
+- name: get_admin_contract_authorization
+  operationId: getAdminContractAuthorization
+  method: GET
+  path: /admin/contracts/{id}/authorization
+  description: Fetch the authorization amount for a given contract
+- name: get_admin_contract_adjustments
+  operationId: getAdminContractAdjustments
+  method: GET
+  path: /admin/contracts/{id}/billing/adjustments
+  description: Fetch the available adjustments for a given contract
+- name: post_admin_contract_billing_adjustment
+  operationId: postAdminContractBillingAdjustment
+  method: POST
+  path: /admin/contracts/{id}/billing/adjustments
+  description: Create a billing adjustment (charge or credit) for the given contract
+- name: delete_admin_contract_cancel
+  operationId: deleteAdminContractCancel
+  method: DELETE
+  path: /admin/contracts/{id}/cancel
+  description: Cancel the Given Contract
+- name: post_contract_contactless_messages
+  operationId: postContractContactlessMessages
+  method: POST
+  path: /admin/contracts/{id}/contactless/messages
+  description: Creates a contactless text message associated with a contract
+- name: get_admin_contract_customer
+  operationId: getAdminContractCustomer
+  method: GET
+  path: /admin/contracts/{id}/customer
+  description: Fetch the customer attached to a given Contract
+- name: get_admin_contracts_drivers
+  operationId: getAdminContractsDrivers
+  method: GET
+  path: /admin/contracts/{id}/drivers
+  description: Get all Drivers attached to a given Contract
+- name: post_admin_contracts_drivers
+  operationId: postAdminContractsDrivers
+  method: POST
+  path: /admin/contracts/{id}/drivers
+  description: Create a Driver attached to a given Contract
+- name: put_admin_contract_finish
+  operationId: putAdminContractFinish
+  method: PUT
+  path: /admin/contracts/{id}/finish
+  description: Finish the given Contract
+- name: put_admin_contract_payment_method
+  operationId: putAdminContractPaymentMethod
+  method: PUT
+  path: /admin/contracts/{id}/payment_method
+  description: Update the payment method for the given contract
+- name: get_admin_contract_payments
+  operationId: getAdminContractPayments
+  method: GET
+  path: /admin/contracts/{id}/payments
+  description: Fetch the payments attached to a given Contract
+- name: get_admin_contract_pricing
+  operationId: getAdminContractPricing
+  method: GET
+  path: /admin/contracts/{id}/pricing
+  description: Fetch the pricing information of a given Contract
+- name: post_admin_contract_receipt_pdf
+  operationId: postAdminContractReceiptPdf
+  method: POST
+  path: /admin/contracts/{id}/receipt/pdf
+  description: Generate and fetch receipt PDF for the given contract
+- name: get_rental_agreement_pdf
+  operationId: getRentalAgreementPDF
+  method: GET
+  path: /admin/contracts/{id}/rental_agreements
+  description: Get the rental agreement PDF for a reservation
+- name: post_admin_contract_settlement
+  operationId: postAdminContractSettlement
+  method: POST
+  path: /admin/contracts/{id}/settlements
+  description: Create a settlement attempt on the balance of the contract
+- name: get_admin_contract_split_bill
+  operationId: getAdminContractSplitBill
+  method: GET
+  path: /admin/contracts/{id}/split_bill
+  description: Fetch the split bill associated to a given Contract
+- name: post_admin_contract_split_bill
+  operationId: postAdminContractSplitBill
+  method: POST
+  path: /admin/contracts/{id}/split_bill
+  description: Creates a split bill that is associated with a given contract
+- name: put_admin_contract_split_bill
+  operationId: putAdminContractSplitBill
+  method: PUT
+  path: /admin/contracts/{id}/split_bill
+  description: Update the split bill associated with a given contract
+- name: delete_admin_contract_split_bill
+  operationId: deleteAdminContractSplitBill
+  method: DELETE
+  path: /admin/contracts/{id}/split_bill
+  description: Deletes a split bill
+- name: get_admin_contract_split_bill_adjustment
+  operationId: getAdminContractSplitBillAdjustment
+  method: GET
+  path: /admin/contracts/{id}/split_bill/adjustment
+  description: Fetch the adjustment associated to a given contract's split bill
+- name: post_admin_contract_split_bill_adjustment
+  operationId: postAdminContractSplitBillAdjustment
+  method: POST
+  path: /admin/contracts/{id}/split_bill/adjustment
+  description: Creates an adjustment of the specified amount on a contract's split bill
+- name: post_admin_contract_split_bill_payment
+  operationId: postAdminContractSplitBillPayment
+  method: POST
+  path: /admin/contracts/{id}/split_bill/payment
+  description: Creates a payment for the split bill of a given contract
+- name: delete_admin_contract_split_bill_payment
+  operationId: deleteAdminContractSplitBillPayment
+  method: DELETE
+  path: /admin/contracts/{id}/split_bill/payment
+  description: Deletes the payment of the split bill of a given contract
+- name: post_admin_contract_split_bill_pdf
+  operationId: postAdminContractSplitBillPdf
+  method: POST
+  path: /admin/contracts/{id}/split_bill/pdf
+  description: Generate split bill PDF for the given contract
+- name: put_admin_contract_start
+  operationId: putAdminContractStart
+  method: PUT
+  path: /admin/contracts/{id}/start
+  description: Start the Given Contract
+- name: put_admin_contract_unassign_vehicle
+  operationId: putAdminContractUnassignVehicle
+  method: PUT
+  path: /admin/contracts/{id}/unassign_vehicle
+  description: Unassign the vehicle currently assigned to the given contract
+- name: put_admin_contract_vehicle
+  operationId: putAdminContractVehicle
+  method: PUT
+  path: /admin/contracts/{id}/vehicle
+  description: Assign a Vehicle to the Given Contract
+- name: get_admin_contract_vehicles_available
+  operationId: getAdminContractVehiclesAvailable
+  method: GET
+  path: /admin/contracts/{id}/vehicles/available
+  description: Retrieves a list of available vehicles for the given contract
+- name: get_admin_contract_vehicles_available_search
+  operationId: getAdminContractVehiclesAvailableSearch
+  method: GET
+  path: /admin/contracts/{id}/vehicles/available/search
+  description: Returns a list of available vehicles for a contract based on the provided query
+- name: get_contract_warranty
+  operationId: getContractWarranty
+  method: GET
+  path: /admin/contracts/{id}/warranty
+  description: Returns a Warranty for a Contract

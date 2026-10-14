@@ -1,0 +1,433 @@
+generated: '2026-10-14'
+method: derived
+generator: derive-vocabulary.py
+source: openapi/silvercar-mob-api-openapi.yml
+vocabulary:
+  name: silvercar Domain Vocabulary
+  description: 'Terms declared by silvercar''s own API contract: its resource groups, objects and enumerations, with the contract''s definitions.
+    Derived, not authored.'
+  version: '2026-10-14'
+  terms:
+  - term: Admin
+    definition: Administrative actions and resources
+    tags:
+    - Resource Group
+    source: openapi/silvercar-mob-api-openapi.yml
+  - term: Contracts
+    definition: Contract actions and resources
+    tags:
+    - Resource Group
+    source: openapi/silvercar-mob-api-openapi.yml
+  - term: Agreements
+    definition: Agreement actions and resources
+    tags:
+    - Resource Group
+    source: openapi/silvercar-mob-api-openapi.yml
+  - term: Availability 2.0
+    definition: Version 2 of Availability which supports vehicle grouping and schedulers
+    tags:
+    - Resource Group
+    source: openapi/silvercar-mob-api-openapi.yml
+  - term: Contactless
+    definition: Contactless Contract actions and resources
+    tags:
+    - Resource Group
+    source: openapi/silvercar-mob-api-openapi.yml
+  - term: Drivers
+    definition: Driver actions and resources
+    tags:
+    - Resource Group
+    source: openapi/silvercar-mob-api-openapi.yml
+  - term: Invoicing
+    definition: Contract invoicing and pricing actions
+    tags:
+    - Resource Group
+    source: openapi/silvercar-mob-api-openapi.yml
+  - term: Customers
+    definition: Customer actions and resources
+    tags:
+    - Resource Group
+    source: openapi/silvercar-mob-api-openapi.yml
+  - term: Vehicles
+    definition: Vehicle actions and resources
+    tags:
+    - Resource Group
+    source: openapi/silvercar-mob-api-openapi.yml
+  - term: Dealerships
+    definition: Dealership actions and resources
+    tags:
+    - Resource Group
+    source: openapi/silvercar-mob-api-openapi.yml
+  - term: Fleets
+    definition: Fleet actions and resources
+    tags:
+    - Resource Group
+    source: openapi/silvercar-mob-api-openapi.yml
+  - term: Remote Profile
+    definition: Customer Remote Profile actions and resources
+    tags:
+    - Resource Group
+    source: openapi/silvercar-mob-api-openapi.yml
+  - term: User
+    definition: Single-user actions and resources
+    tags:
+    - Resource Group
+    source: openapi/silvercar-mob-api-openapi.yml
+  - term: Webhooks
+    definition: Dealership webhook actions and resources
+    tags:
+    - Resource Group
+    source: openapi/silvercar-mob-api-openapi.yml
+  - term: Employees
+    definition: Employee actions and resources
+    tags:
+    - Resource Group
+    source: openapi/silvercar-mob-api-openapi.yml
+  - term: Employer Info
+    definition: Employer Information actions on a Customer resource
+    tags:
+    - Resource Group
+    source: openapi/silvercar-mob-api-openapi.yml
+  - term: Geolocation
+    definition: Geolocation services for lite valet
+    tags:
+    - Resource Group
+    source: openapi/silvercar-mob-api-openapi.yml
+  - term: Issues
+    definition: Vehicle/reservation issue actions
+    tags:
+    - Resource Group
+    source: openapi/silvercar-mob-api-openapi.yml
+  - term: Reporting
+    definition: Generic reporting discovery and data retrieval endpoints
+    tags:
+    - Resource Group
+    source: openapi/silvercar-mob-api-openapi.yml
+  - term: Telematics
+    definition: Telematics actions and resources
+    tags:
+    - Resource Group
+    source: openapi/silvercar-mob-api-openapi.yml
+  - term: Users
+    definition: Multiple-user actions and resources
+    tags:
+    - Resource Group
+    source: openapi/silvercar-mob-api-openapi.yml
+  - term: AdminContactlessMessagesRequest
+    definition: 'Object declared by the contract with fields: fuel_percentage, odometer.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminContactlessMessagesRequest
+  - term: AdminLoginRequest
+    definition: 'Object declared by the contract with fields: email, password.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminLoginRequest
+  - term: AdminLoginResponse
+    definition: 'Object declared by the contract with fields: auth_token.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminLoginResponse
+  - term: CustomerNotificationAttempt
+    definition: 'Object declared by the contract with fields: id, attempt_number, provider, status, provider_message_id, error_code, error_message,
+      requested_at, completed_at, callback_received_at.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/CustomerNotificationAttempt
+  - term: FailedCustomerNotification
+    definition: 'Object declared by the contract with fields: id, reservation_id, customer_id, location_id, message_type, channel, provider, status,
+      attempt_count, replay_count, last_error_code, last_error_message. (4 more)'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/FailedCustomerNotification
+  - term: ReplayCustomerNotificationRequest
+    definition: 'Object declared by the contract with fields: reason.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/ReplayCustomerNotificationRequest
+  - term: ReplayCustomerNotificationResponse
+    definition: 'Object declared by the contract with fields: status, notification_id, notification_attempt_id, attempt_number, replay_requested_at.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/ReplayCustomerNotificationResponse
+  - term: AdminAgreementsMappableFieldsResponse
+    definition: A list of field names that can be mapped onto an agreement
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminAgreementsMappableFieldsResponse
+  - term: AdminAvailabilityVehicles
+    definition: 'Object declared by the contract with fields: id, vin, base_msrp.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminAvailabilityVehicles
+  - term: BillingEstimate
+    definition: 'Object declared by the contract with fields: program_id, transaction_days, currency_code, taxes, rates, fees, tax_total, rates_total,
+      fees_total, tax_average_per_day, rates_average_per_day, fees_average_per_day.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/BillingEstimate
+  - term: AdminAvailabilityGroupResponse
+    definition: 'Object declared by the contract with fields: id, name, available_vehicle_count, total_vehicle_count, make, model, trim, body_type,
+      power_train, available_vehicles, estimate.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminAvailabilityGroupResponse
+  - term: AdminAvailabilityGroups
+    definition: 'Object declared by the contract with fields: make, model, trim, body_type, power_train, available_vehicles.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminAvailabilityGroups
+  - term: AdminAvailabilityIntervals
+    definition: 'Object declared by the contract with fields: start_at, end_at, groups.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminAvailabilityIntervals
+  - term: AdminAvailabilityGroupIntervalsResponse
+    definition: 'Object declared by the contract with fields: id, name, intervals.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminAvailabilityGroupIntervalsResponse
+  - term: ContactlessContractDriverResponse
+    definition: 'Object declared by the contract with fields: agreement_url, customer_name, dealership_name, first_name, fuel, fuel_percentage,
+      last_name, metric, odometer, signature.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/ContactlessContractDriverResponse
+  - term: HypermediaLink
+    definition: 'Object declared by the contract with fields: id, href.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/HypermediaLink
+  - term: AdminDealershipContractResponse
+    definition: 'Object declared by the contract with fields: id, actual_pickup_at, actual_dropoff_at, booked_car_detailed_description, booked_by_name,
+      booking_application, booking_channel, capabilities, confirmation_token, contactless, credit_card_id, customer. (25 more)'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminDealershipContractResponse
+  - term: AdminContractUpdateRequest
+    definition: 'Object declared by the contract with fields: daily_rate_override, fleet_id, purchase_order, repair_order, scheduled_pickup_at,
+      scheduled_dropoff_at, service_vehicle_id, service_advisor_id, vehicle_id.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminContractUpdateRequest
+  - term: AdminAgreementToggleResponse
+    definition: 'Object declared by the contract with fields: id, active, text, numeric_order, language, style, translations, read_only, created_at,
+      updated_at.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminAgreementToggleResponse
+  - term: AdminContractAuthorizationResponse
+    definition: 'Object declared by the contract with fields: amount, currency_code, links.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminContractAuthorizationResponse
+  - term: AdminDriversResponse
+    definition: 'Object declared by the contract with fields: id, email, first_name, last_name, license_number, license_subregion, license_expires_on,
+      born_on, country, phone_number, signature, links.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminDriversResponse
+  - term: AdminDriversRequest
+    definition: 'Object declared by the contract with fields: email, first_name, last_name, license_number, license_subregion, born_on, license_expires_on,
+      country, phone_number.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminDriversRequest
+  - term: AdminContractBillingAdjustmentsResponse
+    definition: 'Object declared by the contract with fields: id, name.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminContractBillingAdjustmentsResponse
+  - term: CreateAdminContractBillingAdjustmentRequest
+    definition: 'Object declared by the contract with fields: type_id, amount, description.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/CreateAdminContractBillingAdjustmentRequest
+  - term: AdminContractCustomerResponse
+    definition: 'Object declared by the contract with fields: id, first_name, last_name, phone_number, email, links.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminContractCustomerResponse
+  - term: ContractNoteAddRequest
+    definition: 'Object declared by the contract with fields: content.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/ContractNoteAddRequest
+  - term: ContractNoteUpdateRequest
+    definition: 'Object declared by the contract with fields: content.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/ContractNoteUpdateRequest
+  - term: AdminContractPaymentResponse
+    definition: 'Object declared by the contract with fields: id, created_at, last_four, card_type, amount, error_code, provider, refund_of_id,
+      refundable_amount, status, links.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminContractPaymentResponse
+  - term: AdminContractPricing
+    definition: 'Object declared by the contract with fields: name, type, total, groups.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminContractPricing
+  - term: AdminContractAdditionalPayerTotals
+    definition: 'Object declared by the contract with fields: customer_name, amount.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminContractAdditionalPayerTotals
+  - term: AdminContractPricingResponse
+    definition: 'Object declared by the contract with fields: id, balance, customer_balance, total, customer_total, customer_payments_total, payer_total,
+      payer_payments_total, payer_balance, payments_total, currency_code, pricing. (2 more)'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminContractPricingResponse
+  - term: AdminContractSplitBillResponse
+    definition: 'Object declared by the contract with fields: id, reference_number, name, contact_name, line1, line2, city, postal_code, subregion,
+      phone_number, email, downloaded_at. (3 more)'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminContractSplitBillResponse
+  - term: AdminContractSplitBillRequest
+    definition: 'Object declared by the contract with fields: reference_number, name, contact_name, line1, line2, city, postal_code, subregion,
+      phone_number, email, fleet_id.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminContractSplitBillRequest
+  - term: AdminContractSplitBillAdjustmentResponse
+    definition: 'Object declared by the contract with fields: amount, taxable, links.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminContractSplitBillAdjustmentResponse
+  - term: AdminContractSplitBillAdjustmentRequest
+    definition: 'Object declared by the contract with fields: amount, taxable, split_bill_id.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminContractSplitBillAdjustmentRequest
+  - term: AdminContractStartRequest
+    definition: 'Object declared by the contract with fields: confirm_plateless_start, fuel, odometer, bypass_signatures, bypass_credit_card_check,
+      vehicle_id, actual_pickup, pickup, dropoff, reason.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminContractStartRequest
+  - term: AdminContractFinishRequest
+    definition: 'Object declared by the contract with fields: dropoff_at, fuel, purchase_order, repair_order, odometer, service_vehicle_id.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminContractFinishRequest
+  - term: AdminContractVehicleRequest
+    definition: 'Object declared by the contract with fields: id.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminContractVehicleRequest
+  - term: AdminOdometer
+    definition: 'Object declared by the contract with fields: value, unit.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminOdometer
+  - term: AdminVehicleResponse
+    definition: 'Object declared by the contract with fields: available_date, unavailable_date, registration, registration_expiration, emissions_expiration,
+      license_state, next_contract_finish_state, connected, connected_car_device_firmware, connected_car_device_last_updated, device, fuel. (27
+      more)'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminVehicleResponse
+  - term: AdminVehicleSortColumns
+    definition: 'Enumeration declared by the contract with values: created_at, updated_at, license, model, odometer, physical_location, status,
+      stock_number, year, vin, maturity_date, in_service_date. (1 more)'
+    tags:
+    - Enumeration
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminVehicleSortColumns
+  - term: AdminContractsWarranty
+    definition: 'Object declared by the contract with fields: daily_rate, warranty_days, tax_percentage, authorization_number.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminContractsWarranty
+  - term: AdminCustomerContractResponse
+    definition: 'Object declared by the contract with fields: id, token, actual_pickup_at, actual_dropoff_at, balance, confirmation_token, status,
+      scheduled_pickup_at, scheduled_dropoff_at, purchase_order.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminCustomerContractResponse
+  - term: AdminCustomerPaymentMethodResponse
+    definition: 'Object declared by the contract with fields: id, card_type, last_four, expires_on, default, links.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminCustomerPaymentMethodResponse
+  - term: AdminDealershipContractSortColumns
+    definition: 'Enumeration declared by the contract with values: actual_pickup_at, location_sequence, scheduled_pickup_at, created_at, status.'
+    tags:
+    - Enumeration
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminDealershipContractSortColumns
+  - term: AdminDealershipContractManifestResponse
+    definition: 'Object declared by the contract with fields: id, ccpa, confirmation_token, contactless, location_sequence, status, created_at,
+      actual_dropoff_at, actual_pickup_at, days_on_loan, vehicle_stock_number, vehicle_license. (17 more)'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminDealershipContractManifestResponse
+  - term: AdminDealershipFleetsContractsVehiclesResponse
+    definition: 'Object declared by the contract with fields: vehicle_groups.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminDealershipFleetsContractsVehiclesResponse
+  - term: SignatureRequest
+    definition: 'Object declared by the contract with fields: image, fuel_percentage, odometer.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/SignatureRequest
+  - term: ContactlessContractResponse
+    definition: 'Object declared by the contract with fields: agreement_url, dealership_name, drive_protection_selections, fuel, fuel_percentage,
+      metric, odometer, signature, toggles.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/ContactlessContractResponse
+  - term: AdminCustomerResponse
+    definition: 'Object declared by the contract with fields: id, amount_due, complete_profile, email, first_name, language, last_name, permitted_to_rent,
+      phone_number, ccpa, links, has_ongoing_contracts.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminCustomerResponse
+  - term: AdminCustomerRequest
+    definition: 'Object declared by the contract with fields: email, first_name, language, last_name, phone_number.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminCustomerRequest
+  - term: AdminCustomerSortColumns
+    definition: 'Enumeration declared by the contract with values: amount_due, email, first_name, last_name.'
+    tags:
+    - Enumeration
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminCustomerSortColumns
+  - term: AdminRemoteProfileResponse
+    definition: 'Object declared by the contract with fields: phone_number, reservation_id, customer, dealership.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminRemoteProfileResponse
+  - term: AdminDealershipCustomerProfileMessageRequest
+    definition: 'Object declared by the contract with fields: phone_number, customer_id, reservation_id.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminDealershipCustomerProfileMessageRequest
+  - term: AdminRemoteProfileSearchRequest
+    definition: 'Object declared by the contract with fields: token, drivers_license_number, drivers_license_state.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminRemoteProfileSearchRequest
+  - term: AdminRemoteProfileQrCodeRequest
+    definition: 'Object declared by the contract with fields: customer_id, deeplink_to, reservation_id.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminRemoteProfileQrCodeRequest
+  - term: AdminDealershipsResponse
+    definition: 'Object declared by the contract with fields: id, name, formatted_hours, onboarding_complete, has_ccs, oem_dealer_codes.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminDealershipsResponse
+  - term: AdminDealershipDetailsResponse
+    definition: 'Object declared by the contract with fields: id, insurance_form_provider, metric, name, phone_number, salesforce_id, time_zone,
+      address, formatted_hours, dealership_hours, onboarding_complete, has_ccs. (11 more)'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminDealershipDetailsResponse
+  - term: UpdateAdminDealershipRequest
+    definition: 'Object declared by the contract with fields: email, name, onboarding_complete, phone_number, fleet_settings.'
+    tags:
+    - Object
+    source: openapi/silvercar-mob-api-openapi.yml#/components/schemas/UpdateAdminDealershipRequest

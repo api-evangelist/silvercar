@@ -1,0 +1,233 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/silvercar/main/json-schema/silvercar-admin-dealership-settings-response-schema.json",
+  "title": "AdminDealershipSettingsResponse",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/silvercar-mob-api-openapi.yml#/components/schemas/AdminDealershipSettingsResponse",
+  "type": "object",
+  "required": [
+    "confirm_res_modify",
+    "contract_required",
+    "fleet_count_range"
+  ],
+  "properties": {
+    "confirm_res_modify": {
+      "type": "boolean"
+    },
+    "contract_required": {
+      "type": "boolean"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "currency_code": {
+      "type": "string"
+    },
+    "embedded_telematics_provider": {
+      "type": "string"
+    },
+    "drive_protection": {
+      "type": "object",
+      "properties": {
+        "cra": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "active",
+                "inactive"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "fleet_count_range": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "min": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
+        }
+      }
+    },
+    "has_tolls": {
+      "type": "boolean"
+    },
+    "insurance_verification_enabled": {
+      "description": "Indicates whether a Dealership's Customers have their Insurance verified by a third party service",
+      "type": "boolean"
+    },
+    "gl_code_mapping_enabled": {
+      "type": "boolean",
+      "description": "Indicates if the dealership has enabled G/L Code Mapping for billing"
+    },
+    "guided_walkaround_by": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Guided walkaround provider configured at dealership level",
+      "enum": [
+        "dealerware"
+      ]
+    },
+    "links": {
+      "properties": {
+        "dealership": {
+          "$ref": "#/$defs/HypermediaLink"
+        }
+      }
+    },
+    "managed_toggles": {
+      "type": "boolean"
+    },
+    "metric": {
+      "type": "boolean"
+    },
+    "mobile_check_in_reminder": {
+      "type": "string",
+      "description": "Option to manage automated mobile check-in reminders",
+      "enum": [
+        "at_booking",
+        "none"
+      ]
+    },
+    "mobile_check_in_prepickup_reminder_hours": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 168,
+      "description": "Hours before pickup to send the mobile check-in reminder"
+    },
+    "notification_method": {
+      "type": "string",
+      "enum": [
+        "sms",
+        "email"
+      ]
+    },
+    "pickup_and_delivery": {
+      "type": "object",
+      "description": "Pickup and Delivery options",
+      "properties": {
+        "valet_tasks_enabled": {
+          "type": "boolean"
+        },
+        "radius": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "value": {
+              "type": "number",
+              "format": "float"
+            }
+          }
+        }
+      }
+    },
+    "pickup_and_delivery_configuration": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Current HopDrive configuration from the dealership's IntegrationLocation settings. Legacy LocationSetting values are ignored. Returns an empty object when no HopDrive IntegrationLocation exists. Response-only through this endpoint.",
+      "properties": {
+        "rooftop_id": {
+          "type": "integer"
+        },
+        "valet_type": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Effective HopDrive valet types. Known values include third_party_labor, valet, guest_rides, and ride_shares. HopDrive IntegrationLocation settings with a rooftop ID and no valet types default to third_party_labor."
+        }
+      }
+    },
+    "pickup_and_delivery_integration_status": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Current HopDrive integration status for the dealership. Response-only through this endpoint.",
+      "enum": [
+        "active",
+        "inactive"
+      ]
+    },
+    "pickup_and_delivery_provider": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Current HopDrive integration provider for the dealership. Response-only through this endpoint.",
+      "enum": [
+        "hopdrive"
+      ]
+    },
+    "prevailing_rate": {
+      "type": "number"
+    },
+    "estimated_reservation_minutes": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "task_management_enabled": {
+      "type": "boolean",
+      "description": "Indicates if the dealership has access to manage the task management feature in web. Managed through Salesforce only."
+    },
+    "telematics_enabled": {
+      "type": "boolean"
+    },
+    "valet_drivers_enabled": {
+      "type": "boolean",
+      "description": "True only when the effective HopDrive valet types include valet."
+    },
+    "toll_provider": {
+      "description": "Toll Provider information is displayed only when Dealership is subscribed to Tolls service",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "$defs": {
+    "HypermediaLink": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "ID of the associated resource"
+        },
+        "href": {
+          "type": "string",
+          "description": "Link to the associated resource"
+        }
+      }
+    }
+  }
+}
