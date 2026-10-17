@@ -1,0 +1,547 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@dealerware.com
+    name: Dealerware Support
+    url: https://support.dealerware.com
+  description: MOB-API
+  termsOfService: support@dealerware.com
+  title: MOB User API
+  version: 1.0.0
+servers:
+- url: https://api.dealerware.com
+  description: Production server
+- url: https://api.dw-tst.com
+  description: Staging server
+security:
+- Auth0: []
+tags:
+- name: User
+  description: Single-user actions and resources
+paths:
+  /admin/user:
+    get:
+      summary: Get the currently logged in user
+      operationId: getUser
+      tags:
+      - User
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminUserResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+    put:
+      summary: Update the currently logged in user's details
+      operationId: putUser
+      tags:
+      - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAdminUserRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/user/dealerships/{dealership_id}/roles:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Returns the user roles for a given location
+      description: 'Returns effective user roles for a dealership. HopDrive roles are returned only for capabilities supported by the dealership''s effective HopDrive valet_type set: manage_valet_moves requires valet or third_party_labor, and manage_guest_rides requires guest_rides.'
+      operationId: getUserDealershipRoles
+      tags:
+      - User
+      parameters:
+      - name: dealership_id
+        in: path
+        required: true
+        description: the dealership id for which you are fetching the user's roles
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminUserDealershipRolesResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/user/password:
+    put:
+      summary: Update the currently logged in user's password
+      operationId: putUserPassword
+      tags:
+      - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAdminUserPasswordRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/user/preferences:
+    put:
+      summary: Update the currently logged in user's dw-web preferences
+      operationId: putUserPreference
+      tags:
+      - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAdminUserPreferencesRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+    get:
+      summary: Return the currently logged in user's dw-web preferences
+      operationId: getUserPreferences
+      tags:
+      - User
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminUserPreferencesResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+components:
+  responses:
+    NoContent:
+      description: No Content
+    UnsupportedMediaType:
+      description: Unsupported Media Type
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Accepted media types is limited to JSON (application/json)
+              code:
+                type: integer
+                example: 6789
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Bad Request
+              code:
+                type: integer
+                example: 6789
+    UnprocessableEntity:
+      description: Unprocessable Content
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Invalid resource id
+              code:
+                type: integer
+                example: 6789
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Resource with id :id not found
+              code:
+                type: integer
+                example: 6789
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Invalid authorization token
+              code:
+                type: integer
+                example: 6789
+    NotAcceptable:
+      description: Not Acceptable
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Missing headers in request
+              code:
+                type: integer
+                example: 6789
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Request is forbidden
+              code:
+                type: integer
+                example: 6789
+  schemas:
+    AdminUserPreferencesResponse:
+      type: object
+      required:
+      - interface_config
+      properties:
+        interface_config:
+          type: object
+          additionalProperties: true
+          description: Interface config containing user preferences for dashboards and other interfaces
+          example:
+            dashboard_tiles:
+              customer:
+                unsettled_balance: false
+    UpdateAdminUserPasswordRequest:
+      type: object
+      properties:
+        password:
+          type: string
+          description: password must include at least one lowercase letter, one uppercase letter, and one digit
+          example: Passw0rd
+    AdminUserDealershipRolesResponse:
+      type: object
+      required:
+      - id
+      - name
+      properties:
+        id:
+          type: integer
+          example: 123
+        name:
+          type: string
+          example: location_manager
+    UpdateAdminUserRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          description: will send this address an email to confirm
+          example: john.doe@silvercar.com
+        first_name:
+          type: string
+          example: John
+        last_name:
+          type: string
+          example: Doe
+        language:
+          type: string
+          example: en
+        phone_number:
+          type: string
+          example: '5551234567'
+    AdminUserResponse:
+      type: object
+      properties:
+        email:
+          type: string
+          example: john.doe@silvercar.com
+        first_name:
+          type: string
+          example: John
+        id:
+          type: integer
+          example: 123
+        last_name:
+          type: string
+          example: Doe
+        language:
+          type: string
+          example: en
+        phone_number:
+          type: string
+          example: '5551234567'
+        session_replays_enabled_until:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          example: '2026-04-10T18:30:00Z'
+          description: When Datadog session replay enforcement expires for the user
+        elevated:
+          type: boolean
+          example: true
+          description: Returned only when the current user is an elevated user
+    UpdateAdminUserPreferencesRequest:
+      type: object
+      properties:
+        interface_config:
+          type:
+          - string
+          - 'null'
+          description: JSON string of the interface config which includes user preferences for dashboards and other interfaces
+          example: '{"dashboard": customers: {{"unsettled_balance":true}}}'
+  securitySchemes:
+    Auth0:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://dealerware.auth0.com/oauth/token
+          scopes: {}
+x-provenance:
+  method: searched
+  source: https://developer.dealerware.com/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.dealerware.com/reference/admincustomerget-1.md
+  - https://developer.dealerware.com/reference/createblacklist-1.md
+  - https://developer.dealerware.com/reference/deleteadmincontractcancel-1.md
+  - https://developer.dealerware.com/reference/deleteadmincontractsplitbill-1.md
+  - https://developer.dealerware.com/reference/deleteadmincontractsplitbillpayment-1.md
+  - https://developer.dealerware.com/reference/deleteadmincontractswarranty-1.md
+  - https://developer.dealerware.com/reference/deleteadmindealershipwebhook.md
+  - https://developer.dealerware.com/reference/deleteadmindriver-1.md
+  - https://developer.dealerware.com/reference/deletecontractnote-1.md
+  - https://developer.dealerware.com/reference/deletecustomerfromblacklist-1.md
+  - https://developer.dealerware.com/reference/deletedealershipcustomernotes.md
+  - https://developer.dealerware.com/reference/deletedealershipcustomers-1.md
+  - https://developer.dealerware.com/reference/deleteemployeeactivation-1.md
+  - https://developer.dealerware.com/reference/deletefleet-1.md
+  - https://developer.dealerware.com/reference/deleteissue-1.md
+  - https://developer.dealerware.com/reference/getadmincontractadjustments-1.md
+  - https://developer.dealerware.com/reference/getadmincontractauthorization-1.md
+  - https://developer.dealerware.com/reference/getadmincontractcustomer-1.md
+  - https://developer.dealerware.com/reference/getadmincontractpayments-1.md
+  - https://developer.dealerware.com/reference/getadmincontractpricing-1.md
+  - https://developer.dealerware.com/reference/getadmincontractsdrivers-1.md
+  - https://developer.dealerware.com/reference/getadmincontractsplitbill-1.md
+  - https://developer.dealerware.com/reference/getadmincontractsplitbilladjustment-1.md
+  - https://developer.dealerware.com/reference/getadmincontractstoggles-1.md
+  - https://developer.dealerware.com/reference/getadmincontractvehiclesavailable-1.md
+  - https://developer.dealerware.com/reference/getadmincontractvehiclesavailablesearch-1.md
+  - https://developer.dealerware.com/reference/getadmincustomercreditcards-1.md
+  - https://developer.dealerware.com/reference/getadmincustomeremployer-1.md
+  - https://developer.dealerware.com/reference/getadmincustomerinsurance-1.md
+  - https://developer.dealerware.com/reference/getadmincustomernotificationsfailed.md
+  - https://developer.dealerware.com/reference/getadmincustomerscontracts-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcontracts-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcontractsmanifesttoday-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcontractssearch-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomernotes.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomers-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomersmessagesprofiles-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomersremoteprofilesearch-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomerssearch-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipemployees-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipemployeessearch-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipfleetscontractsandvehicles-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipserviceadvisors-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipwebhook.md
+  - https://developer.dealerware.com/reference/getadmindealershipwebhooks.md
+  - https://developer.dealerware.com/reference/getadmindriver-1.md
+  - https://developer.dealerware.com/reference/getcontract-1.md
+  - https://developer.dealerware.com/reference/getcontractnotes-1.md
+  - https://developer.dealerware.com/reference/getcontractscontactless-1.md
+  - https://developer.dealerware.com/reference/getcontractscontactlessdriver-1.md
+  - https://developer.dealerware.com/reference/getcontractssaleslead.md
+  - https://developer.dealerware.com/reference/getcontractwarranty-1.md
+  - https://developer.dealerware.com/reference/getdealership-1.md
+  - https://developer.dealerware.com/reference/getdealershipaddress-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailability-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailabilityintervals-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailabilityintervalscontinuous-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailabilityintervalscontinuousdaily-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailabilityintervalsdaily-1.md
+  - https://developer.dealerware.com/reference/getdealershipcalendarbookingchannels.md
+  - https://developer.dealerware.com/reference/getdealershipcalendarcontracts-1.md
+  - https://developer.dealerware.com/reference/getdealershipcalendarvehicles-1.md
+  - https://developer.dealerware.com/reference/getdealershipcontractavailablevehicles.md
+  - https://developer.dealerware.com/reference/getdealershipemployeeroles-1.md
+  - https://developer.dealerware.com/reference/getdealershipfleetpricing-1.md
+  - https://developer.dealerware.com/reference/getdealershipfleets-1.md
+  - https://developer.dealerware.com/reference/getdealershipkpis-1.md
+  - https://developer.dealerware.com/reference/getdealershipmakesandmodels-1.md
+  - https://developer.dealerware.com/reference/getdealershipreportreceivables-1.md
+  - https://developer.dealerware.com/reference/getdealershipreportrevenue-1.md
+  - https://developer.dealerware.com/reference/getdealershipreportrevenuesummary-1.md
+  - https://developer.dealerware.com/reference/getdealershipreporttransactions-1.md
+  - https://developer.dealerware.com/reference/getdealershipreporttransactionsfilteredsorted-1.md
+  - https://developer.dealerware.com/reference/getdealershiproles-1.md
+  - https://developer.dealerware.com/reference/getdealerships-1.md
+  - https://developer.dealerware.com/reference/getdealershipsearch-1.md
+  - https://developer.dealerware.com/reference/getdealershipsettings-1.md
+  - https://developer.dealerware.com/reference/getdealershiptelematicssettings-1.md
+  - https://developer.dealerware.com/reference/getdealershiptrimtypesinfleets-1.md
+  - https://developer.dealerware.com/reference/getdealershipvehicles-1.md
+  - https://developer.dealerware.com/reference/getdealershipvehiclessearch-1.md
+  - https://developer.dealerware.com/reference/getdocument-1.md
+  - https://developer.dealerware.com/reference/getemployee-1.md
+  - https://developer.dealerware.com/reference/getfleet-1.md
+  - https://developer.dealerware.com/reference/getfleetavailability-1.md
+  - https://developer.dealerware.com/reference/getfleetavailabilityintervals-1.md
+  - https://developer.dealerware.com/reference/getfleetavailabilityintervalscontinuous-1.md
+  - https://developer.dealerware.com/reference/getfleetavailabilityintervalscontinuousdaily-1.md
+  - https://developer.dealerware.com/reference/getfleetavailabilityintervalsdaily-1.md
+  - https://developer.dealerware.com/reference/getfleetsettings-1.md
+  - https://developer.dealerware.com/reference/getgeolocationradialdistance-1.md
+  - https://developer.dealerware.com/reference/getmappablefields-1.md
+  - https://developer.dealerware.com/reference/getprogramavailability-1.md
+  - https://developer.dealerware.com/reference/getprogramavailabilityintervals-1.md
+  - https://developer.dealerware.com/reference/getrentalagreementpdf-1.md
+  - https://developer.dealerware.com/reference/getreservationcustomer-1.md
+  - https://developer.dealerware.com/reference/getshortremoteprofile.md
+  - https://developer.dealerware.com/reference/getuser-1.md
+  - https://developer.dealerware.com/reference/getuserdealershiproles-1.md
+  - https://developer.dealerware.com/reference/getuserpreferences.md
+  - https://developer.dealerware.com/reference/getvehicle-1.md
+  - https://developer.dealerware.com/reference/getvehicleevents-1.md
+  - https://developer.dealerware.com/reference/getvehiclegroupdefleetsettings.md
+  - https://developer.dealerware.com/reference/getvehicleissues-1.md
+  - https://developer.dealerware.com/reference/getvehicletelemetry-1.md
+  - https://developer.dealerware.com/reference/patchadminvehicle.md
+  - https://developer.dealerware.com/reference/patchdealershipandfleetsettings-1.md
+  - https://developer.dealerware.com/reference/postadmincontractbillingadjustment-1.md
+  - https://developer.dealerware.com/reference/postadmincontractreceiptpdf-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsdrivers-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsettlement-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsplitbill-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsplitbilladjustment-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsplitbillpayment-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsplitbillpdf-1.md
+  - https://developer.dealerware.com/reference/postadmincustomeremployer-1.md
+  - https://developer.dealerware.com/reference/postadmincustomerinsurance-1.md
+  - https://developer.dealerware.com/reference/postadmincustomernotificationreplay.md
+  - https://developer.dealerware.com/reference/postadmindealershipcustomer-1.md
+  - https://developer.dealerware.com/reference/postadmindealershipcustomermessage-1.md
+  - https://developer.dealerware.com/reference/postadmindealershipcustomernote.md
+  - https://developer.dealerware.com/reference/postadmindealershipcustomersremoteprofileqrcode.md
+  - https://developer.dealerware.com/reference/postadmindealershipemployee-1.md
+  - https://developer.dealerware.com/reference/postadmindealershipwebhook.md
+  - https://developer.dealerware.com/reference/postcontactlessdriversignature-1.md
+  - https://developer.dealerware.com/reference/postcontractcontactlessmessages-1.md
+  - https://developer.dealerware.com/reference/postcontractnote-1.md
+  - https://developer.dealerware.com/reference/postcontractscontactlesssignatures-1.md
+  - https://developer.dealerware.com/reference/postcontractssaleslead.md
+  - https://developer.dealerware.com/reference/postcontractswarranty-1.md
+  - https://developer.dealerware.com/reference/postdealeronboardingvehicles-1.md
+  - https://developer.dealerware.com/reference/postdealershipfleets-1.md
+  - https://developer.dealerware.com/reference/postdealershipvehicle-1.md
+  - https://developer.dealerware.com/reference/postdealervehiclescheckingonboardingstatus-1.md
+  - https://developer.dealerware.com/reference/postdriversignature-1.md
+  - https://developer.dealerware.com/reference/postemployeeactivation-1.md
+  - https://developer.dealerware.com/reference/postfleetcontract-1.md
+  - https://developer.dealerware.com/reference/postfleetvehicles-1.md
+  - https://developer.dealerware.com/reference/postlogin-1.md
+  - https://developer.dealerware.com/reference/postreportingdata.md
+  - https://developer.dealerware.com/reference/postreportingmetadata.md
+  - https://developer.dealerware.com/reference/postuserconfirmations-1.md
+  - https://developer.dealerware.com/reference/postuserpasswordforgot-1.md
+  - https://developer.dealerware.com/reference/postvehicleissue-1.md
+  - https://developer.dealerware.com/reference/putadmincontractfinish-1.md
+  - https://developer.dealerware.com/reference/putadmincontractpaymentmethod-1.md
+  - https://developer.dealerware.com/reference/putadmincontractsplitbill-1.md
+  - https://developer.dealerware.com/reference/putadmincontractstart-1.md
+  - https://developer.dealerware.com/reference/putadmincontractswarranty-1.md
+  - https://developer.dealerware.com/reference/putadmincontractunassignvehicle-1.md
+  - https://developer.dealerware.com/reference/putadmincontractvehicle-1.md
+  - https://developer.dealerware.com/reference/putadmincustomeremployer-1.md
+  - https://developer.dealerware.com/reference/putadmincustomerupdate-1.md
+  - https://developer.dealerware.com/reference/putadmindealershipwebhook.md
+  - https://developer.dealerware.com/reference/putadmindriver-1.md
+  - https://developer.dealerware.com/reference/putcontract-1.md
+  - https://developer.dealerware.com/reference/putcontractnote-1.md
+  - https://developer.dealerware.com/reference/putdealershipaddress-1.md
+  - https://developer.dealerware.com/reference/putdealershipcustomernote.md
+  - https://developer.dealerware.com/reference/putdealershipemployeeroles-1.md
+  - https://developer.dealerware.com/reference/putdealershiptelematicssettings-1.md
+  - https://developer.dealerware.com/reference/putemployee-1.md
+  - https://developer.dealerware.com/reference/putfleet-1.md
+  - https://developer.dealerware.com/reference/putfleetsettings-1.md
+  - https://developer.dealerware.com/reference/putissue-1.md
+  - https://developer.dealerware.com/reference/putreservationcustomer-1.md
+  - https://developer.dealerware.com/reference/putuser-1.md
+  - https://developer.dealerware.com/reference/putuserpassword-1.md
+  - https://developer.dealerware.com/reference/putuserpasswordreset-1.md
+  - https://developer.dealerware.com/reference/putuserpreference-1.md
+  - https://developer.dealerware.com/reference/putvehiclefleet-1.md
+  - https://developer.dealerware.com/reference/putvehiclefleets-1.md
+  - https://developer.dealerware.com/reference/querydnr-1.md
+  - https://developer.dealerware.com/reference/updateadmincustomerinsurance-1.md
+  merge:
+    pages: 174
+    deduped: 1048
+    conflicts_kept_first: 0

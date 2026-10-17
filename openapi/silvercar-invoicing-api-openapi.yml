@@ -1,0 +1,971 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@dealerware.com
+    name: Dealerware Support
+    url: https://support.dealerware.com
+  description: MOB-API
+  termsOfService: support@dealerware.com
+  title: MOB Invoicing API
+  version: 1.0.0
+servers:
+- url: https://api.dealerware.com
+  description: Production server
+- url: https://api.dw-tst.com
+  description: Staging server
+security:
+- Auth0: []
+tags:
+- name: Invoicing
+  description: Contract invoicing and pricing actions
+paths:
+  /admin/contracts/{id}/billing/adjustments:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Fetch the available adjustments for a given contract
+      operationId: getAdminContractAdjustments
+      tags:
+      - Invoicing
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminContractBillingAdjustmentsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+    post:
+      summary: Create a billing adjustment (charge or credit) for the given contract
+      operationId: postAdminContractBillingAdjustment
+      tags:
+      - Invoicing
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAdminContractBillingAdjustmentRequest'
+      responses:
+        '201':
+          description: Success
+          headers:
+            Location:
+              schema:
+                type: string
+                description: Link location of updated pricing summary
+                example: https://api.dw-tst.com/contracts/42/pricing
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/contracts/{id}/payment_method:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    put:
+      summary: Update the payment method for the given contract
+      operationId: putAdminContractPaymentMethod
+      tags:
+      - Invoicing
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - id
+              properties:
+                id:
+                  type: integer
+                  description: Id of the payment method to update the contract with
+                  example: 42
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/contracts/{id}/payments:
+    get:
+      summary: Fetch the payments attached to a given Contract
+      operationId: getAdminContractPayments
+      tags:
+      - Invoicing
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminContractPaymentResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/contracts/{id}/pricing:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Fetch the pricing information of a given Contract
+      operationId: getAdminContractPricing
+      tags:
+      - Invoicing
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminContractPricingResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/contracts/{id}/receipt/pdf:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    post:
+      summary: Generate and fetch receipt PDF for the given contract
+      operationId: postAdminContractReceiptPdf
+      tags:
+      - Invoicing
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      responses:
+        '201':
+          description: Success
+          headers:
+            Location:
+              schema:
+                type: string
+                description: Link location of receipt PDF
+                example: https://api.dw-tst.com/rental_receipt/TUREQkxHQk1hUzFoUj
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/contracts/{id}/settlements:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    post:
+      summary: Create a settlement attempt on the balance of the contract
+      operationId: postAdminContractSettlement
+      tags:
+      - Invoicing
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      responses:
+        '201':
+          description: Success
+          headers:
+            Location:
+              schema:
+                type: string
+                description: Link location of contract payment list
+                example: https://api.dw-tst.com/contracts/42/payments
+        '202':
+          description: Accepted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/contracts/{id}/split_bill/payment:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    post:
+      summary: Creates a payment for the split bill of a given contract
+      operationId: postAdminContractSplitBillPayment
+      tags:
+      - Invoicing
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      responses:
+        '201':
+          $ref: '#/components/responses/Created'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/contracts/{id}/split_bill/pdf:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    post:
+      summary: Generate split bill PDF for the given contract
+      operationId: postAdminContractSplitBillPdf
+      tags:
+      - Invoicing
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      responses:
+        '201':
+          description: Success
+          headers:
+            Location:
+              schema:
+                type: string
+                description: Link location of split bill PDF
+                example: https://api.dw-tst.com/documents/TUREQkxHQk1hUzFoUj
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/customers/{id}/payment_methods:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Fetch the Payment Methods belonging to the given Customer
+      operationId: getAdminCustomerCreditCards
+      tags:
+      - Invoicing
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the customer
+        schema:
+          type: integer
+      - name: reservation_id
+        in: query
+        required: false
+        description: Optional reservation used for reservation-aware payment method selection
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminCustomerPaymentMethodResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+components:
+  responses:
+    NoContent:
+      description: No Content
+    UnsupportedMediaType:
+      description: Unsupported Media Type
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Accepted media types is limited to JSON (application/json)
+              code:
+                type: integer
+                example: 6789
+    Created:
+      description: Created
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: The request has been fulfilled and has resulted in a new resource being created
+    UnprocessableEntity:
+      description: Unprocessable Content
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Invalid resource id
+              code:
+                type: integer
+                example: 6789
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Resource with id :id not found
+              code:
+                type: integer
+                example: 6789
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Invalid authorization token
+              code:
+                type: integer
+                example: 6789
+    NotAcceptable:
+      description: Not Acceptable
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Missing headers in request
+              code:
+                type: integer
+                example: 6789
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Request is forbidden
+              code:
+                type: integer
+                example: 6789
+  schemas:
+    AdminContractBillingAdjustmentsResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 42
+          description: Adjustment ID to be used as type_id when creating a line item
+        name:
+          type: string
+          example: Fuel Service Charge
+          description: Display name for the available adjustment
+    AdminContractPricingResponse:
+      type: object
+      required:
+      - id
+      - balance
+      - customer_balance
+      - customer_payments_total
+      - payer_total
+      - payer_balance
+      - payer_payments_total
+      - customer_total
+      - payments_total
+      - total
+      - currency_code
+      - pricing
+      - additional_payer_totals
+      - links
+      properties:
+        id:
+          type: integer
+          description: Statement ID
+          example: 42
+        balance:
+          type: number
+          format: float
+          description: Remaining balance due for the contract
+          example: 89.23
+        customer_balance:
+          type: number
+          format: float
+          description: Remaining balance due for the customer
+          example: 89
+        total:
+          type: number
+          format: float
+          description: Total cost of the contract, before applied payments
+          example: 125.98
+        customer_total:
+          type: number
+          format: float
+          description: Total customer cost of the contract, before applied payments
+          example: 125.98
+        customer_payments_total:
+          type: number
+          format: float
+          description: Total of successful customer payments on the contract
+          example: 36.98
+        payer_total:
+          type: number
+          format: float
+          description: Total additional payer cost of the contract
+          example: 0
+        payer_payments_total:
+          type: number
+          format: float
+          description: Total of payments made by the additional payer
+          example: 0
+        payer_balance:
+          type: number
+          format: float
+          description: Remaining additional payer balance of the contract
+          example: 0
+        payments_total:
+          type: number
+          format: float
+          description: Total of successful payments on the contract
+          example: 36.98
+        currency_code:
+          type: string
+          description: Applicable currency code for the contract
+          example: USD
+        pricing:
+          type: array
+          description: Collection of charge types and line items
+          items:
+            $ref: '#/components/schemas/AdminContractPricing'
+        additional_payer_totals:
+          type: array
+          description: Collection of split bill totals by each payer
+          items:
+            $ref: '#/components/schemas/AdminContractAdditionalPayerTotals'
+        links:
+          properties:
+            contract:
+              $ref: '#/components/schemas/HypermediaLink'
+    AdminCustomerPaymentMethodResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 123
+          description: Payment method ID
+        card_type:
+          type: string
+          example: Mastercard
+          description: Type of credit card
+        last_four:
+          type: string
+          example: '1111'
+          description: Last four digits of the credit card
+        expires_on:
+          type: string
+          example: '2025-09-24'
+          description: Expiration date of the credit card
+        default:
+          type: boolean
+          example: true
+          description: Indication of whether or not the given card is the customer's default
+        links:
+          properties:
+            customer:
+              $ref: '#/components/schemas/HypermediaLink'
+    CreateAdminContractBillingAdjustmentRequest:
+      type: object
+      properties:
+        type_id:
+          type: integer
+          example: 42
+          description: Billing Adjustment ID of corresponding adjustment type
+        amount:
+          type: number
+          format: float
+          example: -56.45
+          description: Dollar amount of charge or credit being added
+        description:
+          type: string
+          example: additional cleaning charge
+          description: Description of the charge or credit being added
+    AdminContractAdditionalPayerTotals:
+      type: object
+      required:
+      - id
+      properties:
+        customer_name:
+          type: string
+          description: Name of the additional payer
+          example: payer1
+        amount:
+          type: number
+          format: float
+          description: Total amount owed by the additional payer
+          example: 75
+    AdminContractPaymentResponse:
+      type: object
+      required:
+      - id
+      - created_at
+      - amount
+      - refundable_amount
+      - status
+      - provider
+      - links
+      properties:
+        id:
+          type: integer
+          description: Payment ID
+          example: 42
+        created_at:
+          type: string
+          format: date-time
+          example: '2020-06-15T20:22:26Z'
+          description: Time that payment was created
+        last_four:
+          type: string
+          example: '1234'
+          description: Last four digits of the payment method
+        card_type:
+          type: string
+          example: Visa
+          description: Card type of the payment method
+        amount:
+          type: number
+          format: float
+          example: 50.25
+          description: Total payment amount
+        error_code:
+          type: number
+          example: 3005
+          description: payment code returned by the payment processor on failed payments
+        provider:
+          type: string
+          example: braintree
+          description: Payment processor provider
+        refund_of_id:
+          type: integer
+          description: If this payment is a refund, the ID of the original payment
+          example: 21
+        refundable_amount:
+          type: number
+          format: float
+          description: If this payment is a refund, the total amount refunded so far on the original payment
+          example: 25
+        status:
+          type: string
+          description: Status of the payment transaction
+          enum:
+          - authorization_expired
+          - authorized
+          - completed
+          - failed
+          - pending
+        links:
+          properties:
+            contract:
+              $ref: '#/components/schemas/HypermediaLink'
+    HypermediaLink:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 2
+          description: ID of the associated resource
+        href:
+          type: string
+          example: https://api.dw-tst.com/admin/some_resources/2
+          description: Link to the associated resource
+    AdminContractPricing:
+      type: object
+      required:
+      - name
+      - type
+      - total
+      - groups
+      properties:
+        name:
+          type: string
+          description: Display name of pricing section
+          example: Total Rental Charges
+        type:
+          type: string
+          description: Type of adjustment or charge line items
+          example: rental
+        total:
+          type: number
+          format: float
+          description: Sum of included line items.
+          example: 125.98
+        groups:
+          type: array
+          description: Grouped line items for split bills
+          items:
+            type: object
+            required:
+            - description
+            - total
+            - items
+            properties:
+              description:
+                type: string
+                description: The description of the line item
+                example: 12 Daily Rates ($4.00 per day)
+              total:
+                type: number
+                format: float
+                description: Total of the line items
+                example: 48.5
+              items:
+                type: array
+                description: Line items for the line item group
+                items:
+                  type: object
+                  required:
+                  - bill_to
+                  - total
+                  properties:
+                    bill_to:
+                      type: string
+                      description: Bill To Name
+                      example: Leslie Knope
+                    total:
+                      type: number
+                      format: float
+                      description: Total of the line item
+                      example: 48.5
+  securitySchemes:
+    Auth0:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://dealerware.auth0.com/oauth/token
+          scopes: {}
+x-provenance:
+  method: searched
+  source: https://developer.dealerware.com/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.dealerware.com/reference/admincustomerget-1.md
+  - https://developer.dealerware.com/reference/createblacklist-1.md
+  - https://developer.dealerware.com/reference/deleteadmincontractcancel-1.md
+  - https://developer.dealerware.com/reference/deleteadmincontractsplitbill-1.md
+  - https://developer.dealerware.com/reference/deleteadmincontractsplitbillpayment-1.md
+  - https://developer.dealerware.com/reference/deleteadmincontractswarranty-1.md
+  - https://developer.dealerware.com/reference/deleteadmindealershipwebhook.md
+  - https://developer.dealerware.com/reference/deleteadmindriver-1.md
+  - https://developer.dealerware.com/reference/deletecontractnote-1.md
+  - https://developer.dealerware.com/reference/deletecustomerfromblacklist-1.md
+  - https://developer.dealerware.com/reference/deletedealershipcustomernotes.md
+  - https://developer.dealerware.com/reference/deletedealershipcustomers-1.md
+  - https://developer.dealerware.com/reference/deleteemployeeactivation-1.md
+  - https://developer.dealerware.com/reference/deletefleet-1.md
+  - https://developer.dealerware.com/reference/deleteissue-1.md
+  - https://developer.dealerware.com/reference/getadmincontractadjustments-1.md
+  - https://developer.dealerware.com/reference/getadmincontractauthorization-1.md
+  - https://developer.dealerware.com/reference/getadmincontractcustomer-1.md
+  - https://developer.dealerware.com/reference/getadmincontractpayments-1.md
+  - https://developer.dealerware.com/reference/getadmincontractpricing-1.md
+  - https://developer.dealerware.com/reference/getadmincontractsdrivers-1.md
+  - https://developer.dealerware.com/reference/getadmincontractsplitbill-1.md
+  - https://developer.dealerware.com/reference/getadmincontractsplitbilladjustment-1.md
+  - https://developer.dealerware.com/reference/getadmincontractstoggles-1.md
+  - https://developer.dealerware.com/reference/getadmincontractvehiclesavailable-1.md
+  - https://developer.dealerware.com/reference/getadmincontractvehiclesavailablesearch-1.md
+  - https://developer.dealerware.com/reference/getadmincustomercreditcards-1.md
+  - https://developer.dealerware.com/reference/getadmincustomeremployer-1.md
+  - https://developer.dealerware.com/reference/getadmincustomerinsurance-1.md
+  - https://developer.dealerware.com/reference/getadmincustomernotificationsfailed.md
+  - https://developer.dealerware.com/reference/getadmincustomerscontracts-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcontracts-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcontractsmanifesttoday-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcontractssearch-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomernotes.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomers-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomersmessagesprofiles-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomersremoteprofilesearch-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomerssearch-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipemployees-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipemployeessearch-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipfleetscontractsandvehicles-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipserviceadvisors-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipwebhook.md
+  - https://developer.dealerware.com/reference/getadmindealershipwebhooks.md
+  - https://developer.dealerware.com/reference/getadmindriver-1.md
+  - https://developer.dealerware.com/reference/getcontract-1.md
+  - https://developer.dealerware.com/reference/getcontractnotes-1.md
+  - https://developer.dealerware.com/reference/getcontractscontactless-1.md
+  - https://developer.dealerware.com/reference/getcontractscontactlessdriver-1.md
+  - https://developer.dealerware.com/reference/getcontractssaleslead.md
+  - https://developer.dealerware.com/reference/getcontractwarranty-1.md
+  - https://developer.dealerware.com/reference/getdealership-1.md
+  - https://developer.dealerware.com/reference/getdealershipaddress-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailability-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailabilityintervals-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailabilityintervalscontinuous-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailabilityintervalscontinuousdaily-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailabilityintervalsdaily-1.md
+  - https://developer.dealerware.com/reference/getdealershipcalendarbookingchannels.md
+  - https://developer.dealerware.com/reference/getdealershipcalendarcontracts-1.md
+  - https://developer.dealerware.com/reference/getdealershipcalendarvehicles-1.md
+  - https://developer.dealerware.com/reference/getdealershipcontractavailablevehicles.md
+  - https://developer.dealerware.com/reference/getdealershipemployeeroles-1.md
+  - https://developer.dealerware.com/reference/getdealershipfleetpricing-1.md
+  - https://developer.dealerware.com/reference/getdealershipfleets-1.md
+  - https://developer.dealerware.com/reference/getdealershipkpis-1.md
+  - https://developer.dealerware.com/reference/getdealershipmakesandmodels-1.md
+  - https://developer.dealerware.com/reference/getdealershipreportreceivables-1.md
+  - https://developer.dealerware.com/reference/getdealershipreportrevenue-1.md
+  - https://developer.dealerware.com/reference/getdealershipreportrevenuesummary-1.md
+  - https://developer.dealerware.com/reference/getdealershipreporttransactions-1.md
+  - https://developer.dealerware.com/reference/getdealershipreporttransactionsfilteredsorted-1.md
+  - https://developer.dealerware.com/reference/getdealershiproles-1.md
+  - https://developer.dealerware.com/reference/getdealerships-1.md
+  - https://developer.dealerware.com/reference/getdealershipsearch-1.md
+  - https://developer.dealerware.com/reference/getdealershipsettings-1.md
+  - https://developer.dealerware.com/reference/getdealershiptelematicssettings-1.md
+  - https://developer.dealerware.com/reference/getdealershiptrimtypesinfleets-1.md
+  - https://developer.dealerware.com/reference/getdealershipvehicles-1.md
+  - https://developer.dealerware.com/reference/getdealershipvehiclessearch-1.md
+  - https://developer.dealerware.com/reference/getdocument-1.md
+  - https://developer.dealerware.com/reference/getemployee-1.md
+  - https://developer.dealerware.com/reference/getfleet-1.md
+  - https://developer.dealerware.com/reference/getfleetavailability-1.md
+  - https://developer.dealerware.com/reference/getfleetavailabilityintervals-1.md
+  - https://developer.dealerware.com/reference/getfleetavailabilityintervalscontinuous-1.md
+  - https://developer.dealerware.com/reference/getfleetavailabilityintervalscontinuousdaily-1.md
+  - https://developer.dealerware.com/reference/getfleetavailabilityintervalsdaily-1.md
+  - https://developer.dealerware.com/reference/getfleetsettings-1.md
+  - https://developer.dealerware.com/reference/getgeolocationradialdistance-1.md
+  - https://developer.dealerware.com/reference/getmappablefields-1.md
+  - https://developer.dealerware.com/reference/getprogramavailability-1.md
+  - https://developer.dealerware.com/reference/getprogramavailabilityintervals-1.md
+  - https://developer.dealerware.com/reference/getrentalagreementpdf-1.md
+  - https://developer.dealerware.com/reference/getreservationcustomer-1.md
+  - https://developer.dealerware.com/reference/getshortremoteprofile.md
+  - https://developer.dealerware.com/reference/getuser-1.md
+  - https://developer.dealerware.com/reference/getuserdealershiproles-1.md
+  - https://developer.dealerware.com/reference/getuserpreferences.md
+  - https://developer.dealerware.com/reference/getvehicle-1.md
+  - https://developer.dealerware.com/reference/getvehicleevents-1.md
+  - https://developer.dealerware.com/reference/getvehiclegroupdefleetsettings.md
+  - https://developer.dealerware.com/reference/getvehicleissues-1.md
+  - https://developer.dealerware.com/reference/getvehicletelemetry-1.md
+  - https://developer.dealerware.com/reference/patchadminvehicle.md
+  - https://developer.dealerware.com/reference/patchdealershipandfleetsettings-1.md
+  - https://developer.dealerware.com/reference/postadmincontractbillingadjustment-1.md
+  - https://developer.dealerware.com/reference/postadmincontractreceiptpdf-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsdrivers-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsettlement-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsplitbill-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsplitbilladjustment-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsplitbillpayment-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsplitbillpdf-1.md
+  - https://developer.dealerware.com/reference/postadmincustomeremployer-1.md
+  - https://developer.dealerware.com/reference/postadmincustomerinsurance-1.md
+  - https://developer.dealerware.com/reference/postadmincustomernotificationreplay.md
+  - https://developer.dealerware.com/reference/postadmindealershipcustomer-1.md
+  - https://developer.dealerware.com/reference/postadmindealershipcustomermessage-1.md
+  - https://developer.dealerware.com/reference/postadmindealershipcustomernote.md
+  - https://developer.dealerware.com/reference/postadmindealershipcustomersremoteprofileqrcode.md
+  - https://developer.dealerware.com/reference/postadmindealershipemployee-1.md
+  - https://developer.dealerware.com/reference/postadmindealershipwebhook.md
+  - https://developer.dealerware.com/reference/postcontactlessdriversignature-1.md
+  - https://developer.dealerware.com/reference/postcontractcontactlessmessages-1.md
+  - https://developer.dealerware.com/reference/postcontractnote-1.md
+  - https://developer.dealerware.com/reference/postcontractscontactlesssignatures-1.md
+  - https://developer.dealerware.com/reference/postcontractssaleslead.md
+  - https://developer.dealerware.com/reference/postcontractswarranty-1.md
+  - https://developer.dealerware.com/reference/postdealeronboardingvehicles-1.md
+  - https://developer.dealerware.com/reference/postdealershipfleets-1.md
+  - https://developer.dealerware.com/reference/postdealershipvehicle-1.md
+  - https://developer.dealerware.com/reference/postdealervehiclescheckingonboardingstatus-1.md
+  - https://developer.dealerware.com/reference/postdriversignature-1.md
+  - https://developer.dealerware.com/reference/postemployeeactivation-1.md
+  - https://developer.dealerware.com/reference/postfleetcontract-1.md
+  - https://developer.dealerware.com/reference/postfleetvehicles-1.md
+  - https://developer.dealerware.com/reference/postlogin-1.md
+  - https://developer.dealerware.com/reference/postreportingdata.md
+  - https://developer.dealerware.com/reference/postreportingmetadata.md
+  - https://developer.dealerware.com/reference/postuserconfirmations-1.md
+  - https://developer.dealerware.com/reference/postuserpasswordforgot-1.md
+  - https://developer.dealerware.com/reference/postvehicleissue-1.md
+  - https://developer.dealerware.com/reference/putadmincontractfinish-1.md
+  - https://developer.dealerware.com/reference/putadmincontractpaymentmethod-1.md
+  - https://developer.dealerware.com/reference/putadmincontractsplitbill-1.md
+  - https://developer.dealerware.com/reference/putadmincontractstart-1.md
+  - https://developer.dealerware.com/reference/putadmincontractswarranty-1.md
+  - https://developer.dealerware.com/reference/putadmincontractunassignvehicle-1.md
+  - https://developer.dealerware.com/reference/putadmincontractvehicle-1.md
+  - https://developer.dealerware.com/reference/putadmincustomeremployer-1.md
+  - https://developer.dealerware.com/reference/putadmincustomerupdate-1.md
+  - https://developer.dealerware.com/reference/putadmindealershipwebhook.md
+  - https://developer.dealerware.com/reference/putadmindriver-1.md
+  - https://developer.dealerware.com/reference/putcontract-1.md
+  - https://developer.dealerware.com/reference/putcontractnote-1.md
+  - https://developer.dealerware.com/reference/putdealershipaddress-1.md
+  - https://developer.dealerware.com/reference/putdealershipcustomernote.md
+  - https://developer.dealerware.com/reference/putdealershipemployeeroles-1.md
+  - https://developer.dealerware.com/reference/putdealershiptelematicssettings-1.md
+  - https://developer.dealerware.com/reference/putemployee-1.md
+  - https://developer.dealerware.com/reference/putfleet-1.md
+  - https://developer.dealerware.com/reference/putfleetsettings-1.md
+  - https://developer.dealerware.com/reference/putissue-1.md
+  - https://developer.dealerware.com/reference/putreservationcustomer-1.md
+  - https://developer.dealerware.com/reference/putuser-1.md
+  - https://developer.dealerware.com/reference/putuserpassword-1.md
+  - https://developer.dealerware.com/reference/putuserpasswordreset-1.md
+  - https://developer.dealerware.com/reference/putuserpreference-1.md
+  - https://developer.dealerware.com/reference/putvehiclefleet-1.md
+  - https://developer.dealerware.com/reference/putvehiclefleets-1.md
+  - https://developer.dealerware.com/reference/querydnr-1.md
+  - https://developer.dealerware.com/reference/updateadmincustomerinsurance-1.md
+  merge:
+    pages: 174
+    deduped: 1048
+    conflicts_kept_first: 0

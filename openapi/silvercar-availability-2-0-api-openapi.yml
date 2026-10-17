@@ -1,0 +1,605 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@dealerware.com
+    name: Dealerware Support
+    url: https://support.dealerware.com
+  description: MOB-API
+  termsOfService: support@dealerware.com
+  title: MOB Availability 2.0 API
+  version: 1.0.0
+servers:
+- url: https://api.dealerware.com
+  description: Production server
+- url: https://api.dw-tst.com
+  description: Staging server
+security:
+- Auth0: []
+tags:
+- name: Availability 2.0
+  description: Version 2 of Availability which supports vehicle grouping and schedulers
+paths:
+  /admin/availability/groups/{group_id}:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Get availability for a Fleet/Program
+      operationId: getProgramAvailability
+      tags:
+      - Availability 2.0
+      parameters:
+      - name: group_id
+        in: path
+        required: true
+        description: The id of the Fleet/Program
+        schema:
+          type: integer
+      - name: start_at
+        description: The timestamp for the start of the availability range
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          example: '2020-06-15T20:12:26Z'
+      - name: end_at
+        description: The timestamp for the end of the availability range
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          example: '2020-06-15T20:12:26Z'
+      - name: include_estimates
+        description: Whether to include billing estimates for each make and model. Does not work with time_slot_interval.
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+      - name: ignore_reservation_ids
+        description: Comma-separated list of reservation IDs to ignore when calculating availability. Useful for modifying existing reservations.
+        in: query
+        required: false
+        schema:
+          type: string
+          example: 123,234
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminAvailabilityGroupResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /admin/availability/groups/{group_id}/intervals:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Get availability for a Fleet/Program with intervals
+      operationId: getProgramAvailabilityIntervals
+      tags:
+      - Availability 2.0
+      parameters:
+      - name: group_id
+        in: path
+        required: true
+        description: The id of the Fleet/Program
+        schema:
+          type: integer
+      - name: start_at
+        description: The timestamp for the start of the availability range
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          example: '2020-06-15T20:12:26Z'
+      - name: end_at
+        description: The timestamp for the end of the availability range
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          example: '2020-06-15T20:12:26Z'
+      - name: time_slot_interval
+        description: Format response in intervals. 5-minute increments from 15 to 55 minutes, or 1 hour.
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - 15minutes
+          - 20minutes
+          - 25minutes
+          - 30minutes
+          - 35minutes
+          - 40minutes
+          - 45minutes
+          - 50minutes
+          - 55minutes
+          - 1hour
+      - name: ignore_reservation_ids
+        description: Comma-separated list of reservation IDs to ignore when calculating availability. Useful for modifying existing reservations.
+        in: query
+        required: false
+        schema:
+          type: string
+          example: 123,234
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminAvailabilityGroupIntervalsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    AdminAvailabilityVehicles:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Origin vehicle id
+          example: 42
+        vin:
+          type: string
+          description: Vehicle VIN
+          example: 1G1YY22G8X5123456
+        base_msrp:
+          type: string
+          description: Base MSRP
+          example: $28,760.00
+    AdminAvailabilityGroupResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Origin group id
+          example: 42
+        name:
+          type: string
+          description: Group name generated from model description, or existing group name
+          example: 2 Door Coupe/Convertible Roadster
+        available_vehicle_count:
+          type: number
+          description: Number of available vehicles in the group
+          example: 1
+        total_vehicle_count:
+          type: number
+          description: Number of total vehicles in the group
+          example: 2
+        make:
+          type: string
+          description: Vehicle make for the group
+          example: GMC
+        model:
+          type: string
+          description: Vehicle model for the group
+          example: Sierra 1500
+        trim:
+          type: string
+          description: Vehicle trim for the group
+          example: Elevation
+        body_type:
+          type: string
+          description: Vehicle body type for the group
+          example: Crew Cab
+        power_train:
+          type: string
+          description: Vehicle power train for the group
+          example: mechanical
+        available_vehicles:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminAvailabilityVehicles'
+        estimate:
+          $ref: '#/components/schemas/BillingEstimate'
+    AdminAvailabilityIntervals:
+      type: object
+      properties:
+        start_at:
+          type: string
+          description: date and time for the start of the interval
+          example: '2020-06-15T08:00:00Z'
+        end_at:
+          type: string
+          description: date and time for the end of the interval
+          example: '2020-06-15T09:00:00Z'
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminAvailabilityGroups'
+    AdminAvailabilityGroupIntervalsResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Origin group id
+          example: 42
+        name:
+          type: string
+          description: Group name generated from model description, or existing group name
+          example: 2 Door Coupe/Convertible Roadster
+        intervals:
+          type: array
+          description: An array of intervals with availability over start_at to end_at
+          items:
+            $ref: '#/components/schemas/AdminAvailabilityIntervals'
+    BillingEstimate:
+      type: object
+      required:
+      - program_id
+      - transaction_days
+      - currency_code
+      - taxes
+      - rates
+      - fees
+      - tax_total
+      - rates_total
+      - fees_total
+      - tax_average_per_day
+      - rates_average_per_day
+      - fees_average_per_day
+      properties:
+        program_id:
+          type: integer
+          format: int64
+          example: 1
+        transaction_days:
+          type: integer
+          format: int32
+          example: 3
+        currency_code:
+          type: string
+          example: USD
+        taxes:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                example: sales tax
+              total:
+                type: number
+                format: double
+                example: 6
+        rates:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                example: rental
+              total:
+                type: number
+                format: double
+                example: 60
+              description:
+                type: string
+                example: 2 Days at $30.00 per day
+        fees:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                example: facility
+              total:
+                type: number
+                format: double
+                example: 15
+        tax_total:
+          type: number
+          format: double
+          example: 6
+        rates_total:
+          type: number
+          format: double
+          example: 60
+        fees_total:
+          type: number
+          format: double
+          example: 15
+        tax_average_per_day:
+          type: number
+          format: double
+          example: 2
+        rates_average_per_day:
+          type: number
+          format: double
+          example: 20
+        fees_average_per_day:
+          type: number
+          format: double
+          example: 5
+    AdminAvailabilityGroups:
+      type: object
+      properties:
+        make:
+          type: string
+          description: Vehicle make for the group
+          example: GMC
+        model:
+          type: string
+          description: Vehicle model for the group
+          example: Sierra 1500
+        trim:
+          type: string
+          description: Vehicle trim for the group
+          example: Elevation
+        body_type:
+          type: string
+          description: Vehicle body type for the group
+          example: Crew Cab
+        power_train:
+          type: string
+          description: Vehicle power train for the group
+          example: mechanical
+        available_vehicles:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminAvailabilityVehicles'
+  responses:
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Resource with id :id not found
+              code:
+                type: integer
+                example: 6789
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Bad Request
+              code:
+                type: integer
+                example: 6789
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Request is forbidden
+              code:
+                type: integer
+                example: 6789
+  securitySchemes:
+    Auth0:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://dealerware.auth0.com/oauth/token
+          scopes: {}
+x-provenance:
+  method: searched
+  source: https://developer.dealerware.com/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.dealerware.com/reference/admincustomerget-1.md
+  - https://developer.dealerware.com/reference/createblacklist-1.md
+  - https://developer.dealerware.com/reference/deleteadmincontractcancel-1.md
+  - https://developer.dealerware.com/reference/deleteadmincontractsplitbill-1.md
+  - https://developer.dealerware.com/reference/deleteadmincontractsplitbillpayment-1.md
+  - https://developer.dealerware.com/reference/deleteadmincontractswarranty-1.md
+  - https://developer.dealerware.com/reference/deleteadmindealershipwebhook.md
+  - https://developer.dealerware.com/reference/deleteadmindriver-1.md
+  - https://developer.dealerware.com/reference/deletecontractnote-1.md
+  - https://developer.dealerware.com/reference/deletecustomerfromblacklist-1.md
+  - https://developer.dealerware.com/reference/deletedealershipcustomernotes.md
+  - https://developer.dealerware.com/reference/deletedealershipcustomers-1.md
+  - https://developer.dealerware.com/reference/deleteemployeeactivation-1.md
+  - https://developer.dealerware.com/reference/deletefleet-1.md
+  - https://developer.dealerware.com/reference/deleteissue-1.md
+  - https://developer.dealerware.com/reference/getadmincontractadjustments-1.md
+  - https://developer.dealerware.com/reference/getadmincontractauthorization-1.md
+  - https://developer.dealerware.com/reference/getadmincontractcustomer-1.md
+  - https://developer.dealerware.com/reference/getadmincontractpayments-1.md
+  - https://developer.dealerware.com/reference/getadmincontractpricing-1.md
+  - https://developer.dealerware.com/reference/getadmincontractsdrivers-1.md
+  - https://developer.dealerware.com/reference/getadmincontractsplitbill-1.md
+  - https://developer.dealerware.com/reference/getadmincontractsplitbilladjustment-1.md
+  - https://developer.dealerware.com/reference/getadmincontractstoggles-1.md
+  - https://developer.dealerware.com/reference/getadmincontractvehiclesavailable-1.md
+  - https://developer.dealerware.com/reference/getadmincontractvehiclesavailablesearch-1.md
+  - https://developer.dealerware.com/reference/getadmincustomercreditcards-1.md
+  - https://developer.dealerware.com/reference/getadmincustomeremployer-1.md
+  - https://developer.dealerware.com/reference/getadmincustomerinsurance-1.md
+  - https://developer.dealerware.com/reference/getadmincustomernotificationsfailed.md
+  - https://developer.dealerware.com/reference/getadmincustomerscontracts-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcontracts-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcontractsmanifesttoday-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcontractssearch-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomernotes.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomers-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomersmessagesprofiles-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomersremoteprofilesearch-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomerssearch-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipemployees-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipemployeessearch-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipfleetscontractsandvehicles-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipserviceadvisors-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipwebhook.md
+  - https://developer.dealerware.com/reference/getadmindealershipwebhooks.md
+  - https://developer.dealerware.com/reference/getadmindriver-1.md
+  - https://developer.dealerware.com/reference/getcontract-1.md
+  - https://developer.dealerware.com/reference/getcontractnotes-1.md
+  - https://developer.dealerware.com/reference/getcontractscontactless-1.md
+  - https://developer.dealerware.com/reference/getcontractscontactlessdriver-1.md
+  - https://developer.dealerware.com/reference/getcontractssaleslead.md
+  - https://developer.dealerware.com/reference/getcontractwarranty-1.md
+  - https://developer.dealerware.com/reference/getdealership-1.md
+  - https://developer.dealerware.com/reference/getdealershipaddress-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailability-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailabilityintervals-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailabilityintervalscontinuous-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailabilityintervalscontinuousdaily-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailabilityintervalsdaily-1.md
+  - https://developer.dealerware.com/reference/getdealershipcalendarbookingchannels.md
+  - https://developer.dealerware.com/reference/getdealershipcalendarcontracts-1.md
+  - https://developer.dealerware.com/reference/getdealershipcalendarvehicles-1.md
+  - https://developer.dealerware.com/reference/getdealershipcontractavailablevehicles.md
+  - https://developer.dealerware.com/reference/getdealershipemployeeroles-1.md
+  - https://developer.dealerware.com/reference/getdealershipfleetpricing-1.md
+  - https://developer.dealerware.com/reference/getdealershipfleets-1.md
+  - https://developer.dealerware.com/reference/getdealershipkpis-1.md
+  - https://developer.dealerware.com/reference/getdealershipmakesandmodels-1.md
+  - https://developer.dealerware.com/reference/getdealershipreportreceivables-1.md
+  - https://developer.dealerware.com/reference/getdealershipreportrevenue-1.md
+  - https://developer.dealerware.com/reference/getdealershipreportrevenuesummary-1.md
+  - https://developer.dealerware.com/reference/getdealershipreporttransactions-1.md
+  - https://developer.dealerware.com/reference/getdealershipreporttransactionsfilteredsorted-1.md
+  - https://developer.dealerware.com/reference/getdealershiproles-1.md
+  - https://developer.dealerware.com/reference/getdealerships-1.md
+  - https://developer.dealerware.com/reference/getdealershipsearch-1.md
+  - https://developer.dealerware.com/reference/getdealershipsettings-1.md
+  - https://developer.dealerware.com/reference/getdealershiptelematicssettings-1.md
+  - https://developer.dealerware.com/reference/getdealershiptrimtypesinfleets-1.md
+  - https://developer.dealerware.com/reference/getdealershipvehicles-1.md
+  - https://developer.dealerware.com/reference/getdealershipvehiclessearch-1.md
+  - https://developer.dealerware.com/reference/getdocument-1.md
+  - https://developer.dealerware.com/reference/getemployee-1.md
+  - https://developer.dealerware.com/reference/getfleet-1.md
+  - https://developer.dealerware.com/reference/getfleetavailability-1.md
+  - https://developer.dealerware.com/reference/getfleetavailabilityintervals-1.md
+  - https://developer.dealerware.com/reference/getfleetavailabilityintervalscontinuous-1.md
+  - https://developer.dealerware.com/reference/getfleetavailabilityintervalscontinuousdaily-1.md
+  - https://developer.dealerware.com/reference/getfleetavailabilityintervalsdaily-1.md
+  - https://developer.dealerware.com/reference/getfleetsettings-1.md
+  - https://developer.dealerware.com/reference/getgeolocationradialdistance-1.md
+  - https://developer.dealerware.com/reference/getmappablefields-1.md
+  - https://developer.dealerware.com/reference/getprogramavailability-1.md
+  - https://developer.dealerware.com/reference/getprogramavailabilityintervals-1.md
+  - https://developer.dealerware.com/reference/getrentalagreementpdf-1.md
+  - https://developer.dealerware.com/reference/getreservationcustomer-1.md
+  - https://developer.dealerware.com/reference/getshortremoteprofile.md
+  - https://developer.dealerware.com/reference/getuser-1.md
+  - https://developer.dealerware.com/reference/getuserdealershiproles-1.md
+  - https://developer.dealerware.com/reference/getuserpreferences.md
+  - https://developer.dealerware.com/reference/getvehicle-1.md
+  - https://developer.dealerware.com/reference/getvehicleevents-1.md
+  - https://developer.dealerware.com/reference/getvehiclegroupdefleetsettings.md
+  - https://developer.dealerware.com/reference/getvehicleissues-1.md
+  - https://developer.dealerware.com/reference/getvehicletelemetry-1.md
+  - https://developer.dealerware.com/reference/patchadminvehicle.md
+  - https://developer.dealerware.com/reference/patchdealershipandfleetsettings-1.md
+  - https://developer.dealerware.com/reference/postadmincontractbillingadjustment-1.md
+  - https://developer.dealerware.com/reference/postadmincontractreceiptpdf-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsdrivers-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsettlement-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsplitbill-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsplitbilladjustment-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsplitbillpayment-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsplitbillpdf-1.md
+  - https://developer.dealerware.com/reference/postadmincustomeremployer-1.md
+  - https://developer.dealerware.com/reference/postadmincustomerinsurance-1.md
+  - https://developer.dealerware.com/reference/postadmincustomernotificationreplay.md
+  - https://developer.dealerware.com/reference/postadmindealershipcustomer-1.md
+  - https://developer.dealerware.com/reference/postadmindealershipcustomermessage-1.md
+  - https://developer.dealerware.com/reference/postadmindealershipcustomernote.md
+  - https://developer.dealerware.com/reference/postadmindealershipcustomersremoteprofileqrcode.md
+  - https://developer.dealerware.com/reference/postadmindealershipemployee-1.md
+  - https://developer.dealerware.com/reference/postadmindealershipwebhook.md
+  - https://developer.dealerware.com/reference/postcontactlessdriversignature-1.md
+  - https://developer.dealerware.com/reference/postcontractcontactlessmessages-1.md
+  - https://developer.dealerware.com/reference/postcontractnote-1.md
+  - https://developer.dealerware.com/reference/postcontractscontactlesssignatures-1.md
+  - https://developer.dealerware.com/reference/postcontractssaleslead.md
+  - https://developer.dealerware.com/reference/postcontractswarranty-1.md
+  - https://developer.dealerware.com/reference/postdealeronboardingvehicles-1.md
+  - https://developer.dealerware.com/reference/postdealershipfleets-1.md
+  - https://developer.dealerware.com/reference/postdealershipvehicle-1.md
+  - https://developer.dealerware.com/reference/postdealervehiclescheckingonboardingstatus-1.md
+  - https://developer.dealerware.com/reference/postdriversignature-1.md
+  - https://developer.dealerware.com/reference/postemployeeactivation-1.md
+  - https://developer.dealerware.com/reference/postfleetcontract-1.md
+  - https://developer.dealerware.com/reference/postfleetvehicles-1.md
+  - https://developer.dealerware.com/reference/postlogin-1.md
+  - https://developer.dealerware.com/reference/postreportingdata.md
+  - https://developer.dealerware.com/reference/postreportingmetadata.md
+  - https://developer.dealerware.com/reference/postuserconfirmations-1.md
+  - https://developer.dealerware.com/reference/postuserpasswordforgot-1.md
+  - https://developer.dealerware.com/reference/postvehicleissue-1.md
+  - https://developer.dealerware.com/reference/putadmincontractfinish-1.md
+  - https://developer.dealerware.com/reference/putadmincontractpaymentmethod-1.md
+  - https://developer.dealerware.com/reference/putadmincontractsplitbill-1.md
+  - https://developer.dealerware.com/reference/putadmincontractstart-1.md
+  - https://developer.dealerware.com/reference/putadmincontractswarranty-1.md
+  - https://developer.dealerware.com/reference/putadmincontractunassignvehicle-1.md
+  - https://developer.dealerware.com/reference/putadmincontractvehicle-1.md
+  - https://developer.dealerware.com/reference/putadmincustomeremployer-1.md
+  - https://developer.dealerware.com/reference/putadmincustomerupdate-1.md
+  - https://developer.dealerware.com/reference/putadmindealershipwebhook.md
+  - https://developer.dealerware.com/reference/putadmindriver-1.md
+  - https://developer.dealerware.com/reference/putcontract-1.md
+  - https://developer.dealerware.com/reference/putcontractnote-1.md
+  - https://developer.dealerware.com/reference/putdealershipaddress-1.md
+  - https://developer.dealerware.com/reference/putdealershipcustomernote.md
+  - https://developer.dealerware.com/reference/putdealershipemployeeroles-1.md
+  - https://developer.dealerware.com/reference/putdealershiptelematicssettings-1.md
+  - https://developer.dealerware.com/reference/putemployee-1.md
+  - https://developer.dealerware.com/reference/putfleet-1.md
+  - https://developer.dealerware.com/reference/putfleetsettings-1.md
+  - https://developer.dealerware.com/reference/putissue-1.md
+  - https://developer.dealerware.com/reference/putreservationcustomer-1.md
+  - https://developer.dealerware.com/reference/putuser-1.md
+  - https://developer.dealerware.com/reference/putuserpassword-1.md
+  - https://developer.dealerware.com/reference/putuserpasswordreset-1.md
+  - https://developer.dealerware.com/reference/putuserpreference-1.md
+  - https://developer.dealerware.com/reference/putvehiclefleet-1.md
+  - https://developer.dealerware.com/reference/putvehiclefleets-1.md
+  - https://developer.dealerware.com/reference/querydnr-1.md
+  - https://developer.dealerware.com/reference/updateadmincustomerinsurance-1.md
+  merge:
+    pages: 174
+    deduped: 1048
+    conflicts_kept_first: 0

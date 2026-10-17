@@ -1,0 +1,1124 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@dealerware.com
+    name: Dealerware Support
+    url: https://support.dealerware.com
+  description: MOB-API
+  termsOfService: support@dealerware.com
+  title: MOB Customers API
+  version: 1.0.0
+servers:
+- url: https://api.dealerware.com
+  description: Production server
+- url: https://api.dw-tst.com
+  description: Staging server
+security:
+- Auth0: []
+tags:
+- name: Customers
+  description: Customer actions and resources
+paths:
+  /admin/contracts/{id}/customer:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Fetch the customer attached to a given Contract
+      operationId: getAdminContractCustomer
+      tags:
+      - Customers
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminContractCustomerResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/customers/{customer_id}:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Returns a customers's profile details
+      operationId: adminCustomerGet
+      tags:
+      - Customers
+      parameters:
+      - name: customer_id
+        in: path
+        required: true
+        description: the customer ID
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminCustomerResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+    put:
+      summary: Update a Customer's profile
+      operationId: putAdminCustomerUpdate
+      tags:
+      - Customers
+      parameters:
+      - name: customer_id
+        in: path
+        required: true
+        description: the customer ID
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminCustomerRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/dealerships/{dealership_id}/customers:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    delete:
+      summary: Deletes the list of Customers associated with the id's passed in body of request
+      operationId: deleteDealershipCustomers
+      tags:
+      - Customers
+      parameters:
+      - name: dealership_id
+        in: path
+        required: true
+        description: The id of the dealership
+        schema:
+          type: integer
+      - name: customer_ids
+        in: query
+        description: One or more customer ids sent in body of request
+        schema:
+          type: array
+          items:
+            type: string
+            example:
+            - str1
+            - str2
+            - str3
+        required: true
+      description: delete Customers per dealership
+      responses:
+        '204':
+          description: Successful Customer deletion
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+    get:
+      summary: Returns the list of Customers associated with a dealership
+      operationId: getAdminDealershipCustomers
+      tags:
+      - Customers
+      parameters:
+      - name: dealership_id
+        in: path
+        required: true
+        description: The id of the dealership
+        schema:
+          type: integer
+      - name: sort
+        in: query
+        description: The sort order for each sort field MUST be ascending unless it is prefixed with a minus ("-"), in which case it MUST be descending.
+        required: false
+        schema:
+          $ref: '#/components/schemas/AdminCustomerSortColumns'
+      - name: amount_due
+        in: query
+        description: Filter customers to those that have or have no amount due
+        required: false
+        schema:
+          type: boolean
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+        description: Number of records returned in a collection in the response
+        required: false
+      - name: page
+        in: query
+        schema:
+          type: integer
+        description: Page number returned from the collection based on the total records and records per response
+        required: false
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminCustomerResponse'
+            text/csv:
+              schema:
+                type: string
+              examples:
+                csv table:
+                  value: 'first_name, last_name, email, phone_number, amount_due, complete_profile
+
+                    John, Cena, youcantseeme@gmail.com, 5124592222, 23.12, true
+
+                    '
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+    post:
+      summary: Create a new customer associated with a dealership
+      operationId: postAdminDealershipCustomer
+      tags:
+      - Customers
+      parameters:
+      - name: dealership_id
+        in: path
+        required: true
+        description: the dealership ID
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - first_name
+              - last_name
+              - phone_number
+              - language
+              properties:
+                email:
+                  type: string
+                  example: cody.rhodes@gmail.com
+                  description: Email could be required based on the communication_preference location setting
+                first_name:
+                  type: string
+                  example: Cody
+                language:
+                  type: string
+                  enum:
+                  - en
+                  - fr
+                last_name:
+                  type: string
+                  example: Rhodes
+                phone_number:
+                  type: string
+                  example: 5124592222
+      responses:
+        '201':
+          description: Success
+          headers:
+            Location:
+              schema:
+                type: string
+                description: Link location of created customer
+                example: https://api.dw-tst.com/customers/34
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/dealerships/{dealership_id}/customers/messages/profiles:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Get cached profile information for a customer
+      operationId: getAdminDealershipCustomersMessagesProfiles
+      tags:
+      - Customers
+      parameters:
+      - name: dealership_id
+        in: path
+        required: true
+        description: Dealership ID
+        schema:
+          type: integer
+          example: 42
+      - name: token
+        in: query
+        required: true
+        description: Token
+        schema:
+          type: string
+          example: RYRW5qOh5Jwa4Q6L_NwYlQ
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminRemoteProfileResponse'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+    post:
+      summary: Sends an SMS to a new/existing Customer to create/update their Customer profile
+      operationId: postAdminDealershipCustomerMessage
+      tags:
+      - Customers
+      parameters:
+      - name: dealership_id
+        in: path
+        required: true
+        description: the dealership ID
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminDealershipCustomerProfileMessageRequest'
+      responses:
+        '201':
+          description: Success
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/dealerships/{dealership_id}/customers/search:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Returns the list of Customers associated with a dealership based on search query
+      operationId: getAdminDealershipCustomersSearch
+      tags:
+      - Customers
+      parameters:
+      - name: dealership_id
+        in: path
+        required: true
+        description: The id of the dealership
+        schema:
+          type: integer
+      - name: q
+        in: query
+        required: true
+        description: Query parameter to search against indexed fields on a Customer
+        schema:
+          type: string
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+        description: Number of records returned in a collection in the response
+        required: false
+      - name: page
+        in: query
+        schema:
+          type: integer
+        description: Page number returned from the collection based on the total records and records per response
+        required: false
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminCustomerResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/dealerships/{id}/customers/remote_profile/qr_code:
+    post:
+      summary: Generate a QR code for Mobile Check-In remote profile
+      description: 'Generates a QR code containing a short URL that customers can scan to access their Mobile Check-In remote profile.
+
+        This endpoint follows the same flow as InviteHandler but without sending SMS.
+
+
+        - Generates a secure short link for the customer to access their profile
+
+        - Returns QR code as SVG image (default) or URL as plain text (for testing)
+
+        - Location admins can only create links for customers belonging to their dealership
+
+        - The QR code expires after a configured time period'
+      operationId: postAdminDealershipCustomersRemoteProfileQrCode
+      tags:
+      - Customers
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the dealership
+        schema:
+          type: integer
+      requestBody:
+        description: Data used to generate the QR code
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminRemoteProfileQrCodeRequest'
+      responses:
+        '200':
+          description: Success - QR code generated
+          content:
+            image/svg+xml:
+              schema:
+                type: string
+                format: binary
+                description: SVG image containing the QR code (default format)
+              example: "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\">\n  <!-- QR code SVG content -->\n</svg>\n"
+            text/plain:
+              schema:
+                type: string
+                description: Short URL as plain text (when .txt format is requested)
+                example: https://api.dealerware.com/s/rp/abc123xy
+        '403':
+          $ref: '#/components/responses/Forbidden'
+          description: Forbidden - Customer does not belong to the dealership
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+          description: Unprocessable Entity - Required customer_id parameter is missing
+  /admin/dealerships/{id}/customers/remote_profile/search:
+    post:
+      summary: Finds a single Customer profile based on the given token and driver's…
+      operationId: getAdminDealershipCustomersRemoteProfileSearch
+      tags:
+      - Customers
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the dealership
+        schema:
+          type: integer
+      requestBody:
+        description: Data used to search for customer's profile
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminRemoteProfileSearchRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminRemoteProfileResponse'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminRemoteProfileResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+components:
+  schemas:
+    AdminRemoteProfileSearchRequest:
+      type: object
+      required:
+      - token
+      - drivers_license_number
+      - drivers_license_state
+      properties:
+        token:
+          type: string
+          example: aklsjdf01374ndak
+          description: random token that was sent to the customer
+        drivers_license_number:
+          type: integer
+          example: 18841923
+          description: driver's license number of the customer. required until we support email lookup
+        drivers_license_state:
+          type: string
+          example: TX
+          description: driver's license state of the customer. required until we support email lookup
+    AdminRemoteProfileResponse:
+      type: object
+      required:
+      - phone_number
+      - dealership
+      - reservation_id
+      properties:
+        phone_number:
+          type: string
+          example: 5125551234
+          description: the phone number the text was sent to
+        reservation_id:
+          type:
+          - integer
+          - 'null'
+          example: 123
+          description: reservation id associated with the MCI profile link, if present
+        customer:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+              description: ID of the customer
+            dealership_id:
+              type: integer
+              example: 1
+              description: ID of the dealership
+            billing_service_customer_id:
+              type: integer
+              example: 1
+              description: ID of the billing service customer
+            first_name:
+              type: string
+              example: John
+              description: first name of the customer
+            last_name:
+              type: string
+              example: Doe
+              description: last name of the customer
+            language:
+              type: string
+              example: en
+              description: language of the customer
+            phone_number:
+              type: string
+              example: 1234567890
+              description: phone number of the customer
+            email:
+              type: string
+              example: null
+              description: email of the customer
+            ccpa:
+              type: boolean
+              example: false
+              description: ccpa of the customer
+        dealership:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            insurance_form_provider:
+              type: string
+              example: Sedgwick
+            metric:
+              type: boolean
+              example: false
+            name:
+              type: string
+              example: Rentals of Austin
+            phone_number:
+              type: string
+              example: 5125551234
+              description: phone number of the dealership
+            salesforce_id:
+              type: string
+              example: ABC123
+              description: salesforce id of the dealership
+            time_zone:
+              type: string
+              example: America/Chicago
+              description: name of the time zone of the dealership
+            settings:
+              type: object
+              properties:
+                created_at:
+                  type: string
+                  example: '2021-01-01T00:00:00Z'
+                currency_code:
+                  type: string
+                  example: usd
+                embedded_telematics_provider:
+                  type: string
+                  example: Toyota
+                managed_toggles:
+                  type: boolean
+                  example: false
+                metric:
+                  type: boolean
+                  example: false
+                notification_method:
+                  type: string
+                  example: sms
+                prevailing_rate:
+                  type: number
+                  example: 0
+                contract_required:
+                  type: boolean
+                  example: false
+                confirm_res_modify:
+                  type: boolean
+                  example: false
+                telematics_enabled:
+                  type: boolean
+                  example: false
+                updated_at:
+                  type: string
+                  example: '2021-01-01T00:00:00Z'
+                task_management_enabled:
+                  type: boolean
+                  example: false
+                pickup_and_delivery:
+                  type: object
+                  properties:
+                    valet_tasks_enabled:
+                      type: boolean
+                      example: false
+                    radius:
+                      type: object
+                      properties:
+                        enabled:
+                          type: boolean
+                          example: false
+                        value:
+                          type: integer
+                          example: 0
+    AdminCustomerSortColumns:
+      type: string
+      enum:
+      - amount_due
+      - email
+      - first_name
+      - last_name
+    AdminCustomerRequest:
+      type: object
+      required:
+      - first_name
+      - last_name
+      - phone_number
+      - language
+      properties:
+        email:
+          type: string
+          example: cody.rhodes@gmail.com
+          description: Email could be required based on the communication_preference location setting
+        first_name:
+          type: string
+          example: Cody
+        language:
+          type: string
+          enum:
+          - en
+          - fr
+        last_name:
+          type: string
+          example: Rhodes
+        phone_number:
+          type: string
+          example: 5124592222
+    AdminRemoteProfileQrCodeRequest:
+      type: object
+      required:
+      - customer_id
+      properties:
+        customer_id:
+          type: integer
+          example: 123
+          description: ID of the customer for whom to generate the QR code
+        deeplink_to:
+          type: string
+          enum:
+          - personal_info
+          - payment_info
+          - driving_license
+          - insurance
+          - axle
+          example: insurance
+          description: 'Optional parameter to navigate to a specific page in the mobile app.
+
+            - `personal_info`: Personal Info Form - Update name, email, phone, address
+
+            - `payment_info`: Payment Form - Add/update credit card
+
+            - `driving_license`: License Upload - Capture or update driver''s license photo
+
+            - `insurance`: Insurance Form - Add/update insurance details
+
+            - `axle`: Axle Integration - Start Axle insurance verification
+
+
+            If omitted or invalid, customer will be directed to the splash/home page.
+
+            '
+        reservation_id:
+          type: integer
+          example: 123
+          description: Optional reservation id to associate with the generated MCI remote profile link
+    AdminCustomerResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 12
+        amount_due:
+          type: string
+          example: 30.05
+        complete_profile:
+          type: boolean
+          example: true
+        email:
+          type:
+          - string
+          - 'null'
+          example: dusty.rhodes@gmail.com
+        first_name:
+          type: string
+          example: Dusty
+        language:
+          type: string
+          enum:
+          - en
+          - fr
+          example: en
+          description: The preferred language
+        last_name:
+          type: string
+          example: Rhodes
+        permitted_to_rent:
+          type: boolean
+          example: true
+        phone_number:
+          type: string
+          example: 5128675309
+        ccpa:
+          type: boolean
+          example: true
+        links:
+          type: object
+          properties:
+            dealership:
+              $ref: '#/components/schemas/HypermediaLink'
+        has_ongoing_contracts:
+          type: boolean
+          example: true
+    AdminContractCustomerResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Customer ID
+          example: 42
+        first_name:
+          type: string
+          description: First name
+          example: Leslie
+        last_name:
+          type: string
+          description: Last name
+          example: Knope
+        phone_number:
+          type: string
+          description: Customer phone number, stripped to digits only
+          example: '15554447275'
+        email:
+          type: string
+          description: Customer email
+          example: leslie.knope@parks.test
+        links:
+          properties:
+            contract:
+              $ref: '#/components/schemas/HypermediaLink'
+    HypermediaLink:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 2
+          description: ID of the associated resource
+        href:
+          type: string
+          example: https://api.dw-tst.com/admin/some_resources/2
+          description: Link to the associated resource
+    AdminDealershipCustomerProfileMessageRequest:
+      type: object
+      required:
+      - phone_number
+      properties:
+        phone_number:
+          type: string
+          example: 5121111111
+        customer_id:
+          type: integer
+          example: 1
+        reservation_id:
+          type: integer
+          example: 123
+  responses:
+    NoContent:
+      description: No Content
+    UnsupportedMediaType:
+      description: Unsupported Media Type
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Accepted media types is limited to JSON (application/json)
+              code:
+                type: integer
+                example: 6789
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Bad Request
+              code:
+                type: integer
+                example: 6789
+    UnprocessableEntity:
+      description: Unprocessable Content
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Invalid resource id
+              code:
+                type: integer
+                example: 6789
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Resource with id :id not found
+              code:
+                type: integer
+                example: 6789
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Invalid authorization token
+              code:
+                type: integer
+                example: 6789
+    NotAcceptable:
+      description: Not Acceptable
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Missing headers in request
+              code:
+                type: integer
+                example: 6789
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Request is forbidden
+              code:
+                type: integer
+                example: 6789
+  securitySchemes:
+    Auth0:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://dealerware.auth0.com/oauth/token
+          scopes: {}
+x-provenance:
+  method: searched
+  source: https://developer.dealerware.com/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.dealerware.com/reference/admincustomerget-1.md
+  - https://developer.dealerware.com/reference/createblacklist-1.md
+  - https://developer.dealerware.com/reference/deleteadmincontractcancel-1.md
+  - https://developer.dealerware.com/reference/deleteadmincontractsplitbill-1.md
+  - https://developer.dealerware.com/reference/deleteadmincontractsplitbillpayment-1.md
+  - https://developer.dealerware.com/reference/deleteadmincontractswarranty-1.md
+  - https://developer.dealerware.com/reference/deleteadmindealershipwebhook.md
+  - https://developer.dealerware.com/reference/deleteadmindriver-1.md
+  - https://developer.dealerware.com/reference/deletecontractnote-1.md
+  - https://developer.dealerware.com/reference/deletecustomerfromblacklist-1.md
+  - https://developer.dealerware.com/reference/deletedealershipcustomernotes.md
+  - https://developer.dealerware.com/reference/deletedealershipcustomers-1.md
+  - https://developer.dealerware.com/reference/deleteemployeeactivation-1.md
+  - https://developer.dealerware.com/reference/deletefleet-1.md
+  - https://developer.dealerware.com/reference/deleteissue-1.md
+  - https://developer.dealerware.com/reference/getadmincontractadjustments-1.md
+  - https://developer.dealerware.com/reference/getadmincontractauthorization-1.md
+  - https://developer.dealerware.com/reference/getadmincontractcustomer-1.md
+  - https://developer.dealerware.com/reference/getadmincontractpayments-1.md
+  - https://developer.dealerware.com/reference/getadmincontractpricing-1.md
+  - https://developer.dealerware.com/reference/getadmincontractsdrivers-1.md
+  - https://developer.dealerware.com/reference/getadmincontractsplitbill-1.md
+  - https://developer.dealerware.com/reference/getadmincontractsplitbilladjustment-1.md
+  - https://developer.dealerware.com/reference/getadmincontractstoggles-1.md
+  - https://developer.dealerware.com/reference/getadmincontractvehiclesavailable-1.md
+  - https://developer.dealerware.com/reference/getadmincontractvehiclesavailablesearch-1.md
+  - https://developer.dealerware.com/reference/getadmincustomercreditcards-1.md
+  - https://developer.dealerware.com/reference/getadmincustomeremployer-1.md
+  - https://developer.dealerware.com/reference/getadmincustomerinsurance-1.md
+  - https://developer.dealerware.com/reference/getadmincustomernotificationsfailed.md
+  - https://developer.dealerware.com/reference/getadmincustomerscontracts-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcontracts-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcontractsmanifesttoday-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcontractssearch-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomernotes.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomers-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomersmessagesprofiles-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomersremoteprofilesearch-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomerssearch-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipemployees-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipemployeessearch-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipfleetscontractsandvehicles-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipserviceadvisors-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipwebhook.md
+  - https://developer.dealerware.com/reference/getadmindealershipwebhooks.md
+  - https://developer.dealerware.com/reference/getadmindriver-1.md
+  - https://developer.dealerware.com/reference/getcontract-1.md
+  - https://developer.dealerware.com/reference/getcontractnotes-1.md
+  - https://developer.dealerware.com/reference/getcontractscontactless-1.md
+  - https://developer.dealerware.com/reference/getcontractscontactlessdriver-1.md
+  - https://developer.dealerware.com/reference/getcontractssaleslead.md
+  - https://developer.dealerware.com/reference/getcontractwarranty-1.md
+  - https://developer.dealerware.com/reference/getdealership-1.md
+  - https://developer.dealerware.com/reference/getdealershipaddress-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailability-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailabilityintervals-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailabilityintervalscontinuous-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailabilityintervalscontinuousdaily-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailabilityintervalsdaily-1.md
+  - https://developer.dealerware.com/reference/getdealershipcalendarbookingchannels.md
+  - https://developer.dealerware.com/reference/getdealershipcalendarcontracts-1.md
+  - https://developer.dealerware.com/reference/getdealershipcalendarvehicles-1.md
+  - https://developer.dealerware.com/reference/getdealershipcontractavailablevehicles.md
+  - https://developer.dealerware.com/reference/getdealershipemployeeroles-1.md
+  - https://developer.dealerware.com/reference/getdealershipfleetpricing-1.md
+  - https://developer.dealerware.com/reference/getdealershipfleets-1.md
+  - https://developer.dealerware.com/reference/getdealershipkpis-1.md
+  - https://developer.dealerware.com/reference/getdealershipmakesandmodels-1.md
+  - https://developer.dealerware.com/reference/getdealershipreportreceivables-1.md
+  - https://developer.dealerware.com/reference/getdealershipreportrevenue-1.md
+  - https://developer.dealerware.com/reference/getdealershipreportrevenuesummary-1.md
+  - https://developer.dealerware.com/reference/getdealershipreporttransactions-1.md
+  - https://developer.dealerware.com/reference/getdealershipreporttransactionsfilteredsorted-1.md
+  - https://developer.dealerware.com/reference/getdealershiproles-1.md
+  - https://developer.dealerware.com/reference/getdealerships-1.md
+  - https://developer.dealerware.com/reference/getdealershipsearch-1.md
+  - https://developer.dealerware.com/reference/getdealershipsettings-1.md
+  - https://developer.dealerware.com/reference/getdealershiptelematicssettings-1.md
+  - https://developer.dealerware.com/reference/getdealershiptrimtypesinfleets-1.md
+  - https://developer.dealerware.com/reference/getdealershipvehicles-1.md
+  - https://developer.dealerware.com/reference/getdealershipvehiclessearch-1.md
+  - https://developer.dealerware.com/reference/getdocument-1.md
+  - https://developer.dealerware.com/reference/getemployee-1.md
+  - https://developer.dealerware.com/reference/getfleet-1.md
+  - https://developer.dealerware.com/reference/getfleetavailability-1.md
+  - https://developer.dealerware.com/reference/getfleetavailabilityintervals-1.md
+  - https://developer.dealerware.com/reference/getfleetavailabilityintervalscontinuous-1.md
+  - https://developer.dealerware.com/reference/getfleetavailabilityintervalscontinuousdaily-1.md
+  - https://developer.dealerware.com/reference/getfleetavailabilityintervalsdaily-1.md
+  - https://developer.dealerware.com/reference/getfleetsettings-1.md
+  - https://developer.dealerware.com/reference/getgeolocationradialdistance-1.md
+  - https://developer.dealerware.com/reference/getmappablefields-1.md
+  - https://developer.dealerware.com/reference/getprogramavailability-1.md
+  - https://developer.dealerware.com/reference/getprogramavailabilityintervals-1.md
+  - https://developer.dealerware.com/reference/getrentalagreementpdf-1.md
+  - https://developer.dealerware.com/reference/getreservationcustomer-1.md
+  - https://developer.dealerware.com/reference/getshortremoteprofile.md
+  - https://developer.dealerware.com/reference/getuser-1.md
+  - https://developer.dealerware.com/reference/getuserdealershiproles-1.md
+  - https://developer.dealerware.com/reference/getuserpreferences.md
+  - https://developer.dealerware.com/reference/getvehicle-1.md
+  - https://developer.dealerware.com/reference/getvehicleevents-1.md
+  - https://developer.dealerware.com/reference/getvehiclegroupdefleetsettings.md
+  - https://developer.dealerware.com/reference/getvehicleissues-1.md
+  - https://developer.dealerware.com/reference/getvehicletelemetry-1.md
+  - https://developer.dealerware.com/reference/patchadminvehicle.md
+  - https://developer.dealerware.com/reference/patchdealershipandfleetsettings-1.md
+  - https://developer.dealerware.com/reference/postadmincontractbillingadjustment-1.md
+  - https://developer.dealerware.com/reference/postadmincontractreceiptpdf-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsdrivers-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsettlement-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsplitbill-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsplitbilladjustment-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsplitbillpayment-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsplitbillpdf-1.md
+  - https://developer.dealerware.com/reference/postadmincustomeremployer-1.md
+  - https://developer.dealerware.com/reference/postadmincustomerinsurance-1.md
+  - https://developer.dealerware.com/reference/postadmincustomernotificationreplay.md
+  - https://developer.dealerware.com/reference/postadmindealershipcustomer-1.md
+  - https://developer.dealerware.com/reference/postadmindealershipcustomermessage-1.md
+  - https://developer.dealerware.com/reference/postadmindealershipcustomernote.md
+  - https://developer.dealerware.com/reference/postadmindealershipcustomersremoteprofileqrcode.md
+  - https://developer.dealerware.com/reference/postadmindealershipemployee-1.md
+  - https://developer.dealerware.com/reference/postadmindealershipwebhook.md
+  - https://developer.dealerware.com/reference/postcontactlessdriversignature-1.md
+  - https://developer.dealerware.com/reference/postcontractcontactlessmessages-1.md
+  - https://developer.dealerware.com/reference/postcontractnote-1.md
+  - https://developer.dealerware.com/reference/postcontractscontactlesssignatures-1.md
+  - https://developer.dealerware.com/reference/postcontractssaleslead.md
+  - https://developer.dealerware.com/reference/postcontractswarranty-1.md
+  - https://developer.dealerware.com/reference/postdealeronboardingvehicles-1.md
+  - https://developer.dealerware.com/reference/postdealershipfleets-1.md
+  - https://developer.dealerware.com/reference/postdealershipvehicle-1.md
+  - https://developer.dealerware.com/reference/postdealervehiclescheckingonboardingstatus-1.md
+  - https://developer.dealerware.com/reference/postdriversignature-1.md
+  - https://developer.dealerware.com/reference/postemployeeactivation-1.md
+  - https://developer.dealerware.com/reference/postfleetcontract-1.md
+  - https://developer.dealerware.com/reference/postfleetvehicles-1.md
+  - https://developer.dealerware.com/reference/postlogin-1.md
+  - https://developer.dealerware.com/reference/postreportingdata.md
+  - https://developer.dealerware.com/reference/postreportingmetadata.md
+  - https://developer.dealerware.com/reference/postuserconfirmations-1.md
+  - https://developer.dealerware.com/reference/postuserpasswordforgot-1.md
+  - https://developer.dealerware.com/reference/postvehicleissue-1.md
+  - https://developer.dealerware.com/reference/putadmincontractfinish-1.md
+  - https://developer.dealerware.com/reference/putadmincontractpaymentmethod-1.md
+  - https://developer.dealerware.com/reference/putadmincontractsplitbill-1.md
+  - https://developer.dealerware.com/reference/putadmincontractstart-1.md
+  - https://developer.dealerware.com/reference/putadmincontractswarranty-1.md
+  - https://developer.dealerware.com/reference/putadmincontractunassignvehicle-1.md
+  - https://developer.dealerware.com/reference/putadmincontractvehicle-1.md
+  - https://developer.dealerware.com/reference/putadmincustomeremployer-1.md
+  - https://developer.dealerware.com/reference/putadmincustomerupdate-1.md
+  - https://developer.dealerware.com/reference/putadmindealershipwebhook.md
+  - https://developer.dealerware.com/reference/putadmindriver-1.md
+  - https://developer.dealerware.com/reference/putcontract-1.md
+  - https://developer.dealerware.com/reference/putcontractnote-1.md
+  - https://developer.dealerware.com/reference/putdealershipaddress-1.md
+  - https://developer.dealerware.com/reference/putdealershipcustomernote.md
+  - https://developer.dealerware.com/reference/putdealershipemployeeroles-1.md
+  - https://developer.dealerware.com/reference/putdealershiptelematicssettings-1.md
+  - https://developer.dealerware.com/reference/putemployee-1.md
+  - https://developer.dealerware.com/reference/putfleet-1.md
+  - https://developer.dealerware.com/reference/putfleetsettings-1.md
+  - https://developer.dealerware.com/reference/putissue-1.md
+  - https://developer.dealerware.com/reference/putreservationcustomer-1.md
+  - https://developer.dealerware.com/reference/putuser-1.md
+  - https://developer.dealerware.com/reference/putuserpassword-1.md
+  - https://developer.dealerware.com/reference/putuserpasswordreset-1.md
+  - https://developer.dealerware.com/reference/putuserpreference-1.md
+  - https://developer.dealerware.com/reference/putvehiclefleet-1.md
+  - https://developer.dealerware.com/reference/putvehiclefleets-1.md
+  - https://developer.dealerware.com/reference/querydnr-1.md
+  - https://developer.dealerware.com/reference/updateadmincustomerinsurance-1.md
+  merge:
+    pages: 174
+    deduped: 1048
+    conflicts_kept_first: 0

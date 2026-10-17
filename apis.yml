@@ -145,15 +145,16 @@ common:
   url: lifecycle/silvercar-lifecycle.yml
 
 apis:
-- name: Dealerware Partner Integration API
-  description: 'Versioned (mob-api-v4) REST API for Dealerware fleet-management and courtesy/loaner mobility workflows: contracts, reservations,
-    contactless check-in, customers, drivers, employees, dealerships, fleets, vehicles, availability, payments and billing, reporting, and webhooks.
-    OAuth 2.0 client-credentials (Auth0) with RS256 JWT bearer tokens.'
+- aid: silvercar:silvercar-admin-api
+  name: silvercar Admin API
+  description: Administrative actions and resources
   humanURL: https://developer.dealerware.com/reference
   baseURL: https://api.dealerware.com
+  tags:
+  - Admin
   properties:
-  - url: openapi/silvercar-mob-api-openapi.yml
-    type: OpenAPI
+  - type: OpenAPI
+    url: openapi/silvercar-admin-api-openapi.yml
   - type: Documentation
     url: https://developer.dealerware.com/docs
   - type: APIReference
@@ -176,8 +177,1255 @@ apis:
     url: json-schema/silvercar-admin-vehicle-response-schema.json
   - type: JSONSchema
     url: json-schema/silvercar-admin-fleet-response-schema.json
-  aid: silvercar:dealerware-partner-integration-api
-
+- aid: silvercar:silvercar-agreements-api
+  name: silvercar Agreements API
+  description: Agreement actions and resources
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Agreements
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-agreements-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-availability-2-0-api
+  name: silvercar Availability 2.0 API
+  description: Version 2 of Availability which supports vehicle grouping and schedulers
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Availability 2.0
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-availability-2-0-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-availability-api
+  name: silvercar Availability API
+  description: The Availability API from silvercar — 9 operation(s) for availability.
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Availability
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-availability-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-contactless-api
+  name: silvercar Contactless API
+  description: Contactless Contract actions and resources
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Contactless
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-contactless-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-contracts-api
+  name: silvercar Contracts API
+  description: Contract actions and resources
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Contracts
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-contracts-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-createblacklist-api
+  name: silvercar Create Blacklist API
+  description: The CreateBlacklist API from silvercar — 1 operation(s) for createblacklist.
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - CreateBlacklist
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-createblacklist-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-customers-api
+  name: silvercar Customers API
+  description: Customer actions and resources
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Customers
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-customers-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-dealerships-api
+  name: silvercar Dealerships API
+  description: Dealership actions and resources
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Dealerships
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-dealerships-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-deletecustomerfromblacklist-api
+  name: silvercar Delete Customer From Blacklist API
+  description: >-
+    The DeleteCustomerFromBlacklist API from silvercar — 1 operation(s) for deletecustomerfromblacklist.
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - DeleteCustomerFromBlacklist
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-deletecustomerfromblacklist-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-documents-api
+  name: silvercar Documents API
+  description: The Documents API from silvercar — 1 operation(s) for documents.
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Documents
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-documents-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-drivers-api
+  name: silvercar Drivers API
+  description: Driver actions and resources
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Drivers
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-drivers-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-employees-api
+  name: silvercar Employees API
+  description: Employee actions and resources
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Employees
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-employees-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-employer-info-api
+  name: silvercar Employer Info API
+  description: Employer Information actions on a Customer resource
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Employer Info
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-employer-info-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-fleet-settings-api
+  name: silvercar Fleet Settings API
+  description: The Fleet Settings API from silvercar — 3 operation(s) for fleet settings.
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Fleet Settings
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-fleet-settings-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-fleets-api
+  name: silvercar Fleets API
+  description: Fleet actions and resources
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Fleets
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-fleets-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-geolocation-api
+  name: silvercar Geolocation API
+  description: Geolocation services for lite valet
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Geolocation
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-geolocation-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-insurance-api
+  name: silvercar Insurance API
+  description: The Insurance API from silvercar — 1 operation(s) for insurance.
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Insurance
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-insurance-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-invoicing-api
+  name: silvercar Invoicing API
+  description: Contract invoicing and pricing actions
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Invoicing
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-invoicing-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-issues-api
+  name: silvercar Issues API
+  description: Vehicle/reservation issue actions
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Issues
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-issues-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-makes-api
+  name: silvercar Makes API
+  description: The Makes API from silvercar — 1 operation(s) for makes.
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Makes
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-makes-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-models-api
+  name: silvercar Models API
+  description: The Models API from silvercar — 1 operation(s) for models.
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Models
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-models-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-note-api
+  name: silvercar Note API
+  description: The Note API from silvercar — 1 operation(s) for note.
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Note
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-note-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-notes-api
+  name: silvercar Notes API
+  description: The Notes API from silvercar — 3 operation(s) for notes.
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Notes
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-notes-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-private-api
+  name: silvercar Private API
+  description: The Private API from silvercar — 4 operation(s) for private.
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Private
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-private-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-querydnr-api
+  name: silvercar Query DNR API
+  description: The QueryDNR API from silvercar — 1 operation(s) for querydnr.
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - QueryDNR
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-querydnr-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-radial-distance-api
+  name: silvercar Radial Distance API
+  description: The Radial Distance API from silvercar — 1 operation(s) for radial distance.
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Radial Distance
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-radial-distance-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-remote-profile-api
+  name: silvercar Remote Profile API
+  description: Customer Remote Profile actions and resources
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Remote Profile
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-remote-profile-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-rental-agreement-api
+  name: silvercar Rental Agreement API
+  description: The Rental Agreement API from silvercar — 1 operation(s) for rental agreement.
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Rental Agreement
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-rental-agreement-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-reporting-api
+  name: silvercar Reporting API
+  description: Generic reporting discovery and data retrieval endpoints
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Reporting
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-reporting-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-reservations-api
+  name: silvercar Reservations API
+  description: The Reservations API from silvercar — 1 operation(s) for reservations.
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Reservations
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-reservations-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-roles-api
+  name: silvercar Roles API
+  description: The Roles API from silvercar — 2 operation(s) for roles.
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Roles
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-roles-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-scba-booking-flow-api
+  name: silvercar SCBA Booking Flow API
+  description: The SCBA Booking Flow API from silvercar — 2 operation(s) for scba booking flow.
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - SCBA Booking Flow
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-scba-booking-flow-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-service-advisors-api
+  name: silvercar Service Advisors API
+  description: The Service Advisors API from silvercar — 1 operation(s) for service advisors.
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Service Advisors
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-service-advisors-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-telematics-api
+  name: silvercar Telematics API
+  description: Telematics actions and resources
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Telematics
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-telematics-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-user-api
+  name: silvercar User API
+  description: Single-user actions and resources
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - User
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-user-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-users-api
+  name: silvercar Users API
+  description: Multiple-user actions and resources
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Users
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-users-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-vehicles-api
+  name: silvercar Vehicles API
+  description: Vehicle actions and resources
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Vehicles
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-vehicles-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-warranties-api
+  name: silvercar Warranties API
+  description: The Warranties API from silvercar — 1 operation(s) for warranties.
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Warranties
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-warranties-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
+- aid: silvercar:silvercar-webhooks-api
+  name: silvercar Webhooks API
+  description: Dealership webhook actions and resources
+  humanURL: https://developer.dealerware.com/reference
+  baseURL: https://api.dealerware.com
+  tags:
+  - Webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/silvercar-webhooks-api-openapi.yml
+  - type: Documentation
+    url: https://developer.dealerware.com/docs
+  - type: APIReference
+    url: https://developer.dealerware.com/reference
+  - type: GettingStarted
+    url: https://developer.dealerware.com/docs/quickstart-guide
+  - type: Authentication
+    url: authentication/silvercar-authentication.yml
+  - type: Webhooks
+    url: asyncapi/silvercar-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-contract-manifest-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-2-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-dealership-settings-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-vehicle-response-schema.json
+  - type: JSONSchema
+    url: json-schema/silvercar-admin-fleet-response-schema.json
 x-enrichment:
   date: '2026-07-21'
   status: enriched

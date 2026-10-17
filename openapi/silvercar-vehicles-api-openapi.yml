@@ -1,0 +1,2239 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@dealerware.com
+    name: Dealerware Support
+    url: https://support.dealerware.com
+  description: MOB-API
+  termsOfService: support@dealerware.com
+  title: MOB Vehicles API
+  version: 1.0.0
+servers:
+- url: https://api.dealerware.com
+  description: Production server
+- url: https://api.dw-tst.com
+  description: Staging server
+security:
+- Auth0: []
+tags:
+- name: Vehicles
+  description: Vehicle actions and resources
+paths:
+  /admin/contracts/{id}/unassign_vehicle:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    put:
+      summary: Unassign the vehicle currently assigned to the given contract
+      operationId: putAdminContractUnassignVehicle
+      tags:
+      - Vehicles
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/contracts/{id}/vehicle:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    put:
+      summary: Assign a Vehicle to the Given Contract
+      operationId: putAdminContractVehicle
+      tags:
+      - Vehicles
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminContractVehicleRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/contracts/{id}/vehicles/available:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Retrieves a list of available vehicles for the given contract
+      operationId: getAdminContractVehiclesAvailable
+      tags:
+      - Vehicles
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The contract id
+        schema:
+          type: integer
+      - name: fleet_id
+        in: query
+        required: false
+        description: Overriding the fleet from the contract to list out available vehicles
+        schema:
+          type: integer
+          example: 523
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+        description: Page number returned from collection based on total records and records per response
+      - name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 30
+        description: Number records returned in collection in response
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminVehicleResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/contracts/{id}/vehicles/available/search:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Returns a list of available vehicles for a contract based on the provided query
+      operationId: getAdminContractVehiclesAvailableSearch
+      tags:
+      - Vehicles
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The contract id
+        schema:
+          type: integer
+      - name: q
+        in: query
+        required: true
+        description: Query parameter to search against indexed fields on vehicle
+        schema:
+          type: string
+      - name: fleet_id
+        in: query
+        required: false
+        description: Overriding the fleet from the contract to search for available vehicles
+        schema:
+          type: integer
+          example: 523
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+        description: Page number returned from collection based on total records and records per response
+      - name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 30
+        description: Number records returned in collection in response
+      - name: sort
+        in: query
+        description: The sort order is ascending unless the column name is prefixed with a minus (U+002D HYPHEN-MINUS, "-"), in which case it will be descending.
+        required: false
+        schema:
+          $ref: '#/components/schemas/AdminVehicleSortColumns'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminVehicleResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/dealerships/{id}/calendar/vehicles:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Returns a paginated list of Vehicle objects for the Calendar
+      operationId: getDealershipCalendarVehicles
+      tags:
+      - Vehicles
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the dealership
+        schema:
+          type: integer
+      - name: sort
+        in: query
+        required: false
+        description: The sort order for each sort field MUST be ascending unless it is prefixed with a minus (U+002D HYPHEN-MINUS, "-"), in which case it MUST be descending. Allowed Sort fields are make, model, year, mileage, vin, stock_number, license, status
+        schema:
+          type: string
+          example: -make,vin,-model
+      - name: fleet_ids
+        in: query
+        required: false
+        description: Filter vehicles results to those that belong to these fleet ids
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: active
+        in: query
+        required: false
+        description: Filter vehicles to those that are either active or inactive
+        schema:
+          type: boolean
+      - name: status
+        in: query
+        required: false
+        description: Comma separated list of states (in_prep staged returned)
+        schema:
+          type: array
+          items:
+            type: string
+            example: staged
+      - name: mileage_min
+        in: query
+        required: false
+        description: Find Vehicles with mileage in kilometers greater than or equal to mileage_min
+        schema:
+          type: number
+      - name: mileage_max
+        in: query
+        required: false
+        description: Find Vehicles with mileage in kilometers less than or equal to mileage_max
+        schema:
+          type: number
+      - name: make
+        in: query
+        required: false
+        description: Comma Separated list of makes to filter vehicles by
+        schema:
+          type: string
+          example: Ford,Toyota
+      - name: model
+        in: query
+        required: false
+        description: Comma Separated list of models to filter vehicles by
+        schema:
+          type: string
+          example: Focus,Camry
+      - name: page
+        in: query
+        required: false
+        description: The page to be fetched, by default 1
+        schema:
+          type: number
+      - name: per_page
+        in: query
+        required: false
+        description: Number of items per page to be fetched, by default 30
+        schema:
+          type: number
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminCalendarVehicleResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/dealerships/{id}/fleets/contracts_vehicles:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Fetch the fleets for a location, along with the contracts (within the given…
+      operationId: getAdminDealershipFleetsContractsAndVehicles
+      tags:
+      - Vehicles
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the dealership
+        schema:
+          type: integer
+      - name: start_at
+        description: The timestamp for the start of the range to fetch contracts for (inclusive)
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          example: '2020-06-15T00:00:00Z'
+      - name: end_at
+        description: The timestamp for the end of the range to fetch contracts for (inclusive)
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          example: '2020-06-21T00:00:00Z'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/AdminDealershipFleetsContractsVehiclesResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /admin/dealerships/{id}/vehicles:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Returns a paginated list of Vehicle objects associated with a dealership
+      description: Returns a paginated list of Vehicle objects associated with a dealership. Supports filtering by date ranges and sorting by various fields including maturity_date, in_service_date, and rdr_date.
+      operationId: getDealershipVehicles
+      tags:
+      - Vehicles
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the dealership
+        schema:
+          type: integer
+      - name: sort
+        in: query
+        required: false
+        description: The sort order for each sort field MUST be ascending unless it is prefixed with a minus (U+002D HYPHEN-MINUS, "-"), in which case it MUST be descending.
+        schema:
+          $ref: '#/components/schemas/AdminVehicleSortColumns'
+      - name: fleet_ids
+        in: query
+        required: false
+        description: Filter vehicles results to those that belong to these fleet ids
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: active
+        in: query
+        required: false
+        description: Filter vehicles to those that are either active or inactive
+        schema:
+          type: boolean
+      - name: status
+        in: query
+        required: false
+        description: Filter vehicles based on their current state
+        schema:
+          type: string
+      - name: telematics_state
+        in: query
+        required: false
+        description: Filter vehicles based on their telematics source
+        schema:
+          $ref: '#/components/schemas/AdminVehicleTelematicsState'
+      - name: maturity_date_from
+        in: query
+        required: false
+        description: Filter vehicles with maturity_date greater than or equal to this date (YYYY-MM-DD format)
+        schema:
+          type: string
+          format: date
+          example: '2025-08-01'
+      - name: maturity_date_to
+        in: query
+        required: false
+        description: Filter vehicles with maturity_date less than or equal to this date (YYYY-MM-DD format)
+        schema:
+          type: string
+          format: date
+          example: '2025-08-31'
+      - name: in_service_date_from
+        in: query
+        required: false
+        description: Filter vehicles with in_service_date greater than or equal to this date (YYYY-MM-DD format)
+        schema:
+          type: string
+          format: date
+          example: '2025-07-01'
+      - name: in_service_date_to
+        in: query
+        required: false
+        description: Filter vehicles with in_service_date less than or equal to this date (YYYY-MM-DD format)
+        schema:
+          type: string
+          format: date
+          example: '2025-07-31'
+      - name: rdr_date_from
+        in: query
+        required: false
+        description: Filter vehicles with parking lot rdr_date greater than or equal to this date (YYYY-MM-DD format)
+        schema:
+          type: string
+          format: date
+          example: '2025-08-01'
+      - name: rdr_date_to
+        in: query
+        required: false
+        description: Filter vehicles with parking lot rdr_date less than or equal to this date (YYYY-MM-DD format)
+        schema:
+          type: string
+          format: date
+          example: '2025-08-31'
+      - name: page
+        in: query
+        required: false
+        description: The page to be fetched, by default 1
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        required: false
+        description: Number of items per page to be fetched, by default 30
+        schema:
+          type: integer
+      - name: defleet_vehicles
+        in: query
+        required: false
+        description: Filter vehicles to those that meet the dealership's defleet criteria
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminVehicleResponse'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/AdminVehicleCSVResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+    post:
+      summary: Creates a new Vehicle for a Dealership and assigns it to a list of Fleets
+      operationId: postDealershipVehicle
+      tags:
+      - Vehicles
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the dealership
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminVehicleRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/Success'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/fleets/{id}/contracts:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    post:
+      summary: Creates a new Contract associated with a Fleet
+      operationId: postFleetContract
+      tags:
+      - Vehicles
+      parameters:
+      - name: platform
+        in: header
+        required: false
+        description: Header to let us know platform contract was booked on
+        schema:
+          type: string
+      - name: app_name
+        in: header
+        required: false
+        description: Header to let us know name of application
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: The id of the fleet
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminFleetContractRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreatedWithLocationHeader'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/fleets/{id}/vehicles:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    post:
+      summary: Creates a new Vehicle associated with a Fleet
+      operationId: postFleetVehicles
+      tags:
+      - Vehicles
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the fleet
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminVehicleRequest-2'
+      responses:
+        '201':
+          $ref: '#/components/responses/Success'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/vehicles/{id}:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Returns a singular Vehicle object
+      operationId: getVehicle
+      tags:
+      - Vehicles
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the vehicle
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminVehicleResponse-2'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+    put:
+      summary: Updates a Vehicle's Fleets
+      operationId: putVehicleFleets
+      tags:
+      - Vehicles
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the vehicle
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        description: Either `fleet_id` or `fleet_ids` must be present in the request body. If both are present, `fleet_ids` will be used.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fleet_id:
+                  type: integer
+                fleet_ids:
+                  type: array
+                  items:
+                    type: integer
+            example:
+              fleet_ids:
+              - 12
+              - 34
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+    patch:
+      summary: Changes a Vehicle's managed toll transponder
+      description: Installs, replaces, moves, or removes the vehicle's managed toll transponder. Assignment history and the legacy toll tag fields change together, or not at all. Only available at dealerships with toll equipment management enabled. A transponder installed on another vehicle moves only with confirm_toll_transponder_move, and no change may touch a rented vehicle. A save that collides with a concurrent change also returns 409; retry it. fleet_id and fleet_ids are still accepted and behave as they do with PUT.
+      operationId: patchAdminVehicle
+      tags:
+      - Vehicles
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the vehicle
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminVehiclePatchRequest'
+            example:
+              toll_transponder_id: 914
+              confirm_toll_transponder_move: true
+      responses:
+        '200':
+          description: The vehicle after the change
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminVehicleResponse-2'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '409':
+          $ref: '#/components/responses/AdminDealershipTollTransponderConflict'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/vehicles/{id}/events:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Get all telematics events for a given vehicle
+      operationId: getVehicleEvents
+      tags:
+      - Vehicles
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the vehicle
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/AdminVehicleEventCSVResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/vehicles/{id}/fleet:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    put:
+      summary: Updates a Vehicle's Fleet
+      operationId: putVehicleFleet
+      tags:
+      - Vehicles
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the vehicle
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fleet_id:
+                  type: integer
+                fleet_ids:
+                  type: array
+                  items:
+                    type: integer
+            example:
+              fleet_id: 12
+              fleet_ids:
+              - 12
+              - 34
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/vehicles/{id}/issues:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Get all issues for a given vehicle (paginated)
+      operationId: getVehicleIssues
+      tags:
+      - Vehicles
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the vehicle
+        schema:
+          type: integer
+      - name: page
+        in: query
+        required: false
+        description: page of the resource to fetch
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        required: false
+        description: number of records per page
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminIssueResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+    post:
+      summary: Create new issue for the vehicle
+      operationId: postVehicleIssue
+      tags:
+      - Vehicles
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the vehicle
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminIssueRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/Success'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/vehicles/{id}/telemetry:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Fetch the last recorded telemetry for a given vehicle
+      operationId: getVehicleTelemetry
+      tags:
+      - Vehicles
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the vehicle
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminVehicleTelemetryResponse'
+      responses:
+        '200':
+          $ref: '#/components/responses/NoContent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+components:
+  schemas:
+    AdminVehicleCSVResponse:
+      type: string
+      example: 'connected, connected_car_device_firmware, connected_car_data_last_updated, id, license, make, model, odometer_value, odometer_unit, off_lot, physical_location, power_train, status, stock_number, toll_tag_number, vin, year, rdr_date, maturity_date
+
+        true, 281110619:159:11, 2020-06-11T15:08:53Z, 23561, DNL445, Audi, Q5, 20055, km, true, Lot A, mechanical, rented, VV111, HMSJNFDS, 1FT7W2BT4DEB5192, 2020, 2024-03-15, 2024-06-15
+
+        '
+    AdminVehicleSortColumns:
+      type: string
+      enum:
+      - created_at
+      - updated_at
+      - license
+      - model
+      - odometer
+      - physical_location
+      - status
+      - stock_number
+      - year
+      - vin
+      - maturity_date
+      - in_service_date
+      - rdr_date
+    AdminVehicleEventCSVResponse:
+      type: string
+      example: 'recorded_at, created_at, type, serial_number, gps_age, latitude, longitude, odometer_value, odometer_unit, fuel_percentage, battery_voltage, charge_level
+
+        2020-06-15T20:12:26Z, 2020-06-15T20:22:26Z, ign_off, 80A182420034, 12, 30.440157, -97.7716, 3293.5, km, 12.56, 12.48, 91.05
+
+        '
+    AdminCalendarVehicleResponse:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        make:
+          type: string
+          example: Ford
+        model:
+          type: string
+          example: Focus
+        power_train:
+          type: string
+          example: mechanical
+        year:
+          type: number
+          example: 2018
+        mileage:
+          type: object
+          properties:
+            value:
+              type: number
+              format: float
+              example: 20055.12
+            unit:
+              type: string
+              example: km
+        vin:
+          type: string
+          example: 1FADP3K2XJL234567
+        stock_number:
+          type: string
+          example: 1234567
+        license:
+          type: string
+          example: 123ABC
+        status:
+          type: string
+          example: rented
+        color:
+          type: string
+          example: Red
+        links:
+          type: object
+          properties:
+            fleet:
+              $ref: '#/components/schemas/HypermediaLink'
+            fleets:
+              type: array
+              items:
+                $ref: '#/components/schemas/HypermediaLink'
+    HypermediaLink:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 2
+          description: ID of the associated resource
+        href:
+          type: string
+          example: https://api.dw-tst.com/admin/some_resources/2
+          description: Link to the associated resource
+    AdminDealershipTollTransponderResponse:
+      type: object
+      required:
+      - id
+      - external_id
+      - kind
+      - toll_provider
+      - created_at
+      - deactivated_at
+      - current_assignment
+      properties:
+        id:
+          type: integer
+          example: 1234
+        external_id:
+          type: string
+          description: Provider-assigned transponder identifier, stored normalized to lowercase letters and digits.
+          example: alf1234567a
+        kind:
+          type: string
+          enum:
+          - unknown
+          - tag
+          - device
+          description: Whether the transponder is a toll tag or a device; unknown until classified.
+          example: tag
+        toll_provider:
+          type: object
+          required:
+          - id
+          - name
+          properties:
+            id:
+              type: integer
+              example: 12
+            name:
+              type: string
+              example: Verra Mobility
+        created_at:
+          type: string
+          format: date-time
+        deactivated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the transponder was deactivated, or null while it is active.
+        current_assignment:
+          type:
+          - object
+          - 'null'
+          description: 'The vehicle the transponder is installed on now, or null when it is not installed on a vehicle. Null does not guarantee deactivation succeeds: its tag may still be entered on a vehicle at this dealership. A transponder on a rented vehicle cannot be moved, so pickers can show it as unavailable.'
+          required:
+          - vehicle_id
+          - license_plate
+          - vin
+          - status
+          properties:
+            vehicle_id:
+              type: integer
+              example: 4321
+            license_plate:
+              type: string
+              example: 8ABC123
+            vin:
+              type: string
+              example: 1HGCM82633A004352
+            status:
+              type: string
+              description: The vehicle's current state, such as rented or disposed. Tolerate new values.
+              example: rented
+    AdminOdometer:
+      type: object
+      required:
+      - value
+      - unit
+      properties:
+        value:
+          type: number
+          format: float
+          example: 3293.5
+          description: 0.0 indicates no reading was found
+        unit:
+          type: string
+          example: km
+    AdminVehicleTelemetryResponse:
+      type: object
+      required:
+      - event_received_at
+      - fuel
+      - odometer
+      properties:
+        event_received_at:
+          $ref: '#/components/schemas/AdminEventReceivedAt'
+        fuel:
+          $ref: '#/components/schemas/AdminFuelResponse'
+        odometer:
+          $ref: '#/components/schemas/AdminOdometer'
+    AdminVehicleTelematicsState:
+      type: string
+      enum:
+      - CCD
+      - Native
+      - Multiple
+      - All
+    AdminVehicleResponse:
+      type: object
+      properties:
+        available_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          example: '2024-01-02'
+        unavailable_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          example: '2030-12-31'
+        registration:
+          type:
+          - string
+          - 'null'
+          format: date
+          example: '2024-02-03'
+        registration_expiration:
+          type:
+          - string
+          - 'null'
+          format: date
+          example: '2027-02-04'
+        emissions_expiration:
+          type:
+          - string
+          - 'null'
+          format: date
+          example: '2027-03-05'
+        license_state:
+          type:
+          - string
+          - 'null'
+          example: TX
+        next_contract_finish_state:
+          type:
+          - string
+          - 'null'
+          example: maintenance
+        connected:
+          type: boolean
+          example: true
+        connected_car_device_firmware:
+          type: string
+          example: 281110619:159:11
+        connected_car_device_last_updated:
+          type: string
+          format: date-time
+          example: '2020-06-11T15:08:53Z'
+        device:
+          type: string
+          example: guidepoint
+        fuel:
+          type: object
+          required:
+          - unit
+          - capacity
+          properties:
+            unit:
+              type: string
+              example: L
+            capacity:
+              type: number
+              example: 20
+            value:
+              type: number
+              example: 10
+        id:
+          type: integer
+          example: 23561
+        license:
+          type: string
+          example: DNL445
+        links:
+          properties:
+            fleet:
+              $ref: '#/components/schemas/HypermediaLink'
+            fleet_ids:
+              type: array
+              items:
+                type: number
+              example:
+              - 123
+              - 125
+            fleets:
+              type: array
+              items:
+                $ref: '#/components/schemas/HypermediaLink'
+        make:
+          type: string
+          example: Audi
+        model:
+          type: string
+          example: Q5
+        color:
+          description: The color of the vehicle. may not be defined for non-Sedgwick location
+          type: string
+          example: Silver
+        odometer:
+          type: object
+          $ref: '#/components/schemas/AdminOdometer'
+        off_lot:
+          type: boolean
+          example: true
+        physical_location:
+          type: string
+          example: Lot A
+        power_train:
+          type: string
+          example: mechanical
+        status:
+          type: string
+          example: rented
+        stock_number:
+          type: string
+          example: VV111
+        telematics_source:
+          type: string
+          example: guidepoint
+        telematics_enrolled:
+          type: boolean
+          example: true
+        toll_tag_number:
+          type: string
+          example: HMSJNFDS
+        vin:
+          type: string
+          example: 1FT7W2BT4DEB5192
+        year:
+          type: integer
+          example: 2020
+        acriss_code:
+          type: string
+          example: CFAR
+        acriss_model_description:
+          type: string
+          example: Compact SUV Automatic With AC
+        updated_at:
+          type: string
+          example: '2025-03-20T17:42:42Z'
+        created_at:
+          type: string
+          example: '2025-03-20T17:42:42Z'
+        days_off_contract:
+          type: integer
+          example: 7
+        rdr_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: The retail delivery report (RDR) date from the associated parking lot
+          example: '2024-03-15'
+        maturity_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: The maturity date of the vehicle
+          example: '2024-06-15'
+        disposed_at:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: The disposed_at date of the vehicle if exists
+          example: '2024-06-15'
+        in_service_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: The competitor in-service date of the vehicle, defaults to created_at.
+        currently_rented_to_customer_id:
+          type:
+          - integer
+          - 'null'
+          description: The ID of the customer currently renting the vehicle, if rented
+          example: 1789
+    AdminIssueRequest:
+      type: object
+      required:
+      - description
+      properties:
+        description:
+          type: string
+          example: Scratches on the passenger door side
+    AdminVehiclePatchRequest:
+      type: object
+      description: Changes the vehicle's managed toll transponder and, when sent, its fleets. Other vehicle fields are not accepted yet; keep saving them through the existing endpoints.
+      properties:
+        toll_transponder_id:
+          type:
+          - integer
+          - 'null'
+          description: The transponder to install. Omit it to leave the installation unchanged; null removes the installed transponder. It must belong to the vehicle's dealership and be active.
+          example: 914
+        toll_tag_number:
+          type:
+          - string
+          - 'null'
+          description: Optional legacy toll identifier. When sent with toll_transponder_id it must identify the same transponder (its external id or legacy tag), or the request fails with 422. Null is ignored; an empty string goes with removing the transponder.
+          example: ALF1234567A
+        confirm_toll_transponder_move:
+          type: boolean
+          default: false
+          description: Must be true to move a transponder that is installed on another, non-rented vehicle.
+          example: true
+        fleet_id:
+          type: integer
+          description: Replaces the vehicle's fleets, as with PUT. fleet_ids wins when both are sent.
+        fleet_ids:
+          type: array
+          items:
+            type: integer
+          description: Replaces the vehicle's fleets, as with PUT.
+    AdminDealershipFleetsContractsVehiclesResponse:
+      type: object
+      properties:
+        vehicle_groups:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+                example: 1
+                description: ID of the vehicle group
+              contracts:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                      example: 1
+                      description: ID of the contract
+                    status:
+                      type: string
+                      example: pending
+                      description: the status of the contract
+                    vehicle_id:
+                      type:
+                      - number
+                      - 'null'
+                      example: 1
+                      description: the ID of the vehicle associated with this contract, null if no vehicle is yet assigned
+                    customer:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                          example: 1
+                          description: the ID of the customer associated with this reservation
+                        full_name:
+                          type: string
+                          example: Frodo Baggins
+                          description: the full name of the customer associated with this reservation
+                    scheduled_pickup_at:
+                      type: string
+                      format: date-time
+                      example: '2022-05-19T16:22:26Z'
+                    scheduled_dropoff_at:
+                      type: string
+                      format: date-time
+                      example: '2022-08-10T14:15:30Z'
+                    actual_pickup_at:
+                      type:
+                      - string
+                      - 'null'
+                      format: date-time
+                      example: '2022-05-19T16:22:26Z'
+                    actual_dropoff_at:
+                      type:
+                      - string
+                      - 'null'
+                      format: date-time
+                      example: '2022-08-10T14:15:30Z'
+              vehicles:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                      example: 1
+                      description: the ID of the vehicle
+                    trim:
+                      type: object
+                      properties:
+                        make:
+                          type: string
+                          example: Toyota
+                        model:
+                          type: string
+                          example: Corolla
+                        power_train:
+                          type: string
+                          example: mechanical
+                        year:
+                          type: number
+                          example: 1999
+    AdminVehicleRequest:
+      type: object
+      required:
+      - available_on
+      - fleet_ids
+      - license
+      - license_subregion
+      - stock_number
+      - vin
+      properties:
+        available_on:
+          type: string
+          format: date
+          example: '2020-01-01'
+        color:
+          type: string
+          example: grey
+        fleet_ids:
+          type: array
+          items:
+            type: integer
+          example:
+          - 12
+          - 42
+        license:
+          type: string
+          example: ABC123
+          description: Required vehicle plate. Trimmed and converted to ASCII uppercase before validation. The result must contain 1–8 ASCII letters, digits, spaces, or hyphens, with single spaces or hyphens allowed only between groups of letters or digits. Separators count toward the length. Invalid characters are rejected; format acceptance does not guarantee Bestpass registration. For example, padded lowercase ab-123 becomes AB-123; AB--123 and ABCD-1234 are invalid.
+        license_subregion:
+          type: string
+          example: TX
+        stock_number:
+          type: string
+          example: VV111
+        vin:
+          type: string
+          pattern: '[A-HJ-NPR-Z0-9]{17}'
+          example: 1FT7W2BT4DEB5192
+        defleet_vehicles:
+          type: boolean
+          example: true
+    AdminFuelResponse:
+      type: object
+      required:
+      - value
+      - unit
+      - capacity
+      properties:
+        value:
+          type: number
+          format: float
+          example: 17.5
+          description: 0.0 indicates no reading was found
+        unit:
+          type: string
+          example: L
+        capacity:
+          type: number
+          example: 20
+    AdminEventReceivedAt:
+      type: string
+      format: date-time
+      example: '2017-08-11T19:07:04Z'
+      description: The timestamp when the telematics provider recorded the event
+    AdminVehicleRequest-2:
+      type: object
+      required:
+      - license
+      properties:
+        available_on:
+          type: string
+          format: date
+          example: '2020-01-01'
+        color:
+          type: string
+          example: grey
+        license:
+          type: string
+          example: ABC123
+          description: Required vehicle plate. Trimmed and converted to ASCII uppercase before validation. The result must contain 1–8 ASCII letters, digits, spaces, or hyphens, with single spaces or hyphens allowed only between groups of letters or digits. Separators count toward the length. Invalid characters are rejected; format acceptance does not guarantee Bestpass registration. For example, padded lowercase ab-123 becomes AB-123; AB--123 and ABCD-1234 are invalid.
+        license_subregion:
+          type: string
+          example: TX
+        stock_number:
+          type: string
+          example: VV111
+        vin:
+          type: string
+          pattern: '[A-HJ-NPR-Z0-9]{17}'
+          example: 1FT7W2BT4DEB5192
+    AdminIssueResponse:
+      properties:
+        id:
+          type: integer
+          example: 1
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        created_by:
+          type: string
+          example: John Smith
+          description: returns the full name or email of whoever created the issue
+        closed_by:
+          type: string
+          example: john.smith@example.net
+          description: returns the full name or email of whoever closed the issue
+        description:
+          type: string
+          example: Scratches on the passenger door side
+        closed_description:
+          type: string
+          example: Buffed out scratches in the shop
+        status:
+          type: string
+          example: opened
+        image_count:
+          type: number
+    AdminFleetContractRequest:
+      type: object
+      required:
+      - dropoff_at
+      - pickup_at
+      - customer_id
+      properties:
+        service_advisor_id:
+          description: The id of the service advisor associated with the contract
+          type: integer
+        customer_id:
+          description: The id of the customer who the reservation is for
+          type: integer
+        daily_rate_override:
+          description: The daily rate to charge for this contract, if different from the default rate for the vehicle. Must have the accounting and/or admin role to set this field.
+          type:
+          - number
+          - 'null'
+          example: 29.95
+        dropoff_at:
+          description: The time the vehicle is expected to be dropped off, in UTC
+          type: string
+          format: date-time
+          example: '2021-06-15T20:22:26Z'
+        external_deposit_amount:
+          type:
+          - number
+          - 'null'
+          example: 100
+          description: The amount of the external deposit, if any, that was collected for this contract
+        pickup_at:
+          description: The time the vehicle is expected to be picked up, in UTC
+          type: string
+          format: date-time
+          example: '2021-06-19T20:22:26Z'
+        purchase_order:
+          description: The purchase order number
+          type: string
+        repair_order:
+          description: The repair order number, or notes/source of business
+          type: string
+        service_vehicle:
+          description: Identifier for vehicle being serviced
+          type: string
+        vehicle_id:
+          description: Optional. When included, assigns the corresponding vehicle to this contract after creation
+          type: number
+    AdminVehicleResponse-2:
+      type: object
+      required:
+      - available_date
+      - unavailable_date
+      - registration
+      - registration_expiration
+      - emissions_expiration
+      - license_state
+      - next_contract_finish_state
+      - connected
+      - connected_car_device_firmware
+      - connected_car_device_last_updated
+      - days_off_contract
+      - device
+      - fuel
+      - id
+      - license
+      - links
+      - make
+      - model
+      - odometer
+      - off_lot
+      - physical_location
+      - power_train
+      - status
+      - stock_number
+      - toll_tag_number
+      - vin
+      - year
+      - color
+      - acriss_code
+      - acriss_model_description
+      - updated_at
+      - created_at
+      - rdr_date
+      - maturity_date
+      - in_service_date
+      - disposed_at
+      - telematics_source
+      - telematics_enrolled
+      - currently_rented_to_customer_id
+      - toll_transponder
+      properties:
+        available_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          example: '2024-01-02'
+        unavailable_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          example: '2030-12-31'
+        registration:
+          type:
+          - string
+          - 'null'
+          format: date
+          example: '2024-02-03'
+        registration_expiration:
+          type:
+          - string
+          - 'null'
+          format: date
+          example: '2027-02-04'
+        emissions_expiration:
+          type:
+          - string
+          - 'null'
+          format: date
+          example: '2027-03-05'
+        license_state:
+          type:
+          - string
+          - 'null'
+          example: TX
+        next_contract_finish_state:
+          type:
+          - string
+          - 'null'
+          example: maintenance
+        connected:
+          type: boolean
+          example: true
+        connected_car_device_firmware:
+          type:
+          - string
+          - 'null'
+          example: 281110619:159:11
+        connected_car_device_last_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          example: '2020-06-11T15:08:53Z'
+        device:
+          type:
+          - string
+          - 'null'
+          example: motorq
+        fuel:
+          type: object
+          required:
+          - unit
+          - capacity
+          - value
+          properties:
+            unit:
+              type: string
+              example: L
+              description: will always return L for Liters
+            capacity:
+              type: number
+              example: 20
+            value:
+              type: number
+              example: 10
+        id:
+          type: integer
+          example: 23561
+        license:
+          type:
+          - string
+          - 'null'
+          example: DNL445
+        links:
+          type: object
+          required:
+          - fleet
+          - fleets
+          properties:
+            fleet:
+              type:
+              - object
+              - 'null'
+              allOf:
+              - $ref: '#/components/schemas/HypermediaLink'
+            fleets:
+              type: array
+              items:
+                $ref: '#/components/schemas/HypermediaLink'
+        make:
+          type:
+          - string
+          - 'null'
+          example: Audi
+        model:
+          type:
+          - string
+          - 'null'
+          example: Q5
+        odometer:
+          type: object
+          $ref: '#/components/schemas/AdminOdometer'
+        off_lot:
+          type:
+          - boolean
+          - 'null'
+          example: true
+        physical_location:
+          type:
+          - string
+          - 'null'
+          example: Lot A
+        power_train:
+          type:
+          - string
+          - 'null'
+          example: mechanical
+        status:
+          type:
+          - string
+          - 'null'
+          example: rented
+        stock_number:
+          type:
+          - string
+          - 'null'
+          example: VV111
+        toll_tag_number:
+          type:
+          - string
+          - 'null'
+          example: HMSJNFDS
+        vin:
+          type:
+          - string
+          - 'null'
+          example: 1FT7W2BT4DEB5192
+        year:
+          type: integer
+          example: 2020
+        color:
+          type:
+          - string
+          - 'null'
+          example: Blue
+        acriss_code:
+          type:
+          - string
+          - 'null'
+          example: CFAR
+        acriss_model_description:
+          type:
+          - string
+          - 'null'
+          example: Compact SUV Automatic With AC
+        updated_at:
+          type: string
+          format: date-time
+          example: '2024-01-15T00:00:00Z'
+        created_at:
+          type: string
+          format: date-time
+          example: '2024-01-15T00:00:00Z'
+        days_off_contract:
+          type: integer
+          example: 7
+        rdr_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: The retail delivery report (RDR) date from the associated parking lot
+          example: '2024-03-15'
+        maturity_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: The maturity date of the vehicle
+          example: '2024-06-15'
+        in_service_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The in-service date of the vehicle
+          example: '2024-01-15T00:00:00Z'
+        disposed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          example: '2024-06-15T00:00:00Z'
+        telematics_source:
+          type: string
+          example: motorq
+        telematics_enrolled:
+          type: boolean
+          example: true
+        currently_rented_to_customer_id:
+          type:
+          - integer
+          - 'null'
+          example: 12345
+        toll_transponder:
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/AdminDealershipTollTransponderResponse'
+          description: The managed toll transponder installed on the vehicle, or null. The backend keeps the legacy toll_tag_number in step with it.
+    AdminContractVehicleRequest:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: integer
+          description: Vehicle ID
+          example: 42
+  responses:
+    UnprocessableEntity:
+      description: Unprocessable Content
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Invalid resource id
+              code:
+                type: integer
+                example: 6789
+    NoContent:
+      description: No Content
+    UnsupportedMediaType:
+      description: Unsupported Media Type
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Accepted media types is limited to JSON (application/json)
+              code:
+                type: integer
+                example: 6789
+    Success:
+      description: Success
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Invalid authorization token
+              code:
+                type: integer
+                example: 6789
+    CreatedWithLocationHeader:
+      headers:
+        Location:
+          $ref: '#/components/headers/Location'
+      description: Created
+    AdminDealershipTollTransponderConflict:
+      description: The toll transponder's current state does not allow this action
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+            - code
+            - message
+            - key
+            properties:
+              code:
+                type: integer
+                example: 999
+              message:
+                type: string
+                example: Toll transponder is already classified
+              key:
+                type:
+                - string
+                - 'null'
+                description: Optional machine-readable error key
+    NotAcceptable:
+      description: Not Acceptable
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Missing headers in request
+              code:
+                type: integer
+                example: 6789
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Request is forbidden
+              code:
+                type: integer
+                example: 6789
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Resource with id :id not found
+              code:
+                type: integer
+                example: 6789
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Bad Request
+              code:
+                type: integer
+                example: 6789
+  headers:
+    Location:
+      description: Location of created resource
+      schema:
+        type: string
+  securitySchemes:
+    Auth0:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://dealerware.auth0.com/oauth/token
+          scopes: {}
+x-provenance:
+  method: searched
+  source: https://developer.dealerware.com/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.dealerware.com/reference/admincustomerget-1.md
+  - https://developer.dealerware.com/reference/createblacklist-1.md
+  - https://developer.dealerware.com/reference/deleteadmincontractcancel-1.md
+  - https://developer.dealerware.com/reference/deleteadmincontractsplitbill-1.md
+  - https://developer.dealerware.com/reference/deleteadmincontractsplitbillpayment-1.md
+  - https://developer.dealerware.com/reference/deleteadmincontractswarranty-1.md
+  - https://developer.dealerware.com/reference/deleteadmindealershipwebhook.md
+  - https://developer.dealerware.com/reference/deleteadmindriver-1.md
+  - https://developer.dealerware.com/reference/deletecontractnote-1.md
+  - https://developer.dealerware.com/reference/deletecustomerfromblacklist-1.md
+  - https://developer.dealerware.com/reference/deletedealershipcustomernotes.md
+  - https://developer.dealerware.com/reference/deletedealershipcustomers-1.md
+  - https://developer.dealerware.com/reference/deleteemployeeactivation-1.md
+  - https://developer.dealerware.com/reference/deletefleet-1.md
+  - https://developer.dealerware.com/reference/deleteissue-1.md
+  - https://developer.dealerware.com/reference/getadmincontractadjustments-1.md
+  - https://developer.dealerware.com/reference/getadmincontractauthorization-1.md
+  - https://developer.dealerware.com/reference/getadmincontractcustomer-1.md
+  - https://developer.dealerware.com/reference/getadmincontractpayments-1.md
+  - https://developer.dealerware.com/reference/getadmincontractpricing-1.md
+  - https://developer.dealerware.com/reference/getadmincontractsdrivers-1.md
+  - https://developer.dealerware.com/reference/getadmincontractsplitbill-1.md
+  - https://developer.dealerware.com/reference/getadmincontractsplitbilladjustment-1.md
+  - https://developer.dealerware.com/reference/getadmincontractstoggles-1.md
+  - https://developer.dealerware.com/reference/getadmincontractvehiclesavailable-1.md
+  - https://developer.dealerware.com/reference/getadmincontractvehiclesavailablesearch-1.md
+  - https://developer.dealerware.com/reference/getadmincustomercreditcards-1.md
+  - https://developer.dealerware.com/reference/getadmincustomeremployer-1.md
+  - https://developer.dealerware.com/reference/getadmincustomerinsurance-1.md
+  - https://developer.dealerware.com/reference/getadmincustomernotificationsfailed.md
+  - https://developer.dealerware.com/reference/getadmincustomerscontracts-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcontracts-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcontractsmanifesttoday-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcontractssearch-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomernotes.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomers-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomersmessagesprofiles-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomersremoteprofilesearch-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomerssearch-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipemployees-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipemployeessearch-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipfleetscontractsandvehicles-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipserviceadvisors-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipwebhook.md
+  - https://developer.dealerware.com/reference/getadmindealershipwebhooks.md
+  - https://developer.dealerware.com/reference/getadmindriver-1.md
+  - https://developer.dealerware.com/reference/getcontract-1.md
+  - https://developer.dealerware.com/reference/getcontractnotes-1.md
+  - https://developer.dealerware.com/reference/getcontractscontactless-1.md
+  - https://developer.dealerware.com/reference/getcontractscontactlessdriver-1.md
+  - https://developer.dealerware.com/reference/getcontractssaleslead.md
+  - https://developer.dealerware.com/reference/getcontractwarranty-1.md
+  - https://developer.dealerware.com/reference/getdealership-1.md
+  - https://developer.dealerware.com/reference/getdealershipaddress-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailability-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailabilityintervals-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailabilityintervalscontinuous-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailabilityintervalscontinuousdaily-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailabilityintervalsdaily-1.md
+  - https://developer.dealerware.com/reference/getdealershipcalendarbookingchannels.md
+  - https://developer.dealerware.com/reference/getdealershipcalendarcontracts-1.md
+  - https://developer.dealerware.com/reference/getdealershipcalendarvehicles-1.md
+  - https://developer.dealerware.com/reference/getdealershipcontractavailablevehicles.md
+  - https://developer.dealerware.com/reference/getdealershipemployeeroles-1.md
+  - https://developer.dealerware.com/reference/getdealershipfleetpricing-1.md
+  - https://developer.dealerware.com/reference/getdealershipfleets-1.md
+  - https://developer.dealerware.com/reference/getdealershipkpis-1.md
+  - https://developer.dealerware.com/reference/getdealershipmakesandmodels-1.md
+  - https://developer.dealerware.com/reference/getdealershipreportreceivables-1.md
+  - https://developer.dealerware.com/reference/getdealershipreportrevenue-1.md
+  - https://developer.dealerware.com/reference/getdealershipreportrevenuesummary-1.md
+  - https://developer.dealerware.com/reference/getdealershipreporttransactions-1.md
+  - https://developer.dealerware.com/reference/getdealershipreporttransactionsfilteredsorted-1.md
+  - https://developer.dealerware.com/reference/getdealershiproles-1.md
+  - https://developer.dealerware.com/reference/getdealerships-1.md
+  - https://developer.dealerware.com/reference/getdealershipsearch-1.md
+  - https://developer.dealerware.com/reference/getdealershipsettings-1.md
+  - https://developer.dealerware.com/reference/getdealershiptelematicssettings-1.md
+  - https://developer.dealerware.com/reference/getdealershiptrimtypesinfleets-1.md
+  - https://developer.dealerware.com/reference/getdealershipvehicles-1.md
+  - https://developer.dealerware.com/reference/getdealershipvehiclessearch-1.md
+  - https://developer.dealerware.com/reference/getdocument-1.md
+  - https://developer.dealerware.com/reference/getemployee-1.md
+  - https://developer.dealerware.com/reference/getfleet-1.md
+  - https://developer.dealerware.com/reference/getfleetavailability-1.md
+  - https://developer.dealerware.com/reference/getfleetavailabilityintervals-1.md
+  - https://developer.dealerware.com/reference/getfleetavailabilityintervalscontinuous-1.md
+  - https://developer.dealerware.com/reference/getfleetavailabilityintervalscontinuousdaily-1.md
+  - https://developer.dealerware.com/reference/getfleetavailabilityintervalsdaily-1.md
+  - https://developer.dealerware.com/reference/getfleetsettings-1.md
+  - https://developer.dealerware.com/reference/getgeolocationradialdistance-1.md
+  - https://developer.dealerware.com/reference/getmappablefields-1.md
+  - https://developer.dealerware.com/reference/getprogramavailability-1.md
+  - https://developer.dealerware.com/reference/getprogramavailabilityintervals-1.md
+  - https://developer.dealerware.com/reference/getrentalagreementpdf-1.md
+  - https://developer.dealerware.com/reference/getreservationcustomer-1.md
+  - https://developer.dealerware.com/reference/getshortremoteprofile.md
+  - https://developer.dealerware.com/reference/getuser-1.md
+  - https://developer.dealerware.com/reference/getuserdealershiproles-1.md
+  - https://developer.dealerware.com/reference/getuserpreferences.md
+  - https://developer.dealerware.com/reference/getvehicle-1.md
+  - https://developer.dealerware.com/reference/getvehicleevents-1.md
+  - https://developer.dealerware.com/reference/getvehiclegroupdefleetsettings.md
+  - https://developer.dealerware.com/reference/getvehicleissues-1.md
+  - https://developer.dealerware.com/reference/getvehicletelemetry-1.md
+  - https://developer.dealerware.com/reference/patchadminvehicle.md
+  - https://developer.dealerware.com/reference/patchdealershipandfleetsettings-1.md
+  - https://developer.dealerware.com/reference/postadmincontractbillingadjustment-1.md
+  - https://developer.dealerware.com/reference/postadmincontractreceiptpdf-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsdrivers-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsettlement-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsplitbill-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsplitbilladjustment-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsplitbillpayment-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsplitbillpdf-1.md
+  - https://developer.dealerware.com/reference/postadmincustomeremployer-1.md
+  - https://developer.dealerware.com/reference/postadmincustomerinsurance-1.md
+  - https://developer.dealerware.com/reference/postadmincustomernotificationreplay.md
+  - https://developer.dealerware.com/reference/postadmindealershipcustomer-1.md
+  - https://developer.dealerware.com/reference/postadmindealershipcustomermessage-1.md
+  - https://developer.dealerware.com/reference/postadmindealershipcustomernote.md
+  - https://developer.dealerware.com/reference/postadmindealershipcustomersremoteprofileqrcode.md
+  - https://developer.dealerware.com/reference/postadmindealershipemployee-1.md
+  - https://developer.dealerware.com/reference/postadmindealershipwebhook.md
+  - https://developer.dealerware.com/reference/postcontactlessdriversignature-1.md
+  - https://developer.dealerware.com/reference/postcontractcontactlessmessages-1.md
+  - https://developer.dealerware.com/reference/postcontractnote-1.md
+  - https://developer.dealerware.com/reference/postcontractscontactlesssignatures-1.md
+  - https://developer.dealerware.com/reference/postcontractssaleslead.md
+  - https://developer.dealerware.com/reference/postcontractswarranty-1.md
+  - https://developer.dealerware.com/reference/postdealeronboardingvehicles-1.md
+  - https://developer.dealerware.com/reference/postdealershipfleets-1.md
+  - https://developer.dealerware.com/reference/postdealershipvehicle-1.md
+  - https://developer.dealerware.com/reference/postdealervehiclescheckingonboardingstatus-1.md
+  - https://developer.dealerware.com/reference/postdriversignature-1.md
+  - https://developer.dealerware.com/reference/postemployeeactivation-1.md
+  - https://developer.dealerware.com/reference/postfleetcontract-1.md
+  - https://developer.dealerware.com/reference/postfleetvehicles-1.md
+  - https://developer.dealerware.com/reference/postlogin-1.md
+  - https://developer.dealerware.com/reference/postreportingdata.md
+  - https://developer.dealerware.com/reference/postreportingmetadata.md
+  - https://developer.dealerware.com/reference/postuserconfirmations-1.md
+  - https://developer.dealerware.com/reference/postuserpasswordforgot-1.md
+  - https://developer.dealerware.com/reference/postvehicleissue-1.md
+  - https://developer.dealerware.com/reference/putadmincontractfinish-1.md
+  - https://developer.dealerware.com/reference/putadmincontractpaymentmethod-1.md
+  - https://developer.dealerware.com/reference/putadmincontractsplitbill-1.md
+  - https://developer.dealerware.com/reference/putadmincontractstart-1.md
+  - https://developer.dealerware.com/reference/putadmincontractswarranty-1.md
+  - https://developer.dealerware.com/reference/putadmincontractunassignvehicle-1.md
+  - https://developer.dealerware.com/reference/putadmincontractvehicle-1.md
+  - https://developer.dealerware.com/reference/putadmincustomeremployer-1.md
+  - https://developer.dealerware.com/reference/putadmincustomerupdate-1.md
+  - https://developer.dealerware.com/reference/putadmindealershipwebhook.md
+  - https://developer.dealerware.com/reference/putadmindriver-1.md
+  - https://developer.dealerware.com/reference/putcontract-1.md
+  - https://developer.dealerware.com/reference/putcontractnote-1.md
+  - https://developer.dealerware.com/reference/putdealershipaddress-1.md
+  - https://developer.dealerware.com/reference/putdealershipcustomernote.md
+  - https://developer.dealerware.com/reference/putdealershipemployeeroles-1.md
+  - https://developer.dealerware.com/reference/putdealershiptelematicssettings-1.md
+  - https://developer.dealerware.com/reference/putemployee-1.md
+  - https://developer.dealerware.com/reference/putfleet-1.md
+  - https://developer.dealerware.com/reference/putfleetsettings-1.md
+  - https://developer.dealerware.com/reference/putissue-1.md
+  - https://developer.dealerware.com/reference/putreservationcustomer-1.md
+  - https://developer.dealerware.com/reference/putuser-1.md
+  - https://developer.dealerware.com/reference/putuserpassword-1.md
+  - https://developer.dealerware.com/reference/putuserpasswordreset-1.md
+  - https://developer.dealerware.com/reference/putuserpreference-1.md
+  - https://developer.dealerware.com/reference/putvehiclefleet-1.md
+  - https://developer.dealerware.com/reference/putvehiclefleets-1.md
+  - https://developer.dealerware.com/reference/querydnr-1.md
+  - https://developer.dealerware.com/reference/updateadmincustomerinsurance-1.md
+  merge:
+    pages: 174
+    deduped: 1048
+    conflicts_kept_first: 0

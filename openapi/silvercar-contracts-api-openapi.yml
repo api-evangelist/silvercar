@@ -1,0 +1,4702 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@dealerware.com
+    name: Dealerware Support
+    url: https://support.dealerware.com
+  description: MOB-API
+  termsOfService: support@dealerware.com
+  title: MOB Contracts API
+  version: 1.0.0
+servers:
+- url: https://api.dealerware.com
+  description: Production server
+- url: https://api.dw-tst.com
+  description: Staging server
+security:
+- Auth0: []
+tags:
+- name: Contracts
+  description: Contract actions and resources
+paths:
+  /admin/contracts/{contract_id}/notes:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Get the notes for a contract
+      operationId: getContractNotes
+      tags:
+      - Contracts
+      parameters:
+      - name: contract_id
+        in: path
+        required: true
+        description: the Contract ID
+        schema:
+          type: integer
+      - name: page
+        in: query
+        required: false
+        description: Page number returned from the collection based on the total records and records per response
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        required: false
+        description: Number of records to include in the page
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContractNotesResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      summary: Add a note for a contract
+      operationId: postContractNote
+      tags:
+      - Contracts
+      parameters:
+      - name: contract_id
+        in: path
+        required: true
+        description: the Contract ID
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContractNoteAddRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/Created'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/contracts/{contract_id}/notes/{id}:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    put:
+      summary: Update a note for a contract
+      operationId: putContractNote
+      tags:
+      - Contracts
+      parameters:
+      - name: contract_id
+        in: path
+        required: true
+        description: the Contract ID
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        description: the Note ID
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContractNoteUpdateRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+    delete:
+      summary: Delete a note for a contract
+      operationId: deleteContractNote
+      tags:
+      - Contracts
+      parameters:
+      - name: contract_id
+        in: path
+        required: true
+        description: the Contract ID
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        description: the Note ID
+        schema:
+          type: integer
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/contracts/{id}:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Fetch Details for a Given Contract
+      operationId: getContract
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: the contract ID
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminDealershipContractResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+    put:
+      summary: Update Details for a Given Contract
+      operationId: putContract
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: the contract ID
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminContractUpdateRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/contracts/{id}/agreement/toggles:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Get all Toggles attached to a given Contract
+      operationId: getAdminContractsToggles
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the contract
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminAgreementToggleResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/contracts/{id}/authorization:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Fetch the authorization amount for a given contract
+      operationId: getAdminContractAuthorization
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminContractAuthorizationResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/contracts/{id}/billing/adjustments:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Fetch the available adjustments for a given contract
+      operationId: getAdminContractAdjustments
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminContractBillingAdjustmentsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+    post:
+      summary: Create a billing adjustment (charge or credit) for the given contract
+      operationId: postAdminContractBillingAdjustment
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAdminContractBillingAdjustmentRequest'
+      responses:
+        '201':
+          description: Success
+          headers:
+            Location:
+              schema:
+                type: string
+                description: Link location of updated pricing summary
+                example: https://api.dw-tst.com/contracts/42/pricing
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/contracts/{id}/cancel:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    delete:
+      summary: Cancel the Given Contract
+      operationId: deleteAdminContractCancel
+      tags:
+      - Contracts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+                  example: Just because
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/contracts/{id}/contactless/messages:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    post:
+      summary: Creates a contactless text message associated with a contract
+      operationId: postContractContactlessMessages
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminContactlessMessagesRequest'
+      responses:
+        '202':
+          $ref: '#/components/responses/Accepted'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/contracts/{id}/customer:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Fetch the customer attached to a given Contract
+      operationId: getAdminContractCustomer
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminContractCustomerResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/contracts/{id}/drivers:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Get all Drivers attached to a given Contract
+      operationId: getAdminContractsDrivers
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminDriversResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+    post:
+      summary: Create a Driver attached to a given Contract
+      operationId: postAdminContractsDrivers
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminDriversRequest'
+      responses:
+        '201':
+          description: Success
+          headers:
+            Location:
+              schema:
+                type: string
+                description: Link location of created contract additional drivers
+                example: https://api.dw-tst.com/admin/drivers/12
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/contracts/{id}/finish:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    put:
+      summary: Finish the given Contract
+      operationId: putAdminContractFinish
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminContractFinishRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/contracts/{id}/payment_method:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    put:
+      summary: Update the payment method for the given contract
+      operationId: putAdminContractPaymentMethod
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - id
+              properties:
+                id:
+                  type: integer
+                  description: Id of the payment method to update the contract with
+                  example: 42
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/contracts/{id}/payments:
+    get:
+      summary: Fetch the payments attached to a given Contract
+      operationId: getAdminContractPayments
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminContractPaymentResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/contracts/{id}/pricing:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Fetch the pricing information of a given Contract
+      operationId: getAdminContractPricing
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminContractPricingResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/contracts/{id}/receipt/pdf:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    post:
+      summary: Generate and fetch receipt PDF for the given contract
+      operationId: postAdminContractReceiptPdf
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      responses:
+        '201':
+          description: Success
+          headers:
+            Location:
+              schema:
+                type: string
+                description: Link location of receipt PDF
+                example: https://api.dw-tst.com/rental_receipt/TUREQkxHQk1hUzFoUj
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/contracts/{id}/rental_agreements:
+    parameters:
+    - $ref: '#/components/parameters/0'
+    get:
+      summary: Get the rental agreement PDF for a reservation
+      operationId: getRentalAgreementPDF
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        description: reservation_id used to scope rental agreement
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Rental agreement PDF
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: An invalid request has been detected
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          description: User authentication has failed
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: User is not authorized to view this resource
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: The requested resource was not found
+          $ref: '#/components/responses/NotFound'
+  /admin/contracts/{id}/settlements:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    post:
+      summary: Create a settlement attempt on the balance of the contract
+      operationId: postAdminContractSettlement
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      responses:
+        '201':
+          description: Success
+          headers:
+            Location:
+              schema:
+                type: string
+                description: Link location of contract payment list
+                example: https://api.dw-tst.com/contracts/42/payments
+        '202':
+          description: Accepted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/contracts/{id}/split_bill:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Fetch the split bill associated to a given Contract
+      operationId: getAdminContractSplitBill
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminContractSplitBillResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+    post:
+      summary: Creates a split bill that is associated with a given contract
+      operationId: postAdminContractSplitBill
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminContractSplitBillRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreatedWithLocationHeader'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+    put:
+      summary: Update the split bill associated with a given contract
+      operationId: putAdminContractSplitBill
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminContractSplitBillRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+    delete:
+      summary: Deletes a split bill
+      operationId: deleteAdminContractSplitBill
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/contracts/{id}/split_bill/adjustment:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Fetch the adjustment associated to a given contract's split bill
+      operationId: getAdminContractSplitBillAdjustment
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminContractSplitBillAdjustmentResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+    post:
+      summary: Creates an adjustment of the specified amount on a contract's split bill
+      operationId: postAdminContractSplitBillAdjustment
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminContractSplitBillAdjustmentRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreatedWithLocationHeader'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/contracts/{id}/split_bill/payment:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    post:
+      summary: Creates a payment for the split bill of a given contract
+      operationId: postAdminContractSplitBillPayment
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      responses:
+        '201':
+          $ref: '#/components/responses/Created'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+    delete:
+      summary: Deletes the payment of the split bill of a given contract
+      operationId: deleteAdminContractSplitBillPayment
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/contracts/{id}/split_bill/pdf:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    post:
+      summary: Generate split bill PDF for the given contract
+      operationId: postAdminContractSplitBillPdf
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      responses:
+        '201':
+          description: Success
+          headers:
+            Location:
+              schema:
+                type: string
+                description: Link location of split bill PDF
+                example: https://api.dw-tst.com/documents/TUREQkxHQk1hUzFoUj
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/contracts/{id}/start:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    put:
+      summary: Start the Given Contract
+      operationId: putAdminContractStart
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminContractStartRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/ContractStartUnprocessableEntity'
+  /admin/contracts/{id}/unassign_vehicle:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    put:
+      summary: Unassign the vehicle currently assigned to the given contract
+      operationId: putAdminContractUnassignVehicle
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/contracts/{id}/vehicle:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    put:
+      summary: Assign a Vehicle to the Given Contract
+      operationId: putAdminContractVehicle
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the contract
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminContractVehicleRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/contracts/{id}/vehicles/available:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Retrieves a list of available vehicles for the given contract
+      operationId: getAdminContractVehiclesAvailable
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The contract id
+        schema:
+          type: integer
+      - name: fleet_id
+        in: query
+        required: false
+        description: Overriding the fleet from the contract to list out available vehicles
+        schema:
+          type: integer
+          example: 523
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+        description: Page number returned from collection based on total records and records per response
+      - name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 30
+        description: Number records returned in collection in response
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminVehicleResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/contracts/{id}/vehicles/available/search:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Returns a list of available vehicles for a contract based on the provided query
+      operationId: getAdminContractVehiclesAvailableSearch
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The contract id
+        schema:
+          type: integer
+      - name: q
+        in: query
+        required: true
+        description: Query parameter to search against indexed fields on vehicle
+        schema:
+          type: string
+      - name: fleet_id
+        in: query
+        required: false
+        description: Overriding the fleet from the contract to search for available vehicles
+        schema:
+          type: integer
+          example: 523
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+        description: Page number returned from collection based on total records and records per response
+      - name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 30
+        description: Number records returned in collection in response
+      - name: sort
+        in: query
+        description: The sort order is ascending unless the column name is prefixed with a minus (U+002D HYPHEN-MINUS, "-"), in which case it will be descending.
+        required: false
+        schema:
+          $ref: '#/components/schemas/AdminVehicleSortColumns'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminVehicleResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/contracts/{id}/warranty:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Returns a Warranty for a Contract
+      operationId: getContractWarranty
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the Contract
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminContractsWarranty'
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+    post:
+      summary: Creates a Warranty for a Contract
+      operationId: postContractsWarranty
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the Contract
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminContractsWarranty'
+      responses:
+        '201':
+          $ref: '#/components/responses/Success'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+    put:
+      summary: Update the Contract's Warranty
+      operationId: putAdminContractsWarranty
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the Contract
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminContractsWarranty'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+    delete:
+      summary: Removes the Warranty from a Contract
+      operationId: deleteAdminContractsWarranty
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the Contract
+        schema:
+          type: integer
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /admin/customers/{customer_id}/contracts:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Fetch the contracts for a customer at a particular dealership
+      operationId: getAdminCustomersContracts
+      tags:
+      - Contracts
+      parameters:
+      - name: customer_id
+        in: path
+        required: true
+        description: The id of the scoped customer
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+        description: Number of records returned in a collection in the response
+      - name: page
+        in: query
+        schema:
+          type: integer
+        description: Page number returned from the collection based on the total records and records per response
+      responses:
+        '200':
+          description: Successfully got Customer contracts
+          headers:
+            Page:
+              schema:
+                type: integer
+                example: 1
+              description: Current page returned
+            Per-Page:
+              schema:
+                type: integer
+                example: 30
+              description: Records per page returned
+            Total:
+              schema:
+                type: integer
+                example: 2
+              description: Total records available
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminCustomerContractResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /admin/customers/{id}/payment_methods:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Fetch the Payment Methods belonging to the given Customer
+      operationId: getAdminCustomerCreditCards
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the customer
+        schema:
+          type: integer
+      - name: reservation_id
+        in: query
+        required: false
+        description: Optional reservation used for reservation-aware payment method selection
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminCustomerPaymentMethodResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/dealerships/{id}/calendar/booking_channels:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Returns unique booking channel values for calendar filtering
+      operationId: getDealershipCalendarBookingChannels
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the dealership
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - booking_channels
+                properties:
+                  booking_channels:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                    - dealerware
+                    - mykaarma
+                    - xtime
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/dealerships/{id}/calendar/contracts:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Returns a paginated list of Reservations or Contracts for a Dealership Calendar
+      operationId: getDealershipCalendarContracts
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the dealership
+        schema:
+          type: integer
+      - in: query
+        name: status_in
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: booked,cancelled
+        description: Include only Contracts with these statuses (booked, cancelled, pending_agreement, started, finished or no_showed)
+      - in: query
+        name: status_not_in
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: started
+        description: Include Contracts that are not in these statuses (booked, cancelled, pending_agreement, started, finished or no_showed)
+      - in: query
+        name: start_at
+        required: false
+        schema:
+          type: string
+          format: date-time
+          example: '2020-06-15T20:22:26Z'
+        description: Include Contracts created after or on this date and time
+      - in: query
+        name: end_at
+        required: false
+        schema:
+          type: string
+          format: date-time
+          example: '2020-06-15T20:22:26Z'
+        description: Include Contracts created before or on this date and time
+      - in: query
+        name: occurs_during
+        required: false
+        schema:
+          type: string
+          example: 2020-06-15T20:22:26Z,2020-07-15T20:22:26Z
+        description: A string containing the from date and to date separated by a comma
+      - in: query
+        name: fleet_ids
+        required: false
+        schema:
+          type: array
+          items:
+            type: number
+          example: 1,2
+        description: Comma separated list of integers (Fleet ID)
+      - in: query
+        name: agreement_id
+        required: false
+        schema:
+          type: number
+          example: 1
+        description: Include Contracts with this Agreement ID
+      - in: query
+        name: types
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          example: loaner
+        description: Include Contracts with this type (loaner or rental)
+      - in: query
+        name: booking_channels
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          example: xtime,mykaarma
+        description: Comma separated list of booking channel slugs (e.g. dealerware, xtime, mykaarma)
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: number
+        description: The page to be fetched, by default 1
+      - name: per_page
+        in: query
+        required: false
+        schema:
+          type: number
+        description: Number of items per page to be fetched, by default 30
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminCalendarContractResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/dealerships/{id}/contracts/manifest:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Fetch the manifest scope (open or closed today) of contracts for a dealership
+      operationId: getAdminDealershipContracts
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the dealership
+        schema:
+          type: integer
+      - name: sort
+        in: query
+        description: The sort order for each sort field MUST be ascending unless it is prefixed with a minus (U+002D HYPHEN-MINUS, "-"), in which case it MUST be descending.
+        required: false
+        schema:
+          $ref: '#/components/schemas/AdminDealershipContractSortColumns'
+      - name: open
+        in: query
+        description: Filter contracts to those that are open or closed today. Default (no value) returns both.
+        required: false
+        schema:
+          type: boolean
+      - name: status
+        in: query
+        description: Filter contracts based on the status values provided
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - Booked
+            - Pending
+            - Started
+      - name: reservation_time_cap
+        in: query
+        description: Filter contracts whose reservation time has exceeded the configured cap
+        required: false
+        schema:
+          type: boolean
+      - name: columns
+        in: query
+        description: Comma-separated list of columns to include in the CSV response
+        required: false
+        schema:
+          type: string
+          example: confirmation_token, vin, days_on_loan
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+        description: Number of records returned in a collection in the response
+        required: false
+      - name: page
+        in: query
+        schema:
+          type: integer
+        description: Page number returned from the collection based on the total records and records per response
+        required: false
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminDealershipContractManifestResponse'
+            text/csv:
+              schema:
+                type: string
+              examples:
+                csv table:
+                  value: 'Contract ID, Status, Stock #, License, Purchase Order, Repair Order, VIN, Scheduled Start, Contract Start, Days On Contract, Service Vehicle Number, Service Advisor, Program, Customer, Profile
+
+                    ADB4764B92, started, BY123FORD, ABC 123, PO12345, 32423, 1G1JC524417418958, 10/21/2020 3:30 PM EDT, 10/21/2020 3:21 PM EDT, 7, 123, John Smith, Courtesy, Mitch Hedburg, TRUE
+
+                    '
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/dealerships/{id}/contracts/manifest/search:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Query the manifest scope (open and closed today) of contracts for a dealership
+      operationId: getAdminDealershipContractsSearch
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the dealership
+        schema:
+          type: integer
+      - name: q
+        in: query
+        required: true
+        description: Query parameter to search against indexed fields on Contract
+        schema:
+          type: string
+      - name: open
+        in: query
+        required: false
+        description: Filter contracts to those that are open or closed today
+        schema:
+          type: boolean
+      - name: reservation_time_cap
+        in: query
+        required: false
+        description: Filter contracts whose reservation time has exceeded the configured cap
+        schema:
+          type: boolean
+      - name: status
+        in: query
+        required: false
+        description: Filter contracts based on the status values provided
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - Booked
+            - Pending
+            - Started
+      - name: page
+        in: query
+        required: false
+        description: Page number returned from the collection
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        required: false
+        description: Number of records returned in a collection
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminDealershipContractManifestResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/dealerships/{id}/contracts/manifest/today:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Fetch the manifest scope of contracts for a dealership with a pickup/dropoff…
+      operationId: getAdminDealershipContractsManifestToday
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the dealership
+        schema:
+          type: integer
+      - name: filter
+        in: query
+        required: false
+        description: Filters contracts to those that are requested. Default (no value) returns all.
+        schema:
+          type: string
+          enum:
+          - all
+          - pickup
+          - dropoff
+          - pickup_dropoff
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          default: 30
+        description: Number of records returned in a collection in the response.
+        required: false
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+        description: Page number returned from the collection based on the total records and records per response
+        required: false
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminDealershipContractManifestResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /admin/dealerships/{id}/fleets/contracts_vehicles:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Fetch the fleets for a location, along with the contracts (within the given…
+      operationId: getAdminDealershipFleetsContractsAndVehicles
+      tags:
+      - Contracts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The id of the dealership
+        schema:
+          type: integer
+      - name: start_at
+        description: The timestamp for the start of the range to fetch contracts for (inclusive)
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          example: '2020-06-15T00:00:00Z'
+      - name: end_at
+        description: The timestamp for the end of the range to fetch contracts for (inclusive)
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          example: '2020-06-21T00:00:00Z'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/AdminDealershipFleetsContractsVehiclesResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /contracts/contactless/{uuid}:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Returns contactless contract data
+      operationId: getContractsContactless
+      tags:
+      - Contracts
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: UUID of Contactless Contract
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactlessContractResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+  /contracts/contactless/{uuid}/signatures:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    post:
+      summary: Creates a new signature associated with a contactless contract
+      description: 'Creates a signature for the reservation identified by the contactless uuid token.
+
+        If contactless cache already exists, it is reused.
+
+        If contactless cache does not exist, it is created lazily from request values (when provided) or defaults.
+
+        Required body field: image.
+
+        Optional body fields: fuel_percentage, odometer.'
+      operationId: postContractsContactlessSignatures
+      tags:
+      - Contracts
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: The uuid token (reservation confirmation token) of the contactless contract
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignatureRequest'
+            examples:
+              image_only:
+                summary: Signature image only
+                value:
+                  image: V2hhdCdzIHVwIHRoaXMgaXMgbXkgYmFzZTY0IGVuY29kZWQgc2hpdA==
+              image_with_odometer:
+                summary: Signature with odometer
+                value:
+                  image: V2hhdCdzIHVwIHRoaXMgaXMgbXkgYmFzZTY0IGVuY29kZWQgc2hpdA==
+                  odometer:
+                    unit: km
+                    value: 100
+              image_with_fuel_and_odometer:
+                summary: Signature with fuel and odometer
+                value:
+                  image: V2hhdCdzIHVwIHRoaXMgaXMgbXkgYmFzZTY0IGVuY29kZWQgc2hpdA==
+                  fuel_percentage: 75.5
+                  odometer:
+                    unit: km
+                    value: 12345.6
+      responses:
+        '201':
+          $ref: '#/components/responses/Created'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+  /contracts/sales_lead:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    get:
+      summary: Fetch sales lead form details by token
+      description: 'Returns prefilled customer and reservation details for the unauthenticated sales lead form.
+
+        The token must be valid and unexpired.'
+      operationId: getContractsSalesLead
+      tags:
+      - Contracts
+      security: []
+      parameters:
+      - name: token
+        in: query
+        required: true
+        description: One-time token used to load the sales lead form
+        schema:
+          type: string
+          example: ba4cefeb-d247-497b-b93c-a5f30d8c6f34
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: Alex Morgan
+                  phone_number:
+                    type: string
+                    example: '+15125551234'
+                  email:
+                    type: string
+                    example: alex@example.com
+                  customer_vehicle:
+                    type:
+                    - string
+                    - 'null'
+                    example: 2C4RC1BG5KR000001
+        '404':
+          description: Token is invalid, expired, or already used
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 30003
+                  message:
+                    type: string
+                    example: This form has already been submitted, or your access token has expired
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+    post:
+      summary: Submit sales lead purchase intent
+      description: 'Creates or updates a service-to-sales lead for the reservation identified by the token.
+
+        On success, the token is consumed and cannot be reused.'
+      operationId: postContractsSalesLead
+      tags:
+      - Contracts
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - token
+              - purchase_intent
+              properties:
+                token:
+                  type: string
+                  example: ba4cefeb-d247-497b-b93c-a5f30d8c6f34
+                purchase_intent:
+                  type: string
+                  enum:
+                  - buying_now
+                  - buying_soon
+                  - just_exploring
+                  description: Purchase intent selected by the customer
+                  example: buying_now
+            examples:
+              buying_now:
+                summary: Submit buying now intent
+                value:
+                  token: ba4cefeb-d247-497b-b93c-a5f30d8c6f34
+                  purchase_intent: buying_now
+      responses:
+        '201':
+          description: Created
+        '404':
+          description: Token is invalid, expired, or already used
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 30003
+                  message:
+                    type: string
+                    example: This form has already been submitted, or your access token has expired
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+components:
+  schemas:
+    AdminCustomerContractResponse:
+      type: object
+      required:
+      - id
+      - token
+      - status
+      - scheduled_pickup_at
+      - scheduled_dropoff_at
+      - actual_pickup_at
+      - actual_dropoff_at
+      - balance
+      - confirmation_token
+      - purchase_order
+      properties:
+        id:
+          type: integer
+          example: 42
+          description: database id of the contract
+        token:
+          type: string
+          example: 7713738FG3
+          description: token used to identify the contract in Dashboard routes
+        actual_pickup_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          example: '2021-01-14T20:00:00Z'
+          description: Time vehicle was actually picked up at
+        actual_dropoff_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          example: '2021-01-17T15:00:00Z'
+          description: Time vehicle was actually dropped off at
+        balance:
+          type: string
+          example: $254.00
+          description: Amount due on contract
+        confirmation_token:
+          type: string
+          example: 7713738FG3
+          description: also referred to as contract id
+        status:
+          type: string
+          enum:
+          - booked
+          - cancelled
+          - pending_agreement
+          - started
+          - finished
+          - no_showed
+        scheduled_pickup_at:
+          type: string
+          format: date-time
+          example: '2021-01-14T20:00:00Z'
+        scheduled_dropoff_at:
+          type: string
+          format: date-time
+          example: '2021-01-17T15:00:00Z'
+        purchase_order:
+          type:
+          - string
+          - 'null'
+          example: PO123
+          description: The optional purchase order number associated with this contract
+    AdminContractSplitBillRequest:
+      type: object
+      required:
+      - name
+      properties:
+        reference_number:
+          type: string
+          description: Optional field for tracking number
+          example: Claim 1234
+        name:
+          type: string
+          description: Name of additional payer
+          example: Insurance Company
+        contact_name:
+          type: string
+          description: Name of a contact
+          example: Claims Department
+        line1:
+          type: string
+          description: First line of an address
+          example: 123 W St
+        line2:
+          type: string
+          description: Second line of an address
+          example: 456 W St
+        city:
+          type: string
+          description: City of an address
+          example: Austin
+        postal_code:
+          type: string
+          description: Postal code of an address
+          example: '78701'
+        subregion:
+          type: string
+          description: Subregion of an address
+          example: TX
+        phone_number:
+          type: string
+          description: Phone number of a contact
+          example: '15551237890'
+        email:
+          type: string
+          description: Email of a contact
+          example: aaa@bbb.com
+        fleet_id:
+          type: number
+          format: integer
+          example: 42
+    AdminVehicleSortColumns:
+      type: string
+      enum:
+      - created_at
+      - updated_at
+      - license
+      - model
+      - odometer
+      - physical_location
+      - status
+      - stock_number
+      - year
+      - vin
+      - maturity_date
+      - in_service_date
+      - rdr_date
+    SignatureRequest:
+      type: object
+      required:
+      - image
+      properties:
+        image:
+          type: string
+          description: Base64-encoded signature image.
+          example: V2hhdCdzIHVwIHRoaXMgaXMgbXkgYmFzZTY0IGVuY29kZWQgc2hpdA==
+        fuel_percentage:
+          type: number
+          format: float
+          example: 75.5
+          description: Optional fuel percentage for lazy contactless cache creation.
+        odometer:
+          type: object
+          description: Optional odometer for lazy contactless cache creation.
+          required:
+          - value
+          - unit
+          properties:
+            value:
+              type: number
+              format: float
+              example: 12345.6
+            unit:
+              type: string
+              example: km
+    AdminAgreementToggleResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 123
+        active:
+          type:
+          - boolean
+          - 'null'
+          example: true
+          description: Only present on Managed Toggles
+        text:
+          type: string
+          example: I agree to receive my contract and receipt communications via SMS
+          description: The text of the toggle
+        numeric_order:
+          type: integer
+          example: 1
+          description: 0 indexed position index for the toggle to print on contracts
+        language:
+          type: string
+          example: en
+          description: The main language of the agreement
+        style:
+          type:
+          - string
+          - 'null'
+          example: bold
+          description: Only present on Agreement Toggles (non-Managed toggles)
+        translations:
+          type: string
+          example: '[{"language": "fr", "text": "French version of the text"}]'
+          description: this is text based attribute but will work as JSON format to handle sub-languages like fr
+        read_only:
+          type: boolean
+          example: true
+        created_at:
+          type: string
+          format: date-time
+          example: '2020-06-15T20:22:26Z'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2020-06-15T20:22:26Z'
+    AdminContractsWarranty:
+      type: object
+      properties:
+        daily_rate:
+          type: number
+          example: 100.25
+        warranty_days:
+          type: number
+          example: 4
+        tax_percentage:
+          type: number
+          example: 0.08
+        authorization_number:
+          type: string
+          example: ABC123
+    AdminContractCustomerResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Customer ID
+          example: 42
+        first_name:
+          type: string
+          description: First name
+          example: Leslie
+        last_name:
+          type: string
+          description: Last name
+          example: Knope
+        phone_number:
+          type: string
+          description: Customer phone number, stripped to digits only
+          example: '15554447275'
+        email:
+          type: string
+          description: Customer email
+          example: leslie.knope@parks.test
+        links:
+          properties:
+            contract:
+              $ref: '#/components/schemas/HypermediaLink'
+    AdminCalendarContractResponse:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        contract_type:
+          type: string
+          example: contract
+          description: This is either a contract or reservation
+        status:
+          type: string
+          example: booked
+          description: booked, cancelled, pending_agreement, started, finished or no_showed
+        created_at:
+          type: string
+          example: '2022-11-15T12:01:40-05:00'
+        scheduled_pickup_at:
+          type: string
+          example: '2022-11-15T12:01:40-05:00'
+        scheduled_dropoff_at:
+          type: string
+          example: '2022-11-15T12:01:40-05:00'
+        actual_pickup_at:
+          type:
+          - string
+          - 'null'
+          example: '2022-11-15T12:01:40-05:00'
+        actual_dropoff_at:
+          type:
+          - string
+          - 'null'
+          example: '2022-11-15T12:01:40-05:00'
+        service_advisor:
+          type:
+          - string
+          - 'null'
+          example: Ted Smith
+        vehicle_id:
+          type:
+          - number
+          - 'null'
+          example: 1
+        fleet_id:
+          type: number
+          example: 2
+        calendar_group:
+          type: string
+          example: unscheduled
+          description: Either scheduled or unscheduled
+        has_valet_task:
+          type: boolean
+          example: true
+          description: true if the Contract has at least one valet task
+        task_ids:
+          type: array
+          items:
+            type: number
+          example:
+          - 1
+          - 2
+        service_vehicle_id:
+          type:
+          - string
+          - 'null'
+          example: 123abc
+        repair_order:
+          type:
+          - string
+          - 'null'
+          example: abc123
+        purchase_order:
+          type:
+          - string
+          - 'null'
+          example: PO123
+          description: The optional purchase order number associated with this contract
+        booking_application:
+          type:
+          - string
+          - 'null'
+          example: scheduler
+          description: Client application type that created the reservation (e.g. web, iphone-appstore, scheduler).
+        booking_channel:
+          type:
+          - string
+          - 'null'
+          example: mykaarma
+          description: Partner integration source for the booking (e.g. mykaarma, xtime, redcap, toyota-oneapp) or dealerware for Dealerware-native bookings.
+        agreement:
+          $ref: '#/components/schemas/AdminCalendarAgreementResponse'
+        customer:
+          $ref: '#/components/schemas/AdminCalendarCustomerResponse'
+    AdminContractUpdateRequest:
+      type: object
+      required:
+      - scheduled_pickup_at
+      - scheduled_dropoff_at
+      properties:
+        daily_rate_override:
+          description: The daily rate to charge for this contract, if different from the default rate for the vehicle. Must have the accounting and/or admin role to set this field.
+          type:
+          - number
+          - 'null'
+          example: 29.95
+        fleet_id:
+          type: number
+          example: 20
+        purchase_order:
+          type: string
+          example: PO123
+        repair_order:
+          type: string
+          example: ABC123
+        scheduled_pickup_at:
+          type: string
+          format: date-time
+          example: '2029-06-15T20:22:26Z'
+        scheduled_dropoff_at:
+          type: string
+          format: date-time
+          example: '2029-06-15T20:22:26Z'
+        service_vehicle_id:
+          type: string
+          description: only allows numbers and lowercase letters
+          example: 123abc
+        service_advisor_id:
+          type: number
+          example: 1
+        vehicle_id:
+          type:
+          - number
+          - 'null'
+          example: 42
+    HypermediaLink:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 2
+          description: ID of the associated resource
+        href:
+          type: string
+          example: https://api.dw-tst.com/admin/some_resources/2
+          description: Link to the associated resource
+    AdminDealershipContractResponse:
+      type: object
+      required:
+      - id
+      - actual_dropoff_at
+      - actual_pickup_at
+      - booked_by_name
+      - booked_car_detailed_description
+      - booking_application
+      - booking_channel
+      - capabilities
+      - confirmation_token
+      - contactless
+      - created_at
+      - credit_card_id
+      - customer
+      - daily_rate_override
+      - damage_inspections
+      - external_deposit_amount
+      - finished_by_name
+      - fuel
+      - ineligibility_reasons
+      - is_contract_eligible
+      - links
+      - location_sequence
+      - max_vehicle_swaps
+      - odometer
+      - program_minimum_age
+      - purchase_order
+      - repair_order
+      - scheduled_dropoff_at
+      - scheduled_pickup_at
+      - service_advisor_id
+      - service_advisor_name
+      - service_vehicle_id
+      - signed
+      - status
+      - updated_at
+      - vehicle_swaps_performed
+      properties:
+        id:
+          type: integer
+          example: 42
+          description: database id of the contract
+        actual_pickup_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          example: '2023-01-14T20:00:00Z'
+        actual_dropoff_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          example: '2023-01-16T20:00:00Z'
+        booked_car_detailed_description:
+          type: object
+          properties:
+            acriss_code:
+              type: string
+              example: LCAR
+            acriss_model_description:
+              type: string
+              example: Luxy 2/4 Door Automatic with AC
+            city_mpg:
+              type: string
+              example: '21'
+            fuel_tank:
+              type: string
+              example: '17.4'
+            hwy_mpg:
+              type: string
+              example: '32'
+            luggage:
+              type: string
+              example: 2-3
+            make:
+              type: string
+              example: Lexus
+            model:
+              type: string
+              example: IS
+            passengers:
+              type: string
+              example: '5'
+            style:
+              type: string
+              example: '300'
+            type:
+              type: string
+              example: Sedan
+            year:
+              type: string
+              example: '2020'
+        booked_by_name:
+          type:
+          - string
+          - 'null'
+          example: Alexton McAnderson
+        booking_application:
+          type:
+          - string
+          - 'null'
+          example: web
+          description: Client application type that created the reservation (e.g. web, iphone-appstore, scheduler).
+        booking_channel:
+          type:
+          - string
+          - 'null'
+          example: mykaarma
+          description: Partner integration source for the booking (e.g. mykaarma, xtime, redcap, toyota-oneapp) or dealerware for Dealerware-native bookings.
+        capabilities:
+          type: object
+          required:
+          - payments
+          - valet_moves
+          properties:
+            payments:
+              type: object
+              required:
+              - on_platform
+              - off_platform
+              properties:
+                on_platform:
+                  type: boolean
+                  example: true
+                  description: Whether the contract allows on-platform payments.
+                off_platform:
+                  type: boolean
+                  example: false
+                  description: Whether the contract allows off-platform payments.
+            valet_moves:
+              type: object
+              required:
+              - enabled
+              properties:
+                enabled:
+                  type: boolean
+                  example: true
+                  description: Whether the contract dealership supports HopDrive Valet Moves controls.
+        confirmation_token:
+          type: string
+          example: 7713738FG3
+          description: also referred to as contract id
+        contactless:
+          type: boolean
+          example: false
+          description: denotes whether or not the contract is a contactless contract
+        credit_card_id:
+          type:
+          - integer
+          - 'null'
+          example: 42
+          description: ID of the credit card selected on the contract, or null when no card is selected.
+        customer:
+          type: object
+          description: Customer summary. A missing or soft-deleted customer results in a 404 response.
+          required:
+          - id
+          - full_name
+          - has_complete_profile
+          - permitted_to_rent
+          properties:
+            id:
+              type: integer
+              example: 42
+            full_name:
+              type: string
+              example: Test Customer
+              description: Customer name, masked as Deleted Customer for privacy-deleted customers.
+            has_complete_profile:
+              type: boolean
+              example: false
+            permitted_to_rent:
+              type: boolean
+              example: true
+              description: Whether the customer is permitted to rent based on the active Do Not Rent list.
+        created_at:
+          type: string
+          format: date-time
+          example: '2021-01-15T19:38:26Z'
+        daily_rate_override:
+          description: The daily rate to charge for this contract, if different from the default rate for the vehicle
+          type: number
+          example: 29.95
+        damage_inspections:
+          type: array
+          description: Damage inspection statuses for the active car reservations on this contract.
+          items:
+            type: object
+            required:
+            - vehicle_id
+            - status
+            - pdf_report_url
+            properties:
+              vehicle_id:
+                type: integer
+                example: 42
+                description: The vehicle ID for the associated car reservation.
+              status:
+                type: string
+                example: report_generated
+                description: 'The status of the associated damage inspection. Returns `not_inspected`
+
+                  when no damage inspection exists for that car reservation.
+
+                  '
+              pdf_report_url:
+                type:
+                - string
+                - 'null'
+                format: uri
+                example: https://api.dealerware.com/rails/active_storage/blobs/redirect/abc123/report.pdf
+                description: 'The URL for the attached damage inspection PDF report, if present.
+
+                  Returns `null` when no PDF report has been attached for that car reservation.
+
+                  '
+        external_deposit_amount:
+          type:
+          - number
+          - 'null'
+          example: 100
+          description: The amount of the external deposit, if any, that was collected for this contract
+        finished_by_name:
+          type:
+          - string
+          - 'null'
+          example: J. Last
+        fuel:
+          type: object
+          properties:
+            starting_fuel_gallons:
+              type:
+              - number
+              - 'null'
+              example: 10.5
+              description: Fuel amount at the start of the contract in gallons
+            starting_fuel_liters:
+              type:
+              - number
+              - 'null'
+              example: 39.7
+              description: Fuel amount at the start of the contract in liters
+            ending_fuel_gallons:
+              type:
+              - number
+              - 'null'
+              example: 8.2
+              description: Fuel amount at the end of the contract in gallons
+            ending_fuel_liters:
+              type:
+              - number
+              - 'null'
+              example: 31
+              description: Fuel amount at the end of the contract in liters
+            starting_fuel_percentage:
+              type:
+              - number
+              - 'null'
+              format: float
+              example: 75
+              description: Starting fuel as a percentage of the tank capacity
+            ending_fuel_percentage:
+              type:
+              - number
+              - 'null'
+              format: float
+              example: 58
+              description: Ending fuel as a percentage of the tank capacity
+        location_sequence:
+          type: integer
+          example: 42
+          description: sequence id of the contract for its location
+        odometer:
+          type: object
+          properties:
+            starting_odometer_miles:
+              type:
+              - number
+              - 'null'
+              example: 15234
+              description: Odometer reading at the start of the contract in miles
+            starting_odometer_km:
+              type:
+              - number
+              - 'null'
+              example: 24517
+              description: Odometer reading at the start of the contract in kilometers
+            ending_odometer_miles:
+              type:
+              - number
+              - 'null'
+              example: 15321
+              description: Odometer reading at the end of the contract in miles
+            ending_odometer_km:
+              type:
+              - number
+              - 'null'
+              example: 24660
+              description: Odometer reading at the end of the contract in kilometers
+        purchase_order:
+          type:
+          - string
+          - 'null'
+          example: PO123
+          description: The optional purchase order number associated with this contract
+        repair_order:
+          type:
+          - string
+          - 'null'
+          example: 1234ABC
+          description: The optional repair order sent from a contract creation request
+        service_vehicle_id:
+          type:
+          - string
+          - 'null'
+          example: 1234ABC
+          description: The optional service vehicle ID sent from a contract creation request
+        service_vehicle_id_valid:
+          type: boolean
+          example: true
+          description: Whether the service vehicle ID is a valid VIN
+        status:
+          type: string
+          enum:
+          - booked
+          - cancelled
+          - pending_agreement
+          - started
+          - finished
+          - no_showed
+        scheduled_pickup_at:
+          type: string
+          format: date-time
+          example: '2021-01-14T20:00:00Z'
+        scheduled_dropoff_at:
+          type: string
+          format: date-time
+          example: '2021-01-17T15:00:00Z'
+        service_advisor_name:
+          type:
+          - string
+          - 'null'
+          example: Orange Cassidy
+        service_advisor_id:
+          type:
+          - integer
+          - 'null'
+          example: 123
+        signed:
+          type: boolean
+          example: true
+          description: denotes whether or not the required contract signatures are present
+        updated_at:
+          type: string
+          format: date-time
+          example: '2021-01-14T19:38:26Z'
+        program_minimum_age:
+          type:
+          - integer
+          - 'null'
+          example: 21
+          description: The applicable minimum age requirement for drivers, including Drive Protection rules when enforced
+        ineligibility_reasons:
+          type: object
+          description: Detailed information about why drivers may be ineligible for this contract
+          properties:
+            ineligible_drivers:
+              type: array
+              description: Array of drivers who do not meet the program requirements
+              items:
+                type: object
+                properties:
+                  customer_id:
+                    type:
+                    - integer
+                    - 'null'
+                    example: 123
+                    description: The customer ID (null for additional drivers)
+                  is_primary_driver:
+                    type: boolean
+                    example: true
+                    description: Whether this is the primary driver
+                  drivers_name:
+                    type: string
+                    example: John Doe
+                    description: The driver's full name
+                  born_on:
+                    type: string
+                    format: date
+                    example: '2000-01-01'
+                    description: The driver's date of birth in YYYY-MM-DD format
+                  reason:
+                    type: string
+                    example: underage
+                    description: The reason for ineligibility
+        is_contract_eligible:
+          type: boolean
+          example: false
+          description: Whether the contract is eligible to start based on all eligibility checks
+        max_vehicle_swaps:
+          type: integer
+          example: 2
+          description: The maximum number of vehicle swaps that can be performed for this contract.
+        vehicle_swaps_performed:
+          type: integer
+          example: 1
+          description: The number of vehicle swaps that have been performed for this contract.
+        links:
+          type: object
+          properties:
+            vehicle:
+              $ref: '#/components/schemas/HypermediaLink'
+            fleet:
+              $ref: '#/components/schemas/HypermediaLink'
+            customer:
+              $ref: '#/components/schemas/HypermediaLink'
+            dealership:
+              $ref: '#/components/schemas/HypermediaLink'
+    AdminCalendarAgreementResponse:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        insurance_form:
+          type: string
+          example: Custom
+          description: Custom, Arrowhead, PDP, Sedgwick, SedgwickCdw or AutoNation
+    ContactlessContractResponse:
+      type: object
+      properties:
+        agreement_url:
+          type: string
+          example: http://host.com/path/agreement.pdf
+        dealership_name:
+          type: string
+          example: Car Dealership of North Anywhere
+        drive_protection_selections:
+          type:
+          - object
+          - 'null'
+          description: Whether each drive protection insurance category is selected.
+          required:
+          - collision_damage_warranty
+          - loss_damage_warranty
+          - renters_contingent_liability_insurance
+          - supplemental_liability_insurance
+          properties:
+            collision_damage_warranty:
+              type: boolean
+              example: false
+            loss_damage_warranty:
+              type: boolean
+              example: true
+            renters_contingent_liability_insurance:
+              type: boolean
+              example: false
+            supplemental_liability_insurance:
+              type: boolean
+              example: true
+        fuel:
+          type: string
+          example: 15/16
+        fuel_percentage:
+          type: number
+          format: float
+          example: 98.5
+        metric:
+          type: boolean
+          example: false
+        odometer:
+          type: object
+          required:
+          - value
+          - unit
+          properties:
+            value:
+              type: number
+              format: float
+              example: 20055.12
+            unit:
+              type: string
+              example: km
+        signature:
+          type: boolean
+          example: true
+        toggles:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 123
+              text:
+                type: string
+                example: You will return the car.
+              order:
+                type: integer
+                example: 1
+    AdminDealershipContractSortColumns:
+      type: string
+      enum:
+      - actual_pickup_at
+      - location_sequence
+      - scheduled_pickup_at
+      - created_at
+      - status
+    AdminOdometer:
+      type: object
+      required:
+      - value
+      - unit
+      properties:
+        value:
+          type: number
+          format: float
+          example: 3293.5
+          description: 0.0 indicates no reading was found
+        unit:
+          type: string
+          example: km
+    AdminContractBillingAdjustmentsResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 42
+          description: Adjustment ID to be used as type_id when creating a line item
+        name:
+          type: string
+          example: Fuel Service Charge
+          description: Display name for the available adjustment
+    AdminContractSplitBillAdjustmentResponse:
+      type: object
+      properties:
+        amount:
+          type: number
+          format: float
+          description: Amount of the total to be added to the split bill
+          example: 123.45
+        taxable:
+          type: boolean
+          description: Whether the payer of the split bill pays sales tax.
+          example: true
+        links:
+          properties:
+            contract:
+              $ref: '#/components/schemas/HypermediaLink'
+    AdminContractSplitBillResponse:
+      type: object
+      properties:
+        id:
+          type: number
+          format: integer
+          description: ID for split bill
+          example: 1213
+        reference_number:
+          type: string
+          description: Optional field for tracking number
+          example: Claim 1234
+        name:
+          type: string
+          description: Name of additional payer
+          example: Insurance Company
+        contact_name:
+          type: string
+          description: Name of a contact
+          example: Claims Department
+        line1:
+          type: string
+          description: First line of an address
+          example: 123 W St
+        line2:
+          type: string
+          description: Second line of an address
+          example: 456 W St
+        city:
+          type: string
+          description: City of an address
+          example: Austin
+        postal_code:
+          type: string
+          description: Postal code of an address
+          example: '78701'
+        subregion:
+          type: string
+          description: Subregion of an address
+          example: TX
+        phone_number:
+          type: string
+          description: Phone number of a contact
+          example: '15551237890'
+        email:
+          type: string
+          description: Email of a contact
+          example: aaa@bbb.com
+        downloaded_at:
+          type: string
+          format: date-time
+          description: Time at which the invoice pdf was downloaded
+          example: '2020-10-21T10:10:10Z'
+        paid:
+          type: boolean
+          description: Whether the invoice has been marked as paid
+          example: false
+        fleet_id:
+          type: number
+          format: integer
+          description: Program for split bill
+          example: 1213
+        links:
+          properties:
+            contract:
+              $ref: '#/components/schemas/HypermediaLink'
+            downloaded_by:
+              $ref: '#/components/schemas/HypermediaLink'
+    AdminVehicleResponse:
+      type: object
+      properties:
+        available_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          example: '2024-01-02'
+        unavailable_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          example: '2030-12-31'
+        registration:
+          type:
+          - string
+          - 'null'
+          format: date
+          example: '2024-02-03'
+        registration_expiration:
+          type:
+          - string
+          - 'null'
+          format: date
+          example: '2027-02-04'
+        emissions_expiration:
+          type:
+          - string
+          - 'null'
+          format: date
+          example: '2027-03-05'
+        license_state:
+          type:
+          - string
+          - 'null'
+          example: TX
+        next_contract_finish_state:
+          type:
+          - string
+          - 'null'
+          example: maintenance
+        connected:
+          type: boolean
+          example: true
+        connected_car_device_firmware:
+          type: string
+          example: 281110619:159:11
+        connected_car_device_last_updated:
+          type: string
+          format: date-time
+          example: '2020-06-11T15:08:53Z'
+        device:
+          type: string
+          example: guidepoint
+        fuel:
+          type: object
+          required:
+          - unit
+          - capacity
+          properties:
+            unit:
+              type: string
+              example: L
+            capacity:
+              type: number
+              example: 20
+            value:
+              type: number
+              example: 10
+        id:
+          type: integer
+          example: 23561
+        license:
+          type: string
+          example: DNL445
+        links:
+          properties:
+            fleet:
+              $ref: '#/components/schemas/HypermediaLink'
+            fleet_ids:
+              type: array
+              items:
+                type: number
+              example:
+              - 123
+              - 125
+            fleets:
+              type: array
+              items:
+                $ref: '#/components/schemas/HypermediaLink'
+        make:
+          type: string
+          example: Audi
+        model:
+          type: string
+          example: Q5
+        color:
+          description: The color of the vehicle. may not be defined for non-Sedgwick location
+          type: string
+          example: Silver
+        odometer:
+          type: object
+          $ref: '#/components/schemas/AdminOdometer'
+        off_lot:
+          type: boolean
+          example: true
+        physical_location:
+          type: string
+          example: Lot A
+        power_train:
+          type: string
+          example: mechanical
+        status:
+          type: string
+          example: rented
+        stock_number:
+          type: string
+          example: VV111
+        telematics_source:
+          type: string
+          example: guidepoint
+        telematics_enrolled:
+          type: boolean
+          example: true
+        toll_tag_number:
+          type: string
+          example: HMSJNFDS
+        vin:
+          type: string
+          example: 1FT7W2BT4DEB5192
+        year:
+          type: integer
+          example: 2020
+        acriss_code:
+          type: string
+          example: CFAR
+        acriss_model_description:
+          type: string
+          example: Compact SUV Automatic With AC
+        updated_at:
+          type: string
+          example: '2025-03-20T17:42:42Z'
+        created_at:
+          type: string
+          example: '2025-03-20T17:42:42Z'
+        days_off_contract:
+          type: integer
+          example: 7
+        rdr_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: The retail delivery report (RDR) date from the associated parking lot
+          example: '2024-03-15'
+        maturity_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: The maturity date of the vehicle
+          example: '2024-06-15'
+        disposed_at:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: The disposed_at date of the vehicle if exists
+          example: '2024-06-15'
+        in_service_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: The competitor in-service date of the vehicle, defaults to created_at.
+        currently_rented_to_customer_id:
+          type:
+          - integer
+          - 'null'
+          description: The ID of the customer currently renting the vehicle, if rented
+          example: 1789
+    AdminDealershipContractManifestResponse:
+      type: object
+      required:
+      - id
+      - actual_dropoff_at
+      - actual_pickup_at
+      - booking_application
+      - booking_channel
+      - ccpa
+      - confirmation_token
+      - contactless
+      - created_at
+      - customer_name
+      - customer_profile_complete
+      - days_on_loan
+      - fleet_name
+      - links
+      - location_sequence
+      - purchase_order
+      - repair_order
+      - scheduled_dropoff_at
+      - scheduled_pickup_at
+      - service_advisor_name
+      - service_vehicle_id
+      - service_vehicle_id_valid
+      - signed
+      - status
+      - vehicle_license
+      - vehicle_make
+      - vehicle_model
+      - vehicle_stock_number
+      - vehicle_year
+      - vin
+      properties:
+        id:
+          type: integer
+          example: 42
+          description: database id of the contract
+        ccpa:
+          type: boolean
+          example: true
+          description: Customers CCPA status, deleted or not deleted
+        confirmation_token:
+          type: string
+          example: 7713738FG3
+          description: also referred to as contract id
+        contactless:
+          type: boolean
+          example: true
+          description: determines whether a contract's agreement is being signed contactlessly or not
+        location_sequence:
+          type: integer
+          example: 42
+          description: sequence id of the contract for its location
+        status:
+          type:
+          - string
+          - 'null'
+          enum:
+          - booked
+          - cancelled
+          - pending_agreement
+          - started
+          - finished
+          - no_showed
+          description: current state of the contract
+        created_at:
+          type: string
+          format: date-time
+          example: '2020-06-15T20:12:26Z'
+          description: time at which the contract was created
+        actual_dropoff_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          example: '2020-06-17T20:12:26Z'
+          description: time at which the vehicle was dropped off, also indicates the contract finish time
+        actual_pickup_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          example: '2020-06-15T20:12:26Z'
+          description: time at which the vehicle was picked up, also indicates the contract start time
+        days_on_loan:
+          type:
+          - integer
+          - 'null'
+          example: 4
+          description: number of days the vehicle has been out on loan (diff between now and actual_pickup_at, rounded up)
+        vehicle_stock_number:
+          type:
+          - string
+          - 'null'
+          example: ABC123
+          description: the attached vehicle's stock number, nil if no vehicle attached
+        vehicle_license:
+          type:
+          - string
+          - 'null'
+          example: ABC 123
+          description: the attached vehicle's license plate number, nil if no vehicle attached
+        vin:
+          type:
+          - string
+          - 'null'
+          example: 1G1JC524417418958
+          description: the attached vehicle's VIN, nil if no vehicle attached
+        service_vehicle_id:
+          type:
+          - string
+          - 'null'
+          example: 1G1JC524417418958
+          description: the service vehicle's VIN
+        repair_order:
+          type:
+          - string
+          - 'null'
+          example: ABC123
+          description: linked repair order number, if present
+        purchase_order:
+          type:
+          - string
+          - 'null'
+          example: PO123
+          description: linked purchase order number, if present
+        booking_application:
+          type:
+          - string
+          - 'null'
+          example: scheduler
+          description: Client application type that created the reservation (e.g. web, iphone-appstore, scheduler).
+        booking_channel:
+          type:
+          - string
+          - 'null'
+          example: mykaarma
+          description: Partner integration source for the booking (e.g. mykaarma, xtime, redcap, toyota-oneapp) or dealerware for Dealerware-native bookings.
+        service_advisor_name:
+          type:
+          - string
+          - 'null'
+          example: Walter Skinner
+          description: first and last name of the service advisor linked to contract
+        customer_name:
+          type:
+          - string
+          - 'null'
+          example: Fox Mulder
+          description: first and last name of the customer linked to the contract
+        customer_profile_complete:
+          type:
+          - boolean
+          - 'null'
+          example: true
+          description: indication of whether the customer's profile is complete and eligible to start a contract
+        vehicle_make:
+          type:
+          - string
+          - 'null'
+          example: Audi
+          description: the automobile manufacturer
+        vehicle_model:
+          type:
+          - string
+          - 'null'
+          example: A2
+          description: the vehicle model name
+        vehicle_year:
+          type:
+          - integer
+          - 'null'
+          example: 2022
+          description: the year the vehicle was manufactured
+        signed:
+          type: boolean
+          example: true
+          description: indicates whether or not the contract has been signed
+        scheduled_pickup_at:
+          type: string
+          format: date-time
+          example: '2020-06-15T20:12:26Z'
+          description: the time the customer has scheduled to pick up the vehicle
+        scheduled_dropoff_at:
+          type: string
+          format: date-time
+          example: '2020-06-15T20:12:26Z'
+          description: the time the customer has scheduled to drop off the vehicle
+        fleet_name:
+          type: string
+          example: Courtesy
+          description: The name of the vehicle group that is assigned to the contract
+        links:
+          type: object
+          properties:
+            vehicle:
+              allOf:
+              - $ref: '#/components/schemas/HypermediaLink'
+            employee:
+              allOf:
+              - $ref: '#/components/schemas/HypermediaLink'
+            customer:
+              allOf:
+              - $ref: '#/components/schemas/HypermediaLink'
+            fleet:
+              allOf:
+              - $ref: '#/components/schemas/HypermediaLink'
+    AdminContractAuthorizationResponse:
+      type: object
+      properties:
+        amount:
+          type: number
+          format: float
+          description: Authorization amount for contract
+          example: 123.45
+        currency_code:
+          type: string
+          description: Applicable currency code for the contract
+          example: USD
+        links:
+          properties:
+            contract:
+              $ref: '#/components/schemas/HypermediaLink'
+    AdminContractPricing:
+      type: object
+      required:
+      - name
+      - type
+      - total
+      - groups
+      properties:
+        name:
+          type: string
+          description: Display name of pricing section
+          example: Total Rental Charges
+        type:
+          type: string
+          description: Type of adjustment or charge line items
+          example: rental
+        total:
+          type: number
+          format: float
+          description: Sum of included line items.
+          example: 125.98
+        groups:
+          type: array
+          description: Grouped line items for split bills
+          items:
+            type: object
+            required:
+            - description
+            - total
+            - items
+            properties:
+              description:
+                type: string
+                description: The description of the line item
+                example: 12 Daily Rates ($4.00 per day)
+              total:
+                type: number
+                format: float
+                description: Total of the line items
+                example: 48.5
+              items:
+                type: array
+                description: Line items for the line item group
+                items:
+                  type: object
+                  required:
+                  - bill_to
+                  - total
+                  properties:
+                    bill_to:
+                      type: string
+                      description: Bill To Name
+                      example: Leslie Knope
+                    total:
+                      type: number
+                      format: float
+                      description: Total of the line item
+                      example: 48.5
+    AdminContractPricingResponse:
+      type: object
+      required:
+      - id
+      - balance
+      - customer_balance
+      - customer_payments_total
+      - payer_total
+      - payer_balance
+      - payer_payments_total
+      - customer_total
+      - payments_total
+      - total
+      - currency_code
+      - pricing
+      - additional_payer_totals
+      - links
+      properties:
+        id:
+          type: integer
+          description: Statement ID
+          example: 42
+        balance:
+          type: number
+          format: float
+          description: Remaining balance due for the contract
+          example: 89.23
+        customer_balance:
+          type: number
+          format: float
+          description: Remaining balance due for the customer
+          example: 89
+        total:
+          type: number
+          format: float
+          description: Total cost of the contract, before applied payments
+          example: 125.98
+        customer_total:
+          type: number
+          format: float
+          description: Total customer cost of the contract, before applied payments
+          example: 125.98
+        customer_payments_total:
+          type: number
+          format: float
+          description: Total of successful customer payments on the contract
+          example: 36.98
+        payer_total:
+          type: number
+          format: float
+          description: Total additional payer cost of the contract
+          example: 0
+        payer_payments_total:
+          type: number
+          format: float
+          description: Total of payments made by the additional payer
+          example: 0
+        payer_balance:
+          type: number
+          format: float
+          description: Remaining additional payer balance of the contract
+          example: 0
+        payments_total:
+          type: number
+          format: float
+          description: Total of successful payments on the contract
+          example: 36.98
+        currency_code:
+          type: string
+          description: Applicable currency code for the contract
+          example: USD
+        pricing:
+          type: array
+          description: Collection of charge types and line items
+          items:
+            $ref: '#/components/schemas/AdminContractPricing'
+        additional_payer_totals:
+          type: array
+          description: Collection of split bill totals by each payer
+          items:
+            $ref: '#/components/schemas/AdminContractAdditionalPayerTotals'
+        links:
+          properties:
+            contract:
+              $ref: '#/components/schemas/HypermediaLink'
+    AdminDealershipFleetsContractsVehiclesResponse:
+      type: object
+      properties:
+        vehicle_groups:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+                example: 1
+                description: ID of the vehicle group
+              contracts:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                      example: 1
+                      description: ID of the contract
+                    status:
+                      type: string
+                      example: pending
+                      description: the status of the contract
+                    vehicle_id:
+                      type:
+                      - number
+                      - 'null'
+                      example: 1
+                      description: the ID of the vehicle associated with this contract, null if no vehicle is yet assigned
+                    customer:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                          example: 1
+                          description: the ID of the customer associated with this reservation
+                        full_name:
+                          type: string
+                          example: Frodo Baggins
+                          description: the full name of the customer associated with this reservation
+                    scheduled_pickup_at:
+                      type: string
+                      format: date-time
+                      example: '2022-05-19T16:22:26Z'
+                    scheduled_dropoff_at:
+                      type: string
+                      format: date-time
+                      example: '2022-08-10T14:15:30Z'
+                    actual_pickup_at:
+                      type:
+                      - string
+                      - 'null'
+                      format: date-time
+                      example: '2022-05-19T16:22:26Z'
+                    actual_dropoff_at:
+                      type:
+                      - string
+                      - 'null'
+                      format: date-time
+                      example: '2022-08-10T14:15:30Z'
+              vehicles:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                      example: 1
+                      description: the ID of the vehicle
+                    trim:
+                      type: object
+                      properties:
+                        make:
+                          type: string
+                          example: Toyota
+                        model:
+                          type: string
+                          example: Corolla
+                        power_train:
+                          type: string
+                          example: mechanical
+                        year:
+                          type: number
+                          example: 1999
+    AdminCustomerPaymentMethodResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 123
+          description: Payment method ID
+        card_type:
+          type: string
+          example: Mastercard
+          description: Type of credit card
+        last_four:
+          type: string
+          example: '1111'
+          description: Last four digits of the credit card
+        expires_on:
+          type: string
+          example: '2025-09-24'
+          description: Expiration date of the credit card
+        default:
+          type: boolean
+          example: true
+          description: Indication of whether or not the given card is the customer's default
+        links:
+          properties:
+            customer:
+              $ref: '#/components/schemas/HypermediaLink'
+    AdminContractAdditionalPayerTotals:
+      type: object
+      required:
+      - id
+      properties:
+        customer_name:
+          type: string
+          description: Name of the additional payer
+          example: payer1
+        amount:
+          type: number
+          format: float
+          description: Total amount owed by the additional payer
+          example: 75
+    AdminCalendarCustomerResponse:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        customer_profile_complete:
+          type: boolean
+          description: true if the Customer has completed their online profile
+        full_name:
+          type: string
+          example: Sally Smith
+    AdminContractStartRequest:
+      type: object
+      required:
+      - fuel
+      - odometer
+      - vehicle_id
+      properties:
+        confirm_plateless_start:
+          type: boolean
+          default: false
+          description: Explicit confirmation for a start attempt with no current license plate. Applies only to this request and does not bypass other start checks or validation.
+        fuel:
+          type: object
+          required:
+          - value
+          - unit
+          properties:
+            value:
+              type: number
+              format: float
+              example: 17.53
+            unit:
+              type: string
+              example: L
+              description: unit of measurment for fuel value, usually 'L' for liters
+        odometer:
+          type: object
+          required:
+          - value
+          - unit
+          properties:
+            value:
+              type: number
+              format: float
+              example: 20055.12
+            unit:
+              type: string
+              example: km
+              description: unit of measurment for odometer level. currently accepts 'km' or 'mi'
+        bypass_signatures:
+          type: boolean
+          description: a value of true will allow a contract to be started without the collection of a digital signature from the customer, default is false
+        bypass_credit_card_check:
+          type: boolean
+          description: a value of true will allow a contract to be started without a credit card present on the customer or reservation. In addition, any tried authorization will not stop the contract from being started. Default is false
+        vehicle_id:
+          type: number
+          format: integer
+          example: 42
+        actual_pickup:
+          type: string
+          format: date-time
+          example: '2029-06-15T20:22:26Z'
+          description: Actual pickup time for the contract, if different from the reservation time
+        pickup:
+          type: string
+          format: date-time
+          example: '2029-06-15T20:22:26Z'
+          description: Scheduled pickup time for the contract, if different from the reservation time
+        dropoff:
+          type: string
+          format: date-time
+          example: '2029-06-15T20:22:26Z'
+          description: Scheduled dropoff time for the contract, if different from the reservation time
+        reason:
+          type: string
+          description: Reason for starting the contract, if different from the reservation reason
+          example: Customer arrived early
+    AdminDriversResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Additional Driver ID
+          example: 22
+        email:
+          type: string
+          description: Email
+          example: hulk.hogan@gmail.com
+        first_name:
+          type: string
+          description: First name
+          example: Hulk
+        last_name:
+          type: string
+          description: Last name
+          example: Hogan
+        license_number:
+          type: string
+          description: The drivers license number
+          example: 99887766
+        license_subregion:
+          type: string
+          description: The subregion of the drivers license
+          example: TX
+        license_expires_on:
+          type: string
+          description: The expiration date of the drivers license formatted like YYYY-MM-DD
+          example: '2020-06-06'
+        born_on:
+          type: string
+          description: The date of birth formatted like YYYY-MM-DD
+          example: '1989-04-19'
+        country:
+          type: string
+          description: The country of the drivers license
+          example: US
+        phone_number:
+          type: string
+          description: The phone number unformatted
+          example: 5124592222
+        signature:
+          type: boolean
+          description: Has a signature image by signing their agreement
+          example: true
+        links:
+          type: object
+          properties:
+            contract:
+              $ref: '#/components/schemas/HypermediaLink'
+    AdminContractFinishRequest:
+      type: object
+      required:
+      - dropoff_at
+      - fuel
+      - odometer
+      properties:
+        dropoff_at:
+          type: string
+          example: '2023-08-10T20:22:26Z'
+        fuel:
+          type: number
+          format: float
+          example: 75
+          description: Fuel level, expressed as a percentage of how full the car's fuel tank is
+        purchase_order:
+          type: string
+          example: PO123
+          description: Purchase order number for the contract
+        repair_order:
+          type: string
+          example: '1234'
+          description: Repair order number for the contract
+        odometer:
+          type: object
+          required:
+          - value
+          - unit
+          properties:
+            value:
+              type: number
+              format: float
+              example: 20055.12
+            unit:
+              type: string
+              example: km
+              description: unit of measurement for odometer level, currently accepts 'km' or 'mi'
+        service_vehicle_id:
+          type: string
+          example: 1ABCD23EFGH567890
+    ContractNotesResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          author:
+            type: string
+            example: Clever D. Corgi
+            description: Author of note
+          content:
+            type: string
+            example: Requests cars with only 3 tires
+            description: Note text
+          id:
+            type: integer
+            example: 1
+            description: ID of note
+          note_type:
+            type: string
+            example: system
+            description: The type of note, either system or user. May affect the behavior of the note
+          readonly?:
+            type: boolean
+            example: false
+            description: Whether or not the note is readonly, which may affect whether or not it can be edited or deleted
+          updated_at:
+            type: string
+            format: datetime
+            example: '2017-09-06T10:00:00Z'
+            description: Time note was last updated
+    AdminContactlessMessagesRequest:
+      properties:
+        fuel_percentage:
+          type: number
+          format: double
+          example: 94.6
+        odometer:
+          type: object
+          required:
+          - value
+          - unit
+          properties:
+            value:
+              type: number
+              format: float
+              example: 20055.12
+            unit:
+              type: string
+              example: km
+    CreateAdminContractBillingAdjustmentRequest:
+      type: object
+      properties:
+        type_id:
+          type: integer
+          example: 42
+          description: Billing Adjustment ID of corresponding adjustment type
+        amount:
+          type: number
+          format: float
+          example: -56.45
+          description: Dollar amount of charge or credit being added
+        description:
+          type: string
+          example: additional cleaning charge
+          description: Description of the charge or credit being added
+    AdminContractPaymentResponse:
+      type: object
+      required:
+      - id
+      - created_at
+      - amount
+      - refundable_amount
+      - status
+      - provider
+      - links
+      properties:
+        id:
+          type: integer
+          description: Payment ID
+          example: 42
+        created_at:
+          type: string
+          format: date-time
+          example: '2020-06-15T20:22:26Z'
+          description: Time that payment was created
+        last_four:
+          type: string
+          example: '1234'
+          description: Last four digits of the payment method
+        card_type:
+          type: string
+          example: Visa
+          description: Card type of the payment method
+        amount:
+          type: number
+          format: float
+          example: 50.25
+          description: Total payment amount
+        error_code:
+          type: number
+          example: 3005
+          description: payment code returned by the payment processor on failed payments
+        provider:
+          type: string
+          example: braintree
+          description: Payment processor provider
+        refund_of_id:
+          type: integer
+          description: If this payment is a refund, the ID of the original payment
+          example: 21
+        refundable_amount:
+          type: number
+          format: float
+          description: If this payment is a refund, the total amount refunded so far on the original payment
+          example: 25
+        status:
+          type: string
+          description: Status of the payment transaction
+          enum:
+          - authorization_expired
+          - authorized
+          - completed
+          - failed
+          - pending
+        links:
+          properties:
+            contract:
+              $ref: '#/components/schemas/HypermediaLink'
+    AdminDriversRequest:
+      type: object
+      required:
+      - born_on
+      - country
+      - first_name
+      - last_name
+      - license_expires_on
+      - license_number
+      - license_subregion
+      - phone_number
+      properties:
+        email:
+          type: string
+          example: hulk.hogan@gmail.com
+          description: Email
+        first_name:
+          type: string
+          example: Hulk
+          description: First Name
+        last_name:
+          type: string
+          example: Hogan
+          description: Last Name
+        license_number:
+          type: string
+          example: 99887766
+          description: The drivers license number
+        license_subregion:
+          type: string
+          example: TX
+          description: The subregion of the drivers license
+        born_on:
+          type: string
+          example: '1993-04-19'
+          description: The date of birth formatted like YYYY-MM-DD
+        license_expires_on:
+          type: string
+          example: '2018-08-20'
+          description: The expiration date formatted like YYYY-MM-DD
+        country:
+          type: string
+          example: US
+          description: The country of the drivers license
+        phone_number:
+          type: string
+          example: 5124592222
+          description: The additional drivers' phone number unformatted
+    ContractNoteAddRequest:
+      type: object
+      required:
+      - content
+      properties:
+        content:
+          type: string
+    AdminContractVehicleRequest:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: integer
+          description: Vehicle ID
+          example: 42
+    AdminContractSplitBillAdjustmentRequest:
+      type: object
+      properties:
+        amount:
+          type: number
+          format: float
+          description: Amount of the total to be added to the split bill
+          example: 123.45
+        taxable:
+          type: boolean
+          description: Whether the payer of the split bill pays sales tax.
+          example: true
+        split_bill_id:
+          type: number
+          format: integer
+          description: id for the split bill that the split should be applied to
+    ContractNoteUpdateRequest:
+      type: object
+      required:
+      - content
+      properties:
+        content:
+          type: string
+  responses:
+    Created:
+      description: Created
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: The request has been fulfilled and has resulted in a new resource being created
+    ContractStartUnprocessableEntity:
+      description: Start validation failed. For a vehicle with no current license plate, code 10002 and key contracts.platelessStartConfirmationRequired indicate the caller must explicitly confirm this request with confirm_plateless_start true. Other start checks still apply.
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - code
+            - message
+            - key
+            properties:
+              code:
+                type: integer
+                example: 10002
+              message:
+                type: string
+                example: 'This vehicle has no current license plate. Confirm this start attempt with confirm_plateless_start: true.'
+              key:
+                type:
+                - string
+                - 'null'
+                example: contracts.platelessStartConfirmationRequired
+    UnprocessableEntity:
+      description: Unprocessable Content
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Invalid resource id
+              code:
+                type: integer
+                example: 6789
+    Accepted:
+      description: Accepted
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: The request has been accepted for processing
+    UnsupportedMediaType:
+      description: Unsupported Media Type
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Accepted media types is limited to JSON (application/json)
+              code:
+                type: integer
+                example: 6789
+    Success:
+      description: Success
+    NoContent:
+      description: No Content
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Invalid authorization token
+              code:
+                type: integer
+                example: 6789
+    CreatedWithLocationHeader:
+      headers:
+        Location:
+          $ref: '#/components/headers/Location'
+      description: Created
+    NotAcceptable:
+      description: Not Acceptable
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Missing headers in request
+              code:
+                type: integer
+                example: 6789
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Request is forbidden
+              code:
+                type: integer
+                example: 6789
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Resource with id :id not found
+              code:
+                type: integer
+                example: 6789
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Bad Request
+              code:
+                type: integer
+                example: 6789
+  headers:
+    Location:
+      description: Location of created resource
+      schema:
+        type: string
+  parameters:
+    '0':
+      name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+  securitySchemes:
+    Auth0:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://dealerware.auth0.com/oauth/token
+          scopes: {}
+x-provenance:
+  method: searched
+  source: https://developer.dealerware.com/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.dealerware.com/reference/admincustomerget-1.md
+  - https://developer.dealerware.com/reference/createblacklist-1.md
+  - https://developer.dealerware.com/reference/deleteadmincontractcancel-1.md
+  - https://developer.dealerware.com/reference/deleteadmincontractsplitbill-1.md
+  - https://developer.dealerware.com/reference/deleteadmincontractsplitbillpayment-1.md
+  - https://developer.dealerware.com/reference/deleteadmincontractswarranty-1.md
+  - https://developer.dealerware.com/reference/deleteadmindealershipwebhook.md
+  - https://developer.dealerware.com/reference/deleteadmindriver-1.md
+  - https://developer.dealerware.com/reference/deletecontractnote-1.md
+  - https://developer.dealerware.com/reference/deletecustomerfromblacklist-1.md
+  - https://developer.dealerware.com/reference/deletedealershipcustomernotes.md
+  - https://developer.dealerware.com/reference/deletedealershipcustomers-1.md
+  - https://developer.dealerware.com/reference/deleteemployeeactivation-1.md
+  - https://developer.dealerware.com/reference/deletefleet-1.md
+  - https://developer.dealerware.com/reference/deleteissue-1.md
+  - https://developer.dealerware.com/reference/getadmincontractadjustments-1.md
+  - https://developer.dealerware.com/reference/getadmincontractauthorization-1.md
+  - https://developer.dealerware.com/reference/getadmincontractcustomer-1.md
+  - https://developer.dealerware.com/reference/getadmincontractpayments-1.md
+  - https://developer.dealerware.com/reference/getadmincontractpricing-1.md
+  - https://developer.dealerware.com/reference/getadmincontractsdrivers-1.md
+  - https://developer.dealerware.com/reference/getadmincontractsplitbill-1.md
+  - https://developer.dealerware.com/reference/getadmincontractsplitbilladjustment-1.md
+  - https://developer.dealerware.com/reference/getadmincontractstoggles-1.md
+  - https://developer.dealerware.com/reference/getadmincontractvehiclesavailable-1.md
+  - https://developer.dealerware.com/reference/getadmincontractvehiclesavailablesearch-1.md
+  - https://developer.dealerware.com/reference/getadmincustomercreditcards-1.md
+  - https://developer.dealerware.com/reference/getadmincustomeremployer-1.md
+  - https://developer.dealerware.com/reference/getadmincustomerinsurance-1.md
+  - https://developer.dealerware.com/reference/getadmincustomernotificationsfailed.md
+  - https://developer.dealerware.com/reference/getadmincustomerscontracts-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcontracts-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcontractsmanifesttoday-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcontractssearch-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomernotes.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomers-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomersmessagesprofiles-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomersremoteprofilesearch-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomerssearch-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipemployees-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipemployeessearch-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipfleetscontractsandvehicles-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipserviceadvisors-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipwebhook.md
+  - https://developer.dealerware.com/reference/getadmindealershipwebhooks.md
+  - https://developer.dealerware.com/reference/getadmindriver-1.md
+  - https://developer.dealerware.com/reference/getcontract-1.md
+  - https://developer.dealerware.com/reference/getcontractnotes-1.md
+  - https://developer.dealerware.com/reference/getcontractscontactless-1.md
+  - https://developer.dealerware.com/reference/getcontractscontactlessdriver-1.md
+  - https://developer.dealerware.com/reference/getcontractssaleslead.md
+  - https://developer.dealerware.com/reference/getcontractwarranty-1.md
+  - https://developer.dealerware.com/reference/getdealership-1.md
+  - https://developer.dealerware.com/reference/getdealershipaddress-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailability-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailabilityintervals-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailabilityintervalscontinuous-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailabilityintervalscontinuousdaily-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailabilityintervalsdaily-1.md
+  - https://developer.dealerware.com/reference/getdealershipcalendarbookingchannels.md
+  - https://developer.dealerware.com/reference/getdealershipcalendarcontracts-1.md
+  - https://developer.dealerware.com/reference/getdealershipcalendarvehicles-1.md
+  - https://developer.dealerware.com/reference/getdealershipcontractavailablevehicles.md
+  - https://developer.dealerware.com/reference/getdealershipemployeeroles-1.md
+  - https://developer.dealerware.com/reference/getdealershipfleetpricing-1.md
+  - https://developer.dealerware.com/reference/getdealershipfleets-1.md
+  - https://developer.dealerware.com/reference/getdealershipkpis-1.md
+  - https://developer.dealerware.com/reference/getdealershipmakesandmodels-1.md
+  - https://developer.dealerware.com/reference/getdealershipreportreceivables-1.md
+  - https://developer.dealerware.com/reference/getdealershipreportrevenue-1.md
+  - https://developer.dealerware.com/reference/getdealershipreportrevenuesummary-1.md
+  - https://developer.dealerware.com/reference/getdealershipreporttransactions-1.md
+  - https://developer.dealerware.com/reference/getdealershipreporttransactionsfilteredsorted-1.md
+  - https://developer.dealerware.com/reference/getdealershiproles-1.md
+  - https://developer.dealerware.com/reference/getdealerships-1.md
+  - https://developer.dealerware.com/reference/getdealershipsearch-1.md
+  - https://developer.dealerware.com/reference/getdealershipsettings-1.md
+  - https://developer.dealerware.com/reference/getdealershiptelematicssettings-1.md
+  - https://developer.dealerware.com/reference/getdealershiptrimtypesinfleets-1.md
+  - https://developer.dealerware.com/reference/getdealershipvehicles-1.md
+  - https://developer.dealerware.com/reference/getdealershipvehiclessearch-1.md
+  - https://developer.dealerware.com/reference/getdocument-1.md
+  - https://developer.dealerware.com/reference/getemployee-1.md
+  - https://developer.dealerware.com/reference/getfleet-1.md
+  - https://developer.dealerware.com/reference/getfleetavailability-1.md
+  - https://developer.dealerware.com/reference/getfleetavailabilityintervals-1.md
+  - https://developer.dealerware.com/reference/getfleetavailabilityintervalscontinuous-1.md
+  - https://developer.dealerware.com/reference/getfleetavailabilityintervalscontinuousdaily-1.md
+  - https://developer.dealerware.com/reference/getfleetavailabilityintervalsdaily-1.md
+  - https://developer.dealerware.com/reference/getfleetsettings-1.md
+  - https://developer.dealerware.com/reference/getgeolocationradialdistance-1.md
+  - https://developer.dealerware.com/reference/getmappablefields-1.md
+  - https://developer.dealerware.com/reference/getprogramavailability-1.md
+  - https://developer.dealerware.com/reference/getprogramavailabilityintervals-1.md
+  - https://developer.dealerware.com/reference/getrentalagreementpdf-1.md
+  - https://developer.dealerware.com/reference/getreservationcustomer-1.md
+  - https://developer.dealerware.com/reference/getshortremoteprofile.md
+  - https://developer.dealerware.com/reference/getuser-1.md
+  - https://developer.dealerware.com/reference/getuserdealershiproles-1.md
+  - https://developer.dealerware.com/reference/getuserpreferences.md
+  - https://developer.dealerware.com/reference/getvehicle-1.md
+  - https://developer.dealerware.com/reference/getvehicleevents-1.md
+  - https://developer.dealerware.com/reference/getvehiclegroupdefleetsettings.md
+  - https://developer.dealerware.com/reference/getvehicleissues-1.md
+  - https://developer.dealerware.com/reference/getvehicletelemetry-1.md
+  - https://developer.dealerware.com/reference/patchadminvehicle.md
+  - https://developer.dealerware.com/reference/patchdealershipandfleetsettings-1.md
+  - https://developer.dealerware.com/reference/postadmincontractbillingadjustment-1.md
+  - https://developer.dealerware.com/reference/postadmincontractreceiptpdf-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsdrivers-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsettlement-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsplitbill-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsplitbilladjustment-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsplitbillpayment-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsplitbillpdf-1.md
+  - https://developer.dealerware.com/reference/postadmincustomeremployer-1.md
+  - https://developer.dealerware.com/reference/postadmincustomerinsurance-1.md
+  - https://developer.dealerware.com/reference/postadmincustomernotificationreplay.md
+  - https://developer.dealerware.com/reference/postadmindealershipcustomer-1.md
+  - https://developer.dealerware.com/reference/postadmindealershipcustomermessage-1.md
+  - https://developer.dealerware.com/reference/postadmindealershipcustomernote.md
+  - https://developer.dealerware.com/reference/postadmindealershipcustomersremoteprofileqrcode.md
+  - https://developer.dealerware.com/reference/postadmindealershipemployee-1.md
+  - https://developer.dealerware.com/reference/postadmindealershipwebhook.md
+  - https://developer.dealerware.com/reference/postcontactlessdriversignature-1.md
+  - https://developer.dealerware.com/reference/postcontractcontactlessmessages-1.md
+  - https://developer.dealerware.com/reference/postcontractnote-1.md
+  - https://developer.dealerware.com/reference/postcontractscontactlesssignatures-1.md
+  - https://developer.dealerware.com/reference/postcontractssaleslead.md
+  - https://developer.dealerware.com/reference/postcontractswarranty-1.md
+  - https://developer.dealerware.com/reference/postdealeronboardingvehicles-1.md
+  - https://developer.dealerware.com/reference/postdealershipfleets-1.md
+  - https://developer.dealerware.com/reference/postdealershipvehicle-1.md
+  - https://developer.dealerware.com/reference/postdealervehiclescheckingonboardingstatus-1.md
+  - https://developer.dealerware.com/reference/postdriversignature-1.md
+  - https://developer.dealerware.com/reference/postemployeeactivation-1.md
+  - https://developer.dealerware.com/reference/postfleetcontract-1.md
+  - https://developer.dealerware.com/reference/postfleetvehicles-1.md
+  - https://developer.dealerware.com/reference/postlogin-1.md
+  - https://developer.dealerware.com/reference/postreportingdata.md
+  - https://developer.dealerware.com/reference/postreportingmetadata.md
+  - https://developer.dealerware.com/reference/postuserconfirmations-1.md
+  - https://developer.dealerware.com/reference/postuserpasswordforgot-1.md
+  - https://developer.dealerware.com/reference/postvehicleissue-1.md
+  - https://developer.dealerware.com/reference/putadmincontractfinish-1.md
+  - https://developer.dealerware.com/reference/putadmincontractpaymentmethod-1.md
+  - https://developer.dealerware.com/reference/putadmincontractsplitbill-1.md
+  - https://developer.dealerware.com/reference/putadmincontractstart-1.md
+  - https://developer.dealerware.com/reference/putadmincontractswarranty-1.md
+  - https://developer.dealerware.com/reference/putadmincontractunassignvehicle-1.md
+  - https://developer.dealerware.com/reference/putadmincontractvehicle-1.md
+  - https://developer.dealerware.com/reference/putadmincustomeremployer-1.md
+  - https://developer.dealerware.com/reference/putadmincustomerupdate-1.md
+  - https://developer.dealerware.com/reference/putadmindealershipwebhook.md
+  - https://developer.dealerware.com/reference/putadmindriver-1.md
+  - https://developer.dealerware.com/reference/putcontract-1.md
+  - https://developer.dealerware.com/reference/putcontractnote-1.md
+  - https://developer.dealerware.com/reference/putdealershipaddress-1.md
+  - https://developer.dealerware.com/reference/putdealershipcustomernote.md
+  - https://developer.dealerware.com/reference/putdealershipemployeeroles-1.md
+  - https://developer.dealerware.com/reference/putdealershiptelematicssettings-1.md
+  - https://developer.dealerware.com/reference/putemployee-1.md
+  - https://developer.dealerware.com/reference/putfleet-1.md
+  - https://developer.dealerware.com/reference/putfleetsettings-1.md
+  - https://developer.dealerware.com/reference/putissue-1.md
+  - https://developer.dealerware.com/reference/putreservationcustomer-1.md
+  - https://developer.dealerware.com/reference/putuser-1.md
+  - https://developer.dealerware.com/reference/putuserpassword-1.md
+  - https://developer.dealerware.com/reference/putuserpasswordreset-1.md
+  - https://developer.dealerware.com/reference/putuserpreference-1.md
+  - https://developer.dealerware.com/reference/putvehiclefleet-1.md
+  - https://developer.dealerware.com/reference/putvehiclefleets-1.md
+  - https://developer.dealerware.com/reference/querydnr-1.md
+  - https://developer.dealerware.com/reference/updateadmincustomerinsurance-1.md
+  merge:
+    pages: 174
+    deduped: 1048
+    conflicts_kept_first: 0

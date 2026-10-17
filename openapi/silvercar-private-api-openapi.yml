@@ -1,0 +1,1463 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@dealerware.com
+    name: Dealerware Support
+    url: https://support.dealerware.com
+  description: MOB-API
+  termsOfService: support@dealerware.com
+  title: MOB Private API
+  version: 1.0.0
+servers:
+- url: https://api.dealerware.com
+  description: Production server
+- url: https://api.dw-tst.com
+  description: Staging server
+security:
+- Auth0: []
+tags:
+- name: Private
+paths:
+  /admin/customer_notifications/failed:
+    get:
+      summary: Lists failed customer notifications eligible for replay
+      description: Available to god users only.
+      operationId: getAdminCustomerNotificationsFailed
+      tags:
+      - Private
+      parameters:
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 50
+          minimum: 1
+          maximum: 100
+        description: Maximum number of failed customer notifications to return.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FailedCustomerNotification'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /admin/customer_notifications/{notification_id}/replay:
+    post:
+      summary: Replays a failed customer notification
+      description: Available to god users only.
+      operationId: postAdminCustomerNotificationReplay
+      tags:
+      - Private
+      parameters:
+      - name: notification_id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Customer notification ID to replay.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReplayCustomerNotificationRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReplayCustomerNotificationResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /reporting/data:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    post:
+      summary: Returns reporting data for a logical table search
+      description: 'This endpoint executes a report query against a logical table.
+
+
+        The server builds the query for the client from:
+
+        - `columns`: the exact column labels to include
+
+        - `filters`: equality filters using `{ column_name, value }`
+
+        - `runtime_filters`: advanced runtime filters
+
+        - `runtime_param_override`: parameter overrides
+
+
+        Access scope:
+
+        - Before querying data, the server resolves `name_patterns` to exactly one logical table available
+
+        to the `custom_reporting` user group.
+
+
+        Behavior notes:
+
+        1. `/reporting/data.filters` is the simple query-string path and is currently equality-only.
+
+        2. `runtime_filters` supports richer operators. Use metadata to determine which operators are valid
+
+        for a given field.
+
+        3. DATE and DATE_TIME columns may include a date bucket suffix in `columns` and `filters` using
+
+        `Column Name.bucket` syntax. The server sends these to ThoughtSpot as `[Column Name].bucket`.
+
+        Supported buckets are `detailed`, `hourly`, `daily`, `weekly`, `monthly`, `quarterly`, and `yearly`.
+
+        DATE and DATE_TIME columns sent without a suffix default to `detailed`.
+
+        4. ISO 8601 timestamp strings in `runtime_filters` are converted to epoch seconds before the request
+
+        is sent only when they include a time component.
+
+        5. `runtime_param_override` forwards parameter overrides as numbered `param1`, `paramVal1`, etc.
+
+        6. Single-OEM admins may omit `runtime_param_override.oem`; the server infers it from the
+
+        authenticated user.
+
+        7. OEM admins with access to multiple OEMs must send a non-blank `runtime_param_override`
+
+        entry with `name: "oem"`.
+
+        8. Non-OEM admins do not get OEM scoping from `runtime_param_override.oem`; any client-supplied
+
+        `oem` override is stripped and the server injects a runtime filter equivalent to
+
+        `preferred_dealer = true`.
+
+        9. The query filter `[filter_oem]=true` is added only when the effective outgoing
+
+        `runtime_param_override` includes `oem`.
+
+        10. The reporting response is returned with date-like values normalized for API clients.
+
+
+        Validation rules:
+
+        1. `name_patterns` must include at least one non-blank pattern.
+
+        2. `name_patterns` must resolve to exactly one authorized logical table.
+
+        3. At least one column is required.
+
+        4. Every filter column must also appear in `columns`.
+
+        5. `filters` is equality-only.
+
+        6. `runtime_filters` supports richer operators.
+
+        7. Multi-OEM admins must provide `runtime_param_override.oem`.
+
+        8. Dotted column names must use one of the supported date bucket suffixes.
+
+
+        Pagination:
+
+        - `page` (1-based) and `per_page` control how many rows are returned in a single response.
+
+        - Total-record counts are not surfaced because they are known to be inaccurate.
+
+
+        Typical flow:
+
+        1. Call `/reporting/metadata`.
+
+        2. Copy `data_sources[*].name_patterns`.
+
+        3. Choose one or more values from `data_sources[*].column_names`.
+
+        4. Optionally apply equality filters using `data_sources[*].filters`.
+
+        5. Optionally add `runtime_filters` using `data_sources[*].runtime_filters`, for example date ranges
+
+        with `BW_INC`.
+
+        6. Optionally add `runtime_param_override` using `data_sources[*].runtime_parameters`.
+
+        Include `oem` only when the authenticated user has access to multiple OEMs.
+
+        Single-OEM admins may omit `oem`, and non-OEM admins should not rely on sending it.
+
+        7. Call `/reporting/data`.
+
+
+        Example query generation:
+
+        - Request:
+
+        `columns: ["OEM", "Region"]`
+
+        `filters: [{ "column_name": "Region", "value": "West" }]`
+
+        - Generated query string:
+
+        `[OEM] [Region] [Region]="West"`
+
+        - Date bucket request:
+
+        `columns: ["Actual Pickup At.daily"]`
+
+        - Generated date bucket token:
+
+        `[Actual Pickup At].daily`'
+      operationId: postReportingData
+      tags:
+      - Private
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportingDataRequest'
+            examples:
+              single_oem_admin_infers_oem:
+                summary: Single-OEM admin omits oem and the server infers it
+                value:
+                  name_patterns:
+                  - Contracts
+                  columns:
+                  - DBA Name
+                  - Dealer Code
+                  - Region
+                  filters:
+                  - column_name: Region
+                    value: West
+                  runtime_filters:
+                  - column_name: Scheduled Pickup At
+                    operator: BW_INC
+                    values:
+                    - '2026-04-01T00:00:00Z'
+                    - '2026-04-30T23:59:59Z'
+                  runtime_param_override:
+                  - name: Date Filter
+                    value: ACTUAL_DROPOFF_AT
+                  page: 1
+                  per_page: 25
+              multi_oem_admin_explicit_oem:
+                summary: Multi-OEM admin must send an explicit oem override
+                value:
+                  name_patterns:
+                  - Contracts
+                  columns:
+                  - DBA Name
+                  - Dealer Code
+                  - Region
+                  filters:
+                  - column_name: Region
+                    value: West
+                  runtime_param_override:
+                  - name: oem
+                    value: Acura
+                  page: 1
+                  per_page: 25
+              non_oem_admin_oem_is_ignored:
+                summary: Non-OEM admins should not rely on client-supplied oem
+                value:
+                  name_patterns:
+                  - Contracts
+                  columns:
+                  - DBA Name
+                  - Dealer Code
+                  - Region
+                  runtime_param_override:
+                  - name: oem
+                    value: Acura
+                  - name: Date Filter
+                    value: ACTUAL_DROPOFF_AT
+                  page: 1
+                  per_page: 25
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportingDataResponse'
+              examples:
+                compact_rows:
+                  summary: Reporting response
+                  value:
+                    contents:
+                    - column_names:
+                      - DBA Name
+                      - Dealer Code
+                      - Region
+                      - Actual Pickup At
+                      data_rows:
+                      - - Dealer One
+                        - D001
+                        - West
+                        - '2026-04-01T00:00:00Z'
+                      - - Dealer Two
+                        - D002
+                        - West
+                        - '2026-04-02T00:00:00Z'
+        '400':
+          $ref: '#/components/responses/ReportingBadRequest'
+        '401':
+          $ref: '#/components/responses/ReportingUnauthorized'
+        '403':
+          $ref: '#/components/responses/ReportingForbidden'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '422':
+          description: Unprocessable Content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportingErrorResponse'
+              examples:
+                missing_name_patterns:
+                  value:
+                    error: name_patterns must include at least one non-blank pattern
+                ambiguous_name_patterns:
+                  value:
+                    error: name_patterns must resolve to exactly one logical table
+                missing_columns:
+                  value:
+                    error: columns must include at least one column name
+                unknown_filter_column:
+                  value:
+                    error: 'Unknown filter column: Region'
+                unsupported_date_bucket:
+                  value:
+                    error: 'Unsupported date bucket: foo. Supported buckets: detailed, hourly, daily, weekly, monthly, quarterly, yearly'
+                missing_multi_oem_oem_override:
+                  value:
+                    error: runtime_param_override must include oem for OEM admins with access to multiple OEMs
+  /reporting/metadata:
+    parameters:
+    - name: api-version
+      in: header
+      description: Target API version
+      required: true
+      schema:
+        type: integer
+        example: 4
+    post:
+      summary: Returns reporting metadata for logical tables
+      description: 'This endpoint is the discovery step for reporting.
+
+
+        It searches logical tables and returns a reduced response built for API clients:
+
+        - `name_patterns`: the stable selector to send to `/reporting/data`
+
+        - `column_names`: the exact column labels clients may request in `/reporting/data.columns`
+
+        - `filters`: query-string filter metadata for `/reporting/data.filters`
+
+        - `runtime_filters`: column-level runtime filter metadata for `/reporting/data.runtime_filters`
+
+        - `runtime_parameters`: parameter metadata for `/reporting/data.runtime_param_override`
+
+
+        The response intentionally strips out the large raw metadata detail payload.
+
+        Results are limited to logical tables available to the `custom_reporting` user group.
+
+
+        Typical flow:
+
+        1. Call `/reporting/metadata` with optional `name_patterns` that match the worksheet or logical table.
+
+        2. Read `data_sources[*].column_names` and let the user choose which columns to include.
+
+        3. Read `data_sources[*].filters[*]` to build `/reporting/data.filters`.
+
+        4. Read `data_sources[*].runtime_filters[*]` to build `/reporting/data.runtime_filters`.
+
+        5. Read `data_sources[*].runtime_parameters[*]` to build `/reporting/data.runtime_param_override`.
+
+        6. Call `/reporting/data` with `name_patterns`, `columns`, and whichever of those three inputs you need.
+
+
+        Behavior notes:
+
+        1. `column_names` comes from `metadata_detail.columns[*].header.name`.
+
+        2. If only top-level `column_names` are available, the API still returns them but leaves
+
+        `filters` and `runtime_filters` empty because filterability cannot be inferred.
+
+        3. `filters[*].operators` only describes `/reporting/data.filters`, which is currently equality-only.
+
+        4. `runtime_filters[*].operators` describes `/reporting/data.runtime_filters`.
+
+        5. Date and datetime runtime filters expose range operators such as `BW` and `BW_INC`.
+
+        6. `runtime_parameters` is sourced from useful raw parameter metadata when present.
+
+        7. Date-like metadata values are returned as ISO 8601 strings. DATE values use `YYYY-MM-DD`;
+
+        DATE_TIME values use UTC timestamps such as `2026-04-01T00:00:00Z`.
+
+
+        Pagination:
+
+        - `page` (1-based) and `per_page` control how many logical tables are returned in a single response.
+
+        - Total-record counts are not surfaced because they are known to be inaccurate.
+
+
+        Access scope:
+
+        - `name_patterns` defaults to `["%"]` when omitted.
+
+        - Results are permission-scoped to the `custom_reporting` user group.'
+      operationId: postReportingMetadata
+      tags:
+      - Private
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportingMetadataRequest'
+            examples:
+              contracts_lookup:
+                summary: Discover the Contracts worksheet
+                value:
+                  name_patterns:
+                  - Contracts%
+                  page: 1
+                  per_page: 10
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportingMetadataResponse'
+              examples:
+                contracts_metadata:
+                  summary: Minimal metadata response for a client UI
+                  value:
+                    data_sources:
+                    - name_patterns:
+                      - Contracts
+                      logical_table_name: Contracts
+                      column_names:
+                      - DBA Name
+                      - Dealer Code
+                      - Region
+                      - Contract Duration
+                      - Contract Status
+                      filters:
+                      - name: DBA Name
+                        operators:
+                        - EQ
+                        data_type: VARCHAR
+                        allowed_values:
+                        - Dealer One
+                        - Dealer Two
+                      - name: Dealer Code
+                        operators:
+                        - EQ
+                        data_type: VARCHAR
+                      - name: Region
+                        operators:
+                        - EQ
+                        data_type: VARCHAR
+                      - name: Contract Status
+                        operators:
+                        - EQ
+                        data_type: VARCHAR
+                      runtime_filters:
+                      - name: Actual Dropoff At
+                        operators:
+                        - EQ
+                        - BW
+                        - BW_INC
+                        - GT
+                        - GTE
+                        - LT
+                        - LTE
+                        data_type: DATE_TIME
+                      runtime_parameters:
+                      - name: oem
+                        operators:
+                        - EQ
+                        data_type: CHAR
+                        default_value: Acura
+                        allowed_values:
+                        - Acura
+                        - Audi
+                        - BMW
+        '400':
+          $ref: '#/components/responses/ReportingBadRequest'
+        '401':
+          $ref: '#/components/responses/ReportingUnauthorized'
+        '403':
+          $ref: '#/components/responses/ReportingForbidden'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+        '422':
+          $ref: '#/components/responses/ReportingUnprocessableContent'
+components:
+  schemas:
+    ReportingMetadataRequest:
+      type: object
+      properties:
+        name_patterns:
+          type: array
+          description: 'Optional stable selectors that match logical tables by name.
+
+            Defaults to `["%"]` when omitted.
+
+            '
+          items:
+            type: string
+          example:
+          - Contracts%
+        page:
+          type: integer
+          minimum: 1
+          default: 1
+          description: 1-based page number for pagination.
+        per_page:
+          type: integer
+          minimum: 1
+          description: Number of logical tables to return per page.
+          example: 10
+      example:
+        name_patterns:
+        - Contracts%
+        page: 1
+        per_page: 10
+    ReportingDataRequest:
+      type: object
+      required:
+      - name_patterns
+      - columns
+      properties:
+        name_patterns:
+          type: array
+          description: 'Stable selector for the logical table to query. Copy this from
+
+            `POST /reporting/metadata -> data_sources[*].name_patterns`.
+
+            The provided patterns must resolve to exactly one authorized logical table.
+
+            '
+          items:
+            type: string
+          example:
+          - Contracts
+        columns:
+          type: array
+          minItems: 1
+          description: 'Exact column labels to include. At least one column is required.
+
+            Choose values from `POST /reporting/metadata -> data_sources[*].column_names`.
+
+            DATE and DATE_TIME columns may append one supported bucket suffix using `Column Name.bucket`;
+
+            supported buckets are `detailed`, `hourly`, `daily`, `weekly`, `monthly`, `quarterly`, and `yearly`.
+
+            Omitting the suffix on a DATE or DATE_TIME column defaults it to `detailed`.
+
+            '
+          items:
+            type: string
+          example:
+          - DBA Name
+          - Dealer Code
+          - Actual Pickup At.daily
+        filters:
+          type: array
+          description: 'Equality filters using `{ column_name, value }`.
+
+            Each `filters[*].column_name` must also appear in `columns`.
+
+            Only use values returned by `POST /reporting/metadata -> data_sources[*].filters[*].name`.
+
+            '
+          items:
+            $ref: '#/components/schemas/ReportingColumnFilter'
+          example:
+          - column_name: Region
+            value: West
+        runtime_filters:
+          type: array
+          description: 'Advanced runtime filters. Intended for advanced cases such as date-range filtering.
+
+            Use metadata to determine which operators are valid for a given field.
+
+            ISO 8601 timestamp strings are converted to epoch seconds only when they include a time component.
+
+            '
+          items:
+            $ref: '#/components/schemas/ReportingRuntimeFilter'
+          example:
+          - column_name: Scheduled Pickup At
+            operator: BW_INC
+            values:
+            - '2026-04-01T00:00:00Z'
+            - '2026-04-30T23:59:59Z'
+        runtime_param_override:
+          type: array
+          description: "Parameter overrides forwarded as numbered `param1`, `paramVal1`, etc.\nOEM handling depends on the authenticated user:\n- Single-OEM admin: if `oem` is omitted, the server infers it and adds `[filter_oem]=true`.\n- Multi-OEM admin: the request must include a non-blank `oem` override.\n- Non-OEM admin: any client-supplied `oem` override is stripped, and the server injects\n  `preferred_dealer = true` as a runtime filter.\n"
+          items:
+            $ref: '#/components/schemas/ReportingRuntimeParameter'
+          example:
+          - name: Date Filter
+            value: ACTUAL_DROPOFF_AT
+        page:
+          type: integer
+          minimum: 1
+          default: 1
+          description: 1-based page number for pagination.
+        per_page:
+          type: integer
+          minimum: 1
+          description: Number of rows to return per page.
+          example: 25
+      example:
+        name_patterns:
+        - Contracts
+        columns:
+        - DBA Name
+        - Dealer Code
+        - Region
+        filters:
+        - column_name: Region
+          value: West
+        runtime_filters:
+        - column_name: Scheduled Pickup At
+          operator: BW_INC
+          values:
+          - '2026-04-01T00:00:00Z'
+          - '2026-04-30T23:59:59Z'
+        runtime_param_override:
+        - name: Date Filter
+          value: ACTUAL_DROPOFF_AT
+        page: 1
+        per_page: 25
+    ReplayCustomerNotificationResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        notification_id:
+          type: integer
+          example: 123
+        notification_attempt_id:
+          type: integer
+          example: 987
+        attempt_number:
+          type: integer
+          example: 2
+        replay_requested_at:
+          type: string
+          format: date-time
+    ReplayCustomerNotificationRequest:
+      type: object
+      properties:
+        reason:
+          type:
+          - string
+          - 'null'
+          example: Retry after provider outage
+    CustomerNotificationAttempt:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: integer
+          example: 987
+        attempt_number:
+          type: integer
+          example: 2
+        provider:
+          type: string
+          example: partner_mykaarma
+        status:
+          type: string
+          example: provider_rejected
+        provider_message_id:
+          type:
+          - string
+          - 'null'
+          example: message-uuid
+        error_code:
+          type:
+          - string
+          - 'null'
+          example: partner_mykaarma_provider_rejected
+        error_message:
+          type:
+          - string
+          - 'null'
+          example: Provider rejected notification
+        requested_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        completed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        callback_received_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+    ReportingQueryFilterDefinition:
+      type: object
+      required:
+      - name
+      - operators
+      properties:
+        name:
+          type: string
+          description: Exact column label clients may send in `/reporting/data.filters[*].column_name`.
+          example: Region
+        operators:
+          type: array
+          description: 'Operators supported by `/reporting/data.filters` for this column.
+
+            The query-string filter path is currently equality-only.
+
+            '
+          items:
+            type: string
+            enum:
+            - EQ
+          example:
+          - EQ
+        data_type:
+          type: string
+          description: Reporting data type when available.
+          example: VARCHAR
+        allowed_values:
+          type: array
+          description: Enumerated values when the column metadata exposes them.
+          items:
+            oneOf:
+            - type: string
+            - type: number
+            - type: integer
+            - type: boolean
+          example:
+          - West
+          - East
+    FailedCustomerNotification:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 123
+        reservation_id:
+          type:
+          - integer
+          - 'null'
+          example: 456
+        customer_id:
+          type:
+          - integer
+          - 'null'
+          example: 789
+        location_id:
+          type:
+          - integer
+          - 'null'
+          example: 321
+        message_type:
+          type: string
+          example: starting_notification
+        channel:
+          type: string
+          example: sms
+        provider:
+          type: string
+          example: partner_mykaarma
+        status:
+          type: string
+          example: delivery_failed
+        attempt_count:
+          type: integer
+          example: 1
+        replay_count:
+          type: integer
+          example: 0
+        last_error_code:
+          type:
+          - string
+          - 'null'
+          example: partner_mykaarma_provider_rejected
+        last_error_message:
+          type:
+          - string
+          - 'null'
+          example: Provider rejected notification
+        last_failed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        latest_attempt:
+          $ref: '#/components/schemas/CustomerNotificationAttempt'
+    ReportingColumnFilter:
+      type: object
+      required:
+      - column_name
+      - value
+      properties:
+        column_name:
+          type: string
+          description: 'Must be one of the selected values in `columns`. Bucketed date columns use the same
+
+            `Column Name.bucket` syntax as `columns`.
+
+            '
+          example: Actual Pickup At.daily
+        value:
+          description: Equality value for the filter.
+          oneOf:
+          - type: string
+          - type: number
+          - type: integer
+          - type: boolean
+          example: West
+    ReportingMetadataResponse:
+      type: object
+      required:
+      - data_sources
+      properties:
+        data_sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportingDataSource'
+      example:
+        data_sources:
+        - name_patterns:
+          - Contracts
+          logical_table_name: Contracts
+          column_names:
+          - DBA Name
+          - Dealer Code
+          - Region
+          - Contract Duration
+          - Contract Status
+          filters:
+          - name: DBA Name
+            operators:
+            - EQ
+            data_type: VARCHAR
+            allowed_values:
+            - Dealer One
+            - Dealer Two
+          - name: Dealer Code
+            operators:
+            - EQ
+            data_type: VARCHAR
+          - name: Region
+            operators:
+            - EQ
+            data_type: VARCHAR
+          runtime_filters:
+          - name: Actual Dropoff At
+            operators:
+            - EQ
+            - BW
+            - BW_INC
+            - GT
+            - GTE
+            - LT
+            - LTE
+            data_type: DATE_TIME
+          runtime_parameters:
+          - name: oem
+            operators:
+            - EQ
+            data_type: CHAR
+            default_value: Acura
+            allowed_values:
+            - Acura
+            - Audi
+            - BMW
+    ReportingRuntimeFilterDefinition:
+      type: object
+      required:
+      - name
+      - operators
+      properties:
+        name:
+          type: string
+          description: Exact column label clients may send in `/reporting/data.runtime_filters[*].column_name`.
+          example: Actual Dropoff At
+        operators:
+          type: array
+          description: 'Operators supported by `/reporting/data.runtime_filters` for this column.
+
+            Date and datetime columns expose range operators such as `BW` and `BW_INC`.
+
+            '
+          items:
+            type: string
+            enum:
+            - EQ
+            - BW
+            - BW_INC
+            - GT
+            - GTE
+            - LT
+            - LTE
+          example:
+          - EQ
+          - BW_INC
+        data_type:
+          type: string
+          description: Reporting data type when available.
+          example: DATE_TIME
+        allowed_values:
+          type: array
+          description: Enumerated values when the column metadata exposes them.
+          items:
+            oneOf:
+            - type: string
+            - type: number
+            - type: integer
+            - type: boolean
+          example:
+          - West
+          - East
+    ReportingRuntimeParameterDefinition:
+      type: object
+      required:
+      - name
+      - operators
+      properties:
+        name:
+          type: string
+          description: Exact parameter name clients may send in `/reporting/data.runtime_param_override[*].name`.
+          example: oem
+        operators:
+          type: array
+          items:
+            type: string
+            enum:
+            - EQ
+          example:
+          - EQ
+        data_type:
+          type: string
+          description: Reporting data type when available.
+          example: CHAR
+        default_value:
+          description: Default value when the parameter metadata exposes one.
+          oneOf:
+          - type: string
+          - type: number
+          - type: integer
+          - type: boolean
+          example: Acura
+        allowed_values:
+          type: array
+          description: Enumerated values when the parameter metadata exposes them.
+          items:
+            oneOf:
+            - type: string
+            - type: number
+            - type: integer
+            - type: boolean
+          example:
+          - Acura
+          - Audi
+    ReportingErrorResponse:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: string
+          example: name_patterns must include at least one non-blank pattern
+    ReportingDataSource:
+      type: object
+      required:
+      - name_patterns
+      - column_names
+      - filters
+      - runtime_filters
+      - runtime_parameters
+      properties:
+        name_patterns:
+          type: array
+          description: Stable selector to send back to `/reporting/data.name_patterns`.
+          items:
+            type: string
+          example:
+          - Contracts
+        logical_table_name:
+          type: string
+          description: Human-readable name of the logical table. Returned for display purposes.
+          example: Contracts
+        column_names:
+          type: array
+          description: Exact column labels clients may request in `/reporting/data.columns`.
+          items:
+            type: string
+          example:
+          - DBA Name
+          - Dealer Code
+          - Region
+        filters:
+          type: array
+          description: Query-string filter metadata for `/reporting/data.filters`.
+          items:
+            $ref: '#/components/schemas/ReportingQueryFilterDefinition'
+          example:
+          - name: DBA Name
+            operators:
+            - EQ
+            data_type: VARCHAR
+          - name: Region
+            operators:
+            - EQ
+            data_type: VARCHAR
+        runtime_filters:
+          type: array
+          description: Column-level runtime filter metadata for `/reporting/data.runtime_filters`.
+          items:
+            $ref: '#/components/schemas/ReportingRuntimeFilterDefinition'
+          example:
+          - name: Actual Dropoff At
+            operators:
+            - EQ
+            - BW
+            - BW_INC
+            - GT
+            - GTE
+            - LT
+            - LTE
+            data_type: DATE_TIME
+        runtime_parameters:
+          type: array
+          description: Parameter metadata for `/reporting/data.runtime_param_override`.
+          items:
+            $ref: '#/components/schemas/ReportingRuntimeParameterDefinition'
+          example:
+          - name: oem
+            operators:
+            - EQ
+            data_type: CHAR
+            default_value: Acura
+    ReportingRuntimeFilter:
+      type: object
+      required:
+      - column_name
+      - operator
+      properties:
+        column_name:
+          type: string
+          description: Column label to filter at runtime.
+          example: Scheduled Pickup At
+        operator:
+          type: string
+          description: 'Runtime filter operator. Use one of the operators surfaced by
+
+            `POST /reporting/metadata -> data_sources[*].runtime_filters[*].operators` for this field.
+
+            '
+          example: BW_INC
+        value:
+          description: 'Single runtime filter value.
+
+            ISO 8601 strings are converted to epoch seconds only when they include a time component.
+
+            '
+          oneOf:
+          - type: string
+          - type: number
+          - type: integer
+          - type: boolean
+          example: West
+        values:
+          type: array
+          description: 'Multiple runtime filter values, for example a date range.
+
+            ISO 8601 strings are converted to epoch seconds only when they include a time component.
+
+            '
+          items:
+            oneOf:
+            - type: string
+            - type: number
+            - type: integer
+            - type: boolean
+          example:
+          - '2026-04-01T00:00:00Z'
+          - '2026-04-30T23:59:59Z'
+    ReportingDataResponse:
+      type: object
+      description: 'Reporting response. The server preserves the underlying payload shape
+
+        without adding total-row counts, which are known to be inaccurate. Date-like
+
+        response values are normalized to ISO 8601 strings: DATE values use
+
+        `YYYY-MM-DD`, and DATE_TIME values use UTC timestamps such as
+
+        `2026-04-01T00:00:00Z`.
+
+        '
+      additionalProperties: true
+      example:
+        contents:
+        - column_names:
+          - DBA Name
+          - Dealer Code
+          - Region
+          - Actual Pickup At
+          data_rows:
+          - - Dealer One
+            - D001
+            - West
+            - '2026-04-01T00:00:00Z'
+          - - Dealer Two
+            - D002
+            - West
+            - '2026-04-02T00:00:00Z'
+    ReportingRuntimeParameter:
+      type: object
+      required:
+      - name
+      - value
+      properties:
+        name:
+          type: string
+          description: 'Parameter name to override at runtime.
+
+            `oem` is auth-dependent: inferred for single-OEM admins, required for multi-OEM admins,
+
+            and ignored for non-OEM admins.
+
+            '
+          example: oem
+        value:
+          description: Runtime parameter value.
+          oneOf:
+          - type: string
+          - type: number
+          - type: integer
+          - type: boolean
+          example: Acura
+  responses:
+    UnprocessableEntity:
+      description: Unprocessable Content
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Invalid resource id
+              code:
+                type: integer
+                example: 6789
+    ReportingUnauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReportingErrorResponse'
+          example:
+            error: Your session has expired. Please sign in again.
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Invalid authorization token
+              code:
+                type: integer
+                example: 6789
+    ReportingUnprocessableContent:
+      description: Unprocessable Content
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReportingErrorResponse'
+    ReportingForbidden:
+      description: Forbidden
+    NotAcceptable:
+      description: Not Acceptable
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Missing headers in request
+              code:
+                type: integer
+                example: 6789
+    ReportingBadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReportingErrorResponse'
+          example:
+            error: User must have a valid email
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Request is forbidden
+              code:
+                type: integer
+                example: 6789
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Resource with id :id not found
+              code:
+                type: integer
+                example: 6789
+  securitySchemes:
+    Auth0:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://dealerware.auth0.com/oauth/token
+          scopes: {}
+x-provenance:
+  method: searched
+  source: https://developer.dealerware.com/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.dealerware.com/reference/admincustomerget-1.md
+  - https://developer.dealerware.com/reference/createblacklist-1.md
+  - https://developer.dealerware.com/reference/deleteadmincontractcancel-1.md
+  - https://developer.dealerware.com/reference/deleteadmincontractsplitbill-1.md
+  - https://developer.dealerware.com/reference/deleteadmincontractsplitbillpayment-1.md
+  - https://developer.dealerware.com/reference/deleteadmincontractswarranty-1.md
+  - https://developer.dealerware.com/reference/deleteadmindealershipwebhook.md
+  - https://developer.dealerware.com/reference/deleteadmindriver-1.md
+  - https://developer.dealerware.com/reference/deletecontractnote-1.md
+  - https://developer.dealerware.com/reference/deletecustomerfromblacklist-1.md
+  - https://developer.dealerware.com/reference/deletedealershipcustomernotes.md
+  - https://developer.dealerware.com/reference/deletedealershipcustomers-1.md
+  - https://developer.dealerware.com/reference/deleteemployeeactivation-1.md
+  - https://developer.dealerware.com/reference/deletefleet-1.md
+  - https://developer.dealerware.com/reference/deleteissue-1.md
+  - https://developer.dealerware.com/reference/getadmincontractadjustments-1.md
+  - https://developer.dealerware.com/reference/getadmincontractauthorization-1.md
+  - https://developer.dealerware.com/reference/getadmincontractcustomer-1.md
+  - https://developer.dealerware.com/reference/getadmincontractpayments-1.md
+  - https://developer.dealerware.com/reference/getadmincontractpricing-1.md
+  - https://developer.dealerware.com/reference/getadmincontractsdrivers-1.md
+  - https://developer.dealerware.com/reference/getadmincontractsplitbill-1.md
+  - https://developer.dealerware.com/reference/getadmincontractsplitbilladjustment-1.md
+  - https://developer.dealerware.com/reference/getadmincontractstoggles-1.md
+  - https://developer.dealerware.com/reference/getadmincontractvehiclesavailable-1.md
+  - https://developer.dealerware.com/reference/getadmincontractvehiclesavailablesearch-1.md
+  - https://developer.dealerware.com/reference/getadmincustomercreditcards-1.md
+  - https://developer.dealerware.com/reference/getadmincustomeremployer-1.md
+  - https://developer.dealerware.com/reference/getadmincustomerinsurance-1.md
+  - https://developer.dealerware.com/reference/getadmincustomernotificationsfailed.md
+  - https://developer.dealerware.com/reference/getadmincustomerscontracts-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcontracts-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcontractsmanifesttoday-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcontractssearch-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomernotes.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomers-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomersmessagesprofiles-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomersremoteprofilesearch-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipcustomerssearch-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipemployees-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipemployeessearch-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipfleetscontractsandvehicles-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipserviceadvisors-1.md
+  - https://developer.dealerware.com/reference/getadmindealershipwebhook.md
+  - https://developer.dealerware.com/reference/getadmindealershipwebhooks.md
+  - https://developer.dealerware.com/reference/getadmindriver-1.md
+  - https://developer.dealerware.com/reference/getcontract-1.md
+  - https://developer.dealerware.com/reference/getcontractnotes-1.md
+  - https://developer.dealerware.com/reference/getcontractscontactless-1.md
+  - https://developer.dealerware.com/reference/getcontractscontactlessdriver-1.md
+  - https://developer.dealerware.com/reference/getcontractssaleslead.md
+  - https://developer.dealerware.com/reference/getcontractwarranty-1.md
+  - https://developer.dealerware.com/reference/getdealership-1.md
+  - https://developer.dealerware.com/reference/getdealershipaddress-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailability-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailabilityintervals-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailabilityintervalscontinuous-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailabilityintervalscontinuousdaily-1.md
+  - https://developer.dealerware.com/reference/getdealershipavailabilityintervalsdaily-1.md
+  - https://developer.dealerware.com/reference/getdealershipcalendarbookingchannels.md
+  - https://developer.dealerware.com/reference/getdealershipcalendarcontracts-1.md
+  - https://developer.dealerware.com/reference/getdealershipcalendarvehicles-1.md
+  - https://developer.dealerware.com/reference/getdealershipcontractavailablevehicles.md
+  - https://developer.dealerware.com/reference/getdealershipemployeeroles-1.md
+  - https://developer.dealerware.com/reference/getdealershipfleetpricing-1.md
+  - https://developer.dealerware.com/reference/getdealershipfleets-1.md
+  - https://developer.dealerware.com/reference/getdealershipkpis-1.md
+  - https://developer.dealerware.com/reference/getdealershipmakesandmodels-1.md
+  - https://developer.dealerware.com/reference/getdealershipreportreceivables-1.md
+  - https://developer.dealerware.com/reference/getdealershipreportrevenue-1.md
+  - https://developer.dealerware.com/reference/getdealershipreportrevenuesummary-1.md
+  - https://developer.dealerware.com/reference/getdealershipreporttransactions-1.md
+  - https://developer.dealerware.com/reference/getdealershipreporttransactionsfilteredsorted-1.md
+  - https://developer.dealerware.com/reference/getdealershiproles-1.md
+  - https://developer.dealerware.com/reference/getdealerships-1.md
+  - https://developer.dealerware.com/reference/getdealershipsearch-1.md
+  - https://developer.dealerware.com/reference/getdealershipsettings-1.md
+  - https://developer.dealerware.com/reference/getdealershiptelematicssettings-1.md
+  - https://developer.dealerware.com/reference/getdealershiptrimtypesinfleets-1.md
+  - https://developer.dealerware.com/reference/getdealershipvehicles-1.md
+  - https://developer.dealerware.com/reference/getdealershipvehiclessearch-1.md
+  - https://developer.dealerware.com/reference/getdocument-1.md
+  - https://developer.dealerware.com/reference/getemployee-1.md
+  - https://developer.dealerware.com/reference/getfleet-1.md
+  - https://developer.dealerware.com/reference/getfleetavailability-1.md
+  - https://developer.dealerware.com/reference/getfleetavailabilityintervals-1.md
+  - https://developer.dealerware.com/reference/getfleetavailabilityintervalscontinuous-1.md
+  - https://developer.dealerware.com/reference/getfleetavailabilityintervalscontinuousdaily-1.md
+  - https://developer.dealerware.com/reference/getfleetavailabilityintervalsdaily-1.md
+  - https://developer.dealerware.com/reference/getfleetsettings-1.md
+  - https://developer.dealerware.com/reference/getgeolocationradialdistance-1.md
+  - https://developer.dealerware.com/reference/getmappablefields-1.md
+  - https://developer.dealerware.com/reference/getprogramavailability-1.md
+  - https://developer.dealerware.com/reference/getprogramavailabilityintervals-1.md
+  - https://developer.dealerware.com/reference/getrentalagreementpdf-1.md
+  - https://developer.dealerware.com/reference/getreservationcustomer-1.md
+  - https://developer.dealerware.com/reference/getshortremoteprofile.md
+  - https://developer.dealerware.com/reference/getuser-1.md
+  - https://developer.dealerware.com/reference/getuserdealershiproles-1.md
+  - https://developer.dealerware.com/reference/getuserpreferences.md
+  - https://developer.dealerware.com/reference/getvehicle-1.md
+  - https://developer.dealerware.com/reference/getvehicleevents-1.md
+  - https://developer.dealerware.com/reference/getvehiclegroupdefleetsettings.md
+  - https://developer.dealerware.com/reference/getvehicleissues-1.md
+  - https://developer.dealerware.com/reference/getvehicletelemetry-1.md
+  - https://developer.dealerware.com/reference/patchadminvehicle.md
+  - https://developer.dealerware.com/reference/patchdealershipandfleetsettings-1.md
+  - https://developer.dealerware.com/reference/postadmincontractbillingadjustment-1.md
+  - https://developer.dealerware.com/reference/postadmincontractreceiptpdf-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsdrivers-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsettlement-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsplitbill-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsplitbilladjustment-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsplitbillpayment-1.md
+  - https://developer.dealerware.com/reference/postadmincontractsplitbillpdf-1.md
+  - https://developer.dealerware.com/reference/postadmincustomeremployer-1.md
+  - https://developer.dealerware.com/reference/postadmincustomerinsurance-1.md
+  - https://developer.dealerware.com/reference/postadmincustomernotificationreplay.md
+  - https://developer.dealerware.com/reference/postadmindealershipcustomer-1.md
+  - https://developer.dealerware.com/reference/postadmindealershipcustomermessage-1.md
+  - https://developer.dealerware.com/reference/postadmindealershipcustomernote.md
+  - https://developer.dealerware.com/reference/postadmindealershipcustomersremoteprofileqrcode.md
+  - https://developer.dealerware.com/reference/postadmindealershipemployee-1.md
+  - https://developer.dealerware.com/reference/postadmindealershipwebhook.md
+  - https://developer.dealerware.com/reference/postcontactlessdriversignature-1.md
+  - https://developer.dealerware.com/reference/postcontractcontactlessmessages-1.md
+  - https://developer.dealerware.com/reference/postcontractnote-1.md
+  - https://developer.dealerware.com/reference/postcontractscontactlesssignatures-1.md
+  - https://developer.dealerware.com/reference/postcontractssaleslead.md
+  - https://developer.dealerware.com/reference/postcontractswarranty-1.md
+  - https://developer.dealerware.com/reference/postdealeronboardingvehicles-1.md
+  - https://developer.dealerware.com/reference/postdealershipfleets-1.md
+  - https://developer.dealerware.com/reference/postdealershipvehicle-1.md
+  - https://developer.dealerware.com/reference/postdealervehiclescheckingonboardingstatus-1.md
+  - https://developer.dealerware.com/reference/postdriversignature-1.md
+  - https://developer.dealerware.com/reference/postemployeeactivation-1.md
+  - https://developer.dealerware.com/reference/postfleetcontract-1.md
+  - https://developer.dealerware.com/reference/postfleetvehicles-1.md
+  - https://developer.dealerware.com/reference/postlogin-1.md
+  - https://developer.dealerware.com/reference/postreportingdata.md
+  - https://developer.dealerware.com/reference/postreportingmetadata.md
+  - https://developer.dealerware.com/reference/postuserconfirmations-1.md
+  - https://developer.dealerware.com/reference/postuserpasswordforgot-1.md
+  - https://developer.dealerware.com/reference/postvehicleissue-1.md
+  - https://developer.dealerware.com/reference/putadmincontractfinish-1.md
+  - https://developer.dealerware.com/reference/putadmincontractpaymentmethod-1.md
+  - https://developer.dealerware.com/reference/putadmincontractsplitbill-1.md
+  - https://developer.dealerware.com/reference/putadmincontractstart-1.md
+  - https://developer.dealerware.com/reference/putadmincontractswarranty-1.md
+  - https://developer.dealerware.com/reference/putadmincontractunassignvehicle-1.md
+  - https://developer.dealerware.com/reference/putadmincontractvehicle-1.md
+  - https://developer.dealerware.com/reference/putadmincustomeremployer-1.md
+  - https://developer.dealerware.com/reference/putadmincustomerupdate-1.md
+  - https://developer.dealerware.com/reference/putadmindealershipwebhook.md
+  - https://developer.dealerware.com/reference/putadmindriver-1.md
+  - https://developer.dealerware.com/reference/putcontract-1.md
+  - https://developer.dealerware.com/reference/putcontractnote-1.md
+  - https://developer.dealerware.com/reference/putdealershipaddress-1.md
+  - https://developer.dealerware.com/reference/putdealershipcustomernote.md
+  - https://developer.dealerware.com/reference/putdealershipemployeeroles-1.md
+  - https://developer.dealerware.com/reference/putdealershiptelematicssettings-1.md
+  - https://developer.dealerware.com/reference/putemployee-1.md
+  - https://developer.dealerware.com/reference/putfleet-1.md
+  - https://developer.dealerware.com/reference/putfleetsettings-1.md
+  - https://developer.dealerware.com/reference/putissue-1.md
+  - https://developer.dealerware.com/reference/putreservationcustomer-1.md
+  - https://developer.dealerware.com/reference/putuser-1.md
+  - https://developer.dealerware.com/reference/putuserpassword-1.md
+  - https://developer.dealerware.com/reference/putuserpasswordreset-1.md
+  - https://developer.dealerware.com/reference/putuserpreference-1.md
+  - https://developer.dealerware.com/reference/putvehiclefleet-1.md
+  - https://developer.dealerware.com/reference/putvehiclefleets-1.md
+  - https://developer.dealerware.com/reference/querydnr-1.md
+  - https://developer.dealerware.com/reference/updateadmincustomerinsurance-1.md
+  merge:
+    pages: 174
+    deduped: 1048
+    conflicts_kept_first: 0
